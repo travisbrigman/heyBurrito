@@ -1,0 +1,29 @@
+import React, { useContext, useEffect } from "react";
+import { FoodDetailContext } from "./FoodDetailProvider";
+import { MenuItem } from "./MenuItem";
+import "./MenuItem.css";
+
+export const MenuList = (props) => {
+  // This state changes when `getAnimals()` is invoked below
+  const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
+
+  useEffect(() => {
+    getFoodDetails();
+  }, []);
+
+  //TODO::finish route on line 17
+  return (
+    <div className="menu">
+      <h1>Our Menu</h1>
+      <button onClick={() => props.history.push("/")}>Add to Order</button>
+      <article className="menuList">
+        {foodDetails.map((foodDetailObject) => (
+          <MenuItem
+            key={foodDetailObject.id}
+            foodDetailObject={foodDetailObject}
+          />
+        ))}
+      </article>
+    </div>
+  );
+};
