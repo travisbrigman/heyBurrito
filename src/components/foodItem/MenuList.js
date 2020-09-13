@@ -11,12 +11,12 @@ export const MenuList = (props) => {
     getFoodDetails();
   }, []);
 
-  //TODO::finish route on line 17
+  //TODO::finish route on line 19
   return (
     <div className="menu">
       <h1>Our Menu</h1>
-      <button onClick={() => props.history.push("/")}>Add to Order</button>
       <article className="menuList">
+      <button onClick={() => props.history.push("/")}>Add to Order</button>
         {foodDetails.map((foodDetailObject) => (
           <MenuItem
             key={foodDetailObject.id}
