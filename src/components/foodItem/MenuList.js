@@ -16,7 +16,7 @@ export const MenuList = (props) => {
     <div className="menu">
       <h1>Our Menu</h1>
       <article className="menuList">
-      <button className="addToOrder" onClick={() => props.history.push("/")}>Add to Order</button>
+
         {foodDetails.map((foodDetailObject) => (
           <MenuItem
             key={foodDetailObject.id}

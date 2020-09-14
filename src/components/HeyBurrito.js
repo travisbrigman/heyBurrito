@@ -5,6 +5,7 @@ import { NavBar } from "./nav/Navbar"
 import { Login } from "./auth/Login"
 import { Register } from "./auth/Register"
 import "./HeyBurrito.css"
+import { CustomerProvider } from "./customers/CustomerProvider"
 
 export const HeyBurrito = () => (
     <>
@@ -12,8 +13,10 @@ export const HeyBurrito = () => (
             if (localStorage.getItem("heyBurrito_customer")) {
                 return (
                     <>
+                    <CustomerProvider>
                         <Route render={props => <NavBar {...props} />} />
                         <Route render={props => <ApplicationViews {...props} />} />
+                    </CustomerProvider>
                     </>
                 )
             } else {
