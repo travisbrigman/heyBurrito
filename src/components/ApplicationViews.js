@@ -25,7 +25,7 @@ export const ApplicationViews = (props) => {
             <article className="body-right"></article>
         </div>
         <footer>
-        <small><div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></small>
+        <small><div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></div></small>
         </footer>
         </>
     )

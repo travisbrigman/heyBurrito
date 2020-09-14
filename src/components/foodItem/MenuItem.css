@@ -1,4 +1,14 @@
 .menuItem {
     display: flex;
+    flex-flow: column wrap;
+    border: 1px orange solid
+}
+
+.menuList {
+    display: flex;
     flex-flow: row wrap;
+}
+
+.addToOrder {
+    order: 2;
 }
