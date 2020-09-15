@@ -1,19 +1,21 @@
 import React, { useContext, useEffect } from "react";
 import { Route } from "react-router-dom";
-import { FoodDetailProvider } from "./foodItem/FoodDetailProvider";
 import { MenuList } from "./foodItem/MenuList";
 import { CustomerContext } from "./customers/CustomerProvider";
+import { MenuItemForm } from "./order/MenuItemOrderForm";
+import { FoodDetailProvider } from "./foodItem/FoodDetailProvider";
+import { OrderProvider } from "./order/OrderProvider";
+import { IngredientProvider } from "./ingredients/IngredientProvider";
 const logo = require("/Users/travislaptop/workspace/hey-burrito/src/assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
   const { getCustomers, signedInCustomer } = useContext(CustomerContext);
 
   useEffect(() => {
-    getCustomers()
+    getCustomers();
   }, []);
-  
 
-  console.log(signedInCustomer)
+
 
   const handleLogout = () => {
     localStorage.clear();
@@ -34,9 +36,19 @@ export const ApplicationViews = (props) => {
         <article className="body-center">
           <FoodDetailProvider>
             {/* Render the location list when http://localhost:3000/ */}
-            <Route exact path="/">
-              <MenuList />
-            </Route>
+            <Route exact path="/" render={(props) => <MenuList {...props} />} />
+          </FoodDetailProvider>
+
+          <FoodDetailProvider>
+            <OrderProvider>
+              <IngredientProvider>
+                <Route
+                  exact
+                  path="/create"
+                  render={(props) => <MenuItemForm {...props} />}
+                />
+              </IngredientProvider>
+            </OrderProvider>
           </FoodDetailProvider>
         </article>
         <article className="body-right"></article>

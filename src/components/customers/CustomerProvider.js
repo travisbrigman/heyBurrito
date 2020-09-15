@@ -29,11 +29,11 @@ export const CustomerProvider = (props) => {
     return parseInt(localStorage.getItem("heyBurrito_customer"));
   };
   const userID = currentUser();
-  console.log(userID);
+
 
   const signedInCustomer =
     customers.find((customer) => customer.id === userID) || {};
-  console.log(`from Provider ${signedInCustomer}`);
+
 
   /*
         You return a context provider which has the
