@@ -4,12 +4,10 @@ import { MenuItem } from "./MenuItem";
 import "./MenuItem.css";
 
 export const MenuList = (props) => {
-  // This state changes when `getAnimals()` is invoked below
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
   useEffect(() => {
     getFoodDetails();
-    console.log(props)
   }, []);
 
   return (
