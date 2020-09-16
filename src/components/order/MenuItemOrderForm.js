@@ -2,7 +2,6 @@ import React, { useContext, useRef, useEffect, useState } from "react";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { OrderContext } from "./OrderProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
-import { RadioButton } from "./RadioButton";
 
 export const MenuItemForm = (props) => {
   const { ingredients, getIngredients } = useContext(IngredientContext);
@@ -16,13 +15,15 @@ export const MenuItemForm = (props) => {
 
   //create a func , set parameter in state ==== value of what you just selected
 
-  //    function useInput(initialValue) {
-  //     const [value, setValue] = useState(initialValue);
-  //     function handleChange(e) {
-  //       setValue(e.target.value);
-  //     }
-  //     return [value, handleChange];
-  //   }
+  function useInput(initialValue) {
+    const [value, setValue] = useState(initialValue);
+    function handleChange(e) {
+      setValue(e.target.value);
+    }
+    return [value, handleChange];
+  }
+
+  const [tortilla, setTortilla] = useInput("");
 
   useEffect(() => {
     getIngredients();
@@ -30,13 +31,13 @@ export const MenuItemForm = (props) => {
     getFoodDetails();
   }, []);
 
-  useEffect(() => {
-    const justTortillas =
-      ingredients.filter(
-        (ingredientObject) => ingredientObject.ingredientCategoryId === 1
-      ) || [];
-    setTortillas(justTortillas);
-  }, []);
+    useEffect(() => {
+  const justTortillas =
+    ingredients.filter(
+      (ingredientObject) => ingredientObject.ingredientCategoryId === 1
+    ) || [];
+  setTortillas(justTortillas);
+    }, [ingredients]);
 
   useEffect(() => {
     const FoodDetailObject =
@@ -47,7 +48,7 @@ export const MenuItemForm = (props) => {
 
   const constructNewOrderItem = () => {
     addToOrder({
-      name: "",
+      tortilla: tortilla,
       rice: rice.current.checked,
     }).then(() => props.history.push("/"));
   };
@@ -58,10 +59,18 @@ export const MenuItemForm = (props) => {
       <fieldset>
         <div className="form-group__tortilla">
           {tortillas.map((ingredientObject) => (
-            <RadioButton
-              key={ingredientObject.id}
-              ingredientObject={ingredientObject}
-            />
+            <div>
+              <input
+                type="radio"
+                id={ingredientObject.id}
+                value={ingredientObject.name}
+                checked={ingredientObject.name === tortilla}
+                onChange={setTortilla}
+              />
+              <label htmlFor={ingredientObject.name}>
+                {ingredientObject.name}
+              </label>
+            </div>
           ))}
         </div>
       </fieldset>

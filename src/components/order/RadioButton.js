@@ -2,6 +2,7 @@ import React from "react"
 import { useState } from "react"
 
 export const RadioButton = ( { ingredientObject }  ) => {
+
     function useInput(initialValue) {
         const [value, setValue] = useState(initialValue);
         function handleChange(e) {
@@ -9,8 +10,9 @@ export const RadioButton = ( { ingredientObject }  ) => {
         }
         return [value, handleChange];
       }
+      
     const [tortilla, setTortilla] = useInput("");
-
+    
     return (
         <div>
         <input
