@@ -10,7 +10,7 @@ export const IngredientProvider = (props) => {
   const [ingredients, setIngredients] = useState([]);
 
   const getIngredients = () => {
-    return fetch("http://localhost:8088/ingredients")
+    return fetch("http://localhost:8088/ingredients?_expand=ingredientCategory")
       .then((res) => res.json())
       .then(setIngredients);
   };
