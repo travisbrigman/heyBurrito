@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  useRef,
-  useEffect,
-  useState,
-} from "react";
+import React, { useContext, useRef, useEffect, useState } from "react";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { OrderContext } from "./OrderProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
@@ -17,19 +12,18 @@ export const MenuItemForm = (props) => {
   const rice = useRef(null);
 
   const [foodItem, setFoodItem] = useState({});
- 
+  const [tortillas, setTortillas] = useState([]);
 
   //create a func , set parameter in state ==== value of what you just selected
 
-//    function useInput(initialValue) {
-//     const [value, setValue] = useState(initialValue);
-//     function handleChange(e) {
-//       setValue(e.target.value);
-//     }
-//     return [value, handleChange];
-//   }
+  //    function useInput(initialValue) {
+  //     const [value, setValue] = useState(initialValue);
+  //     function handleChange(e) {
+  //       setValue(e.target.value);
+  //     }
+  //     return [value, handleChange];
+  //   }
 
-  
   useEffect(() => {
     getIngredients();
     getOrders();
@@ -37,15 +31,23 @@ export const MenuItemForm = (props) => {
   }, []);
 
   useEffect(() => {
+    const justTortillas =
+      ingredients.filter(
+        (ingredientObject) => ingredientObject.ingredientCategoryId === 1
+      ) || [];
+    setTortillas(justTortillas);
+  }, []);
+
+  useEffect(() => {
     const FoodDetailObject =
       foodDetails.find((food) => food.name === "Burrito") || {}; //<-- this should be different
-      console.log(FoodDetailObject)
+
     setFoodItem(FoodDetailObject);
   }, [foodDetails]);
 
   const constructNewOrderItem = () => {
     addToOrder({
-      name: '',
+      name: "",
       rice: rice.current.checked,
     }).then(() => props.history.push("/"));
   };
@@ -55,19 +57,12 @@ export const MenuItemForm = (props) => {
       <h2 className="menuForm__title">Build Your {foodItem.name}</h2>
       <fieldset>
         <div className="form-group__tortilla">
-
-        {const justTortillas = () => {
-        ingredients.filter(ingredientObject => (
-            ingredientObject.ingredientCategoryId === 1 
-        ))
-    }
-        ingredients.map((ingredientObject) => (
-          <RadioButton
-            key={ingredientObject.id}
-            ingredientObject={ingredientObject}
-          />
-        ))}
-
+          {tortillas.map((ingredientObject) => (
+            <RadioButton
+              key={ingredientObject.id}
+              ingredientObject={ingredientObject}
+            />
+          ))}
         </div>
       </fieldset>
       <fieldset>
@@ -88,7 +83,7 @@ export const MenuItemForm = (props) => {
       <button
         type="submit"
         onClick={(evt) => {
-          evt.preventDefault();// Prevent browser from submitting the form
+          evt.preventDefault(); // Prevent browser from submitting the form
           constructNewOrderItem();
         }}
         className="btn btn-primary"
