@@ -8,11 +8,17 @@ export const IngredientContext = React.createContext();
 
 export const IngredientProvider = (props) => {
   const [ingredients, setIngredients] = useState([]);
+  const [foodItemIngredients, setFoodItemIngredients] = useState([]);
 
   const getIngredients = () => {
     return fetch("http://localhost:8088/ingredients?_expand=ingredientCategory")
       .then((res) => res.json())
       .then(setIngredients);
+  };
+  const getFoodItemIngredients = () => {
+    return fetch("http://localhost:8088/foodItemIngredients?_expand=ingredients")
+      .then((res) => res.json())
+      .then(setFoodItemIngredients);
   };
   
   return (
@@ -20,6 +26,8 @@ export const IngredientProvider = (props) => {
     value={{
       ingredients,
       getIngredients,
+      foodItemIngredients,
+      getFoodItemIngredients
     }}
     >
       {props.children}

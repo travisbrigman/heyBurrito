@@ -6,6 +6,7 @@ import { MenuItemForm } from "./order/MenuItemOrderForm";
 import { FoodDetailProvider } from "./foodItem/FoodDetailProvider";
 import { OrderProvider } from "./order/OrderProvider";
 import { IngredientProvider } from "./ingredients/IngredientProvider";
+import { FoodItemProvider } from "./foodItem/FoodItemProvider";
 const logo = require("/Users/travislaptop/workspace/hey-burrito/src/assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
@@ -14,8 +15,6 @@ export const ApplicationViews = (props) => {
   useEffect(() => {
     getCustomers();
   }, []);
-
-
 
   const handleLogout = () => {
     localStorage.clear();
@@ -39,17 +38,19 @@ export const ApplicationViews = (props) => {
             <Route exact path="/" render={(props) => <MenuList {...props} />} />
           </FoodDetailProvider>
 
-          <FoodDetailProvider>
-            <OrderProvider>
-              <IngredientProvider>
-                <Route
-                  exact
-                  path="/create"
-                  render={(props) => <MenuItemForm {...props} />}
-                />
-              </IngredientProvider>
-            </OrderProvider>
-          </FoodDetailProvider>
+          <FoodItemProvider>
+            <FoodDetailProvider>
+              <OrderProvider>
+                <IngredientProvider>
+                  <Route
+                    exact
+                    path="/create"
+                    render={(props) => <MenuItemForm {...props} />}
+                  />
+                </IngredientProvider>
+              </OrderProvider>
+            </FoodDetailProvider>
+          </FoodItemProvider>
         </article>
         <article className="body-right"></article>
       </div>

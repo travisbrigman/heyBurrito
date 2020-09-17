@@ -2,7 +2,6 @@ import React from "react"
 import "./MenuItem.css"
 
 export const MenuItem = ( { foodDetailObject, history }  ) => {
-    console.log(foodDetailObject, history )
     return (
     <section className="menuItem">
         <h3 className="menuItem__name">{ foodDetailObject.name }</h3>
