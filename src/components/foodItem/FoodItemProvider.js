@@ -9,6 +9,8 @@ export const FoodItemContext = React.createContext();
 export const FoodItemProvider = (props) => {
   const [foodItems, setFoodItems] = useState([]);
   const [foodItemIngredients, setFoodItemIngredients] = useState([]);
+  const [postResponse, setPostResponse] = useState({});
+  
 
   const getFoodItems = () => {
     return fetch("http://localhost:8088/foodItems")
@@ -29,8 +31,10 @@ export const FoodItemProvider = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(foodItemObject),
-    }).then(getFoodItems);
-  };
+    }).then(res => res.json())
+    .then(setPostResponse)
+    .then(getFoodItems)  
+};
 
   const addToFoodItemIngredients = (foodItemIngredientObject) => {
     return fetch("http://localhost:8088/foodItemIngredients", {
@@ -39,6 +43,7 @@ export const FoodItemProvider = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(foodItemIngredientObject),
+      
     }).then(getFoodItems);
   };
   
@@ -50,7 +55,8 @@ export const FoodItemProvider = (props) => {
       foodItemIngredients,
       getFoodItemIngredients,
       addToFoodItems,
-      addToFoodItemIngredients
+      addToFoodItemIngredients,
+      postResponse
     }}
     >
       {props.children}

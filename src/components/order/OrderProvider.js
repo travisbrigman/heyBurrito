@@ -28,8 +28,11 @@ export const OrderProvider = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(orderObject),
+      
     }).then(getOrders);
   };
+
+
 
   return (
     <OrderContext.Provider

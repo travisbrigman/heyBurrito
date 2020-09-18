@@ -12,6 +12,7 @@ export const MenuItemForm = (props) => {
     getFoodItemIngredients,
     addToFoodItems,
     addToFoodItemIngredients,
+    postResponse
   } = useContext(FoodItemContext);
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { orders, getOrders, addToOrder } = useContext(OrderContext);
@@ -79,20 +80,54 @@ export const MenuItemForm = (props) => {
   }, [foodDetails]);
 
   const constructNewOrderItem = () => {
+    const tortillaIngredient = tortillas.find(
+      (selectedTortilla) => selectedTortilla.name === tortilla
+    );
+    const beanIngredient = beans.find(
+      (selectedBean) => selectedBean.name === beanType
+    );
+    const meatIngredient = meats.find(
+      (selectedMeat) => selectedMeat.name === meatType
+    );
+
+    const foodItemData = [tortillaIngredient, beanIngredient, meatIngredient];
     addToFoodItems({
-      tortilla: tortilla,
-      beans: beanType,
-      meat: meatType,
-      rice: rice.current.checked,
       specialInstructions: specialInstructions.current.value,
       quantity: quantity.current.value,
+      detailId: foodItemObject.id,
     })
-      .then(addToFoodItemIngredients({}))
+    
+    if (rice.current.checked === true) {
+      addToFoodItemIngredients({
+        ingredientId: 23,
+        foodItemId: postResponse.id
+      });
+    }
+    foodItemData.forEach((i) =>
+      addToFoodItemIngredients({ 
+          ingredientId: i.id,
+          foodItemId: postResponse.id
+     })
+    );
+
+    for (const [key, value] of Object.entries(checkedItems)) {
+      const foundIngredient = ingredients.find(
+        (ingredient) => ingredient.name === key
+      );
+      addToFoodItemIngredients({
+        ingredientId: foundIngredient.id,
+        foodItemId: postResponse.id
+      })
+      .then(getFoodItems)
       .then(() => props.history.push("/"));
+    }
+    
+
   };
 
+  /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   const Checkbox = ({ type = "checkbox", name, checked = false, onChange }) => {
-    console.log("Checkbox: ", name, checked);
+    //console.log("Checkbox: ", name, checked);
 
     return (
       <input type={type} name={name} checked={checked} onChange={onChange} />
@@ -106,8 +141,9 @@ export const MenuItemForm = (props) => {
       ...checkedItems,
       [event.target.name]: event.target.checked,
     });
-    console.log("checkedItems: ", checkedItems);
+    //console.log("checkedItems: ", checkedItems);
   };
+  /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
 
   return (
     <form className="menuItemObjectOrderForm">
@@ -120,7 +156,7 @@ export const MenuItemForm = (props) => {
               <input
                 type="radio"
                 id={ingredientObject.id}
-                value={ingredientObject.id}
+                value={ingredientObject.name}
                 checked={ingredientObject.name === tortilla}
                 onChange={setTortilla}
               />
