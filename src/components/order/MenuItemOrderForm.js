@@ -12,7 +12,7 @@ export const MenuItemForm = (props) => {
     getFoodItemIngredients,
     addToFoodItems,
     addToFoodItemIngredients,
-    postResponse
+    postResponse,
   } = useContext(FoodItemContext);
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { orders, getOrders, addToOrder } = useContext(OrderContext);
@@ -89,40 +89,39 @@ export const MenuItemForm = (props) => {
     const meatIngredient = meats.find(
       (selectedMeat) => selectedMeat.name === meatType
     );
+    const riceObject = ingredients.find((rice) => rice.id === 23);
 
     const foodItemData = [tortillaIngredient, beanIngredient, meatIngredient];
-    addToFoodItems({
-      specialInstructions: specialInstructions.current.value,
-      quantity: quantity.current.value,
-      detailId: foodItemObject.id,
-    })
-    
+
     if (rice.current.checked === true) {
-      addToFoodItemIngredients({
-        ingredientId: 23,
-        foodItemId: postResponse.id
-      });
+      foodItemData.push(riceObject);
     }
-    foodItemData.forEach((i) =>
-      addToFoodItemIngredients({ 
-          ingredientId: i.id,
-          foodItemId: postResponse.id
-     })
-    );
 
     for (const [key, value] of Object.entries(checkedItems)) {
       const foundIngredient = ingredients.find(
         (ingredient) => ingredient.name === key
       );
-      addToFoodItemIngredients({
-        ingredientId: foundIngredient.id,
-        foodItemId: postResponse.id
-      })
+      foodItemData.push(foundIngredient);
+    }
+
+    console.log(foodItemData)
+
+     addToFoodItems({
+      specialInstructions: specialInstructions.current.value,
+      quantity: quantity.current.value,
+      detailId: foodItemObject.id,
+    }).then( 
+        
+        foodItemData
+          .forEach((i) =>
+            addToFoodItemIngredients({
+              ingredientId: i.id,
+              foodItemId: postResponse.id,
+            })
+          )
+    )
       .then(getFoodItems)
       .then(() => props.history.push("/"));
-    }
-    
-
   };
 
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */

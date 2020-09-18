@@ -33,7 +33,7 @@ export const FoodItemProvider = (props) => {
       body: JSON.stringify(foodItemObject),
     }).then(res => res.json())
     .then(setPostResponse)
-    .then(getFoodItems)  
+    //.then(getFoodItems)  
 };
 
   const addToFoodItemIngredients = (foodItemIngredientObject) => {
@@ -44,7 +44,7 @@ export const FoodItemProvider = (props) => {
       },
       body: JSON.stringify(foodItemIngredientObject),
       
-    }).then(getFoodItems);
+    })//.then(getFoodItems);
   };
   
   return (
