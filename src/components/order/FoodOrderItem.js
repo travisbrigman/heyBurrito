@@ -4,7 +4,11 @@ import React from "react";
 
 export const FoodOrderItem = ({ foodItemObject, props, deleteOrder, foodDetails, ingredients, foodItemIngredients }) => {
 
-    const foodDetailObject = foodDetails.find(foodDetailObject => foodDetailObject.id === foodItemObject.detailId)
+    const foodDetailObject = foodDetails.find(foodDetailObject => foodDetailObject.id === foodItemObject.detailId) || {}
+    // console.log(foodDetails)
+    // console.log(`food Detail Object ${foodDetailObject}`)
+    // console.log(`food Item Object ${foodItemObject}`)
+ 
 
     const ItemIngredientList = () => {
         //this will give me an array with just FoodItemIngredient Objects that match the ID of the current FoodItem.
@@ -15,23 +19,22 @@ export const FoodOrderItem = ({ foodItemObject, props, deleteOrder, foodDetails,
             return ingredients.find( ingredient => ingredient.id === ingredientIdObject.ingredientsId)
 
         })
-        return itemIngredientList
-            
+        return itemIngredientList        
             
     }
     return (
     <section className="foodOrderItem">
       <h3 className="foodOrderItem__name">{foodDetailObject.name}</h3>
       <div className="foodItem__Instructions">
-        {foodItemObject.instructions}
+        {foodItemObject.specialInstructions}
       </div>
       <div className="foodOrderItem__Combo">{}</div>
       <ItemIngredientList></ItemIngredientList>
 
-      <button className="editFoodItem" onClick={() => props.push("/create")}>
+      <button className="editFoodItem" onClick="">
         edit
       </button>
-      <button className="editFoodItem" onClick={deleteOrder()}>
+      <button className="editFoodItem" onClick="">
         delete
       </button>
     </section>

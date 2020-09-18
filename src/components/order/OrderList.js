@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { OrderContext } from "./OrderProvider";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
-import { OrderFoodItem } from "./OrderFoodItem";
+import { FoodOrderItem } from "./FoodOrderItem";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 
-export const OrderList = () => {
+export const OrderList = (props) => {
   const { orders, getOrders } = useContext(OrderContext);
   const { foodItems, getFoodItems } = useContext(FoodItemContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
@@ -23,18 +23,19 @@ export const OrderList = () => {
     getFoodDetails();
     getIngredients();
     getFoodItemIngredients();
-  }, []);
+  }, [foodDetails]);
 
   return (
     <div className="orders">
-      {getFoodItems.map((foodItemObject) => (
-        <OrderFoodItem
+      {foodItems.map((foodItemObject) => (
+        <FoodOrderItem
           key={foodItemObject.id}
           foodItemObject={foodItemObject}
           deleteOrder={deleteOrder}
           foodDetails={foodDetails}
           ingredients={ingredients}
           foodItemIngredients={foodItemIngredients}
+          {...props}
         />
       ))}
     </div>
