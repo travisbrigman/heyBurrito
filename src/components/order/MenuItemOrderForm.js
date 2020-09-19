@@ -108,7 +108,7 @@ export const MenuItemForm = (props) => {
 
      addToFoodItems({
       specialInstructions: specialInstructions.current.value,
-      quantity: quantity.current.value,
+      quantity: parseInt(quantity.current.value),
       detailId: foodItemObject.id,
     }).then( 
         
