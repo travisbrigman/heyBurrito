@@ -16,7 +16,7 @@ export const IngredientProvider = (props) => {
       .then(setIngredients);
   };
   const getFoodItemIngredients = () => {
-    return fetch("http://localhost:8088/foodItemIngredients?_expand=ingredients")
+    return fetch("http://localhost:8088/foodItemIngredients?_expand=ingredient")
       .then((res) => res.json())
       .then(setFoodItemIngredients);
   };

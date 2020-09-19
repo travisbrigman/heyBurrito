@@ -23,7 +23,7 @@ export const OrderList = (props) => {
     getFoodDetails();
     getIngredients();
     getFoodItemIngredients();
-  }, [foodDetails]);
+  }, []);
 
   return (
     <div className="orders">
