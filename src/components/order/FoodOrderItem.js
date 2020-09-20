@@ -12,23 +12,22 @@ export const FoodOrderItem = ({
       (foodDetailObject) => foodDetailObject.id === foodItemObject.detailId
     ) || {};
 
-  const ItemIngredientList = () => {
+    
+  const ItemIngredientList = ({ingredients}) => {
     //this will give me an array with just FoodItemIngredient Objects that match the ID of the current FoodItem.
     const ingredientIdList =
       foodItemIngredients.filter(
         (ingredient) => ingredient.foodItemId === foodItemObject.id
       ) || [];
 
-      console.log(ingredientIdList)
-
     //this should take that array and and for each object in that array, match it with a food ingredient.
+ 
     const itemIngredientList =
       ingredientIdList.map((ingredientIdObject) => {
         return ingredients.find(
-          (ingredient) => ingredient.id === ingredientIdObject.ingredientsId
+          (ingredient) => ingredient.id === ingredientIdObject.ingredientId
         );
-      }) || {};
-    console.log(itemIngredientList);
+      })
     return <div>{itemIngredientList}</div>;
   };
 
