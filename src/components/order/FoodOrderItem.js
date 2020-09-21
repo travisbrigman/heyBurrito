@@ -28,11 +28,19 @@ export const FoodOrderItem = ({
           (ingredient) => ingredient.id === ingredientIdObject.ingredientId
         );
       })
-    return <div>{itemIngredientList}</div>;
+      console.log(itemIngredientList)
+    return itemIngredientList.map(ingredient => {
+      return(
+        <>
+        <div>{ingredient.ingredientCategory.categoryName}: {ingredient.name}</div>
+        
+        </>
+      )
+    })
   };
 
   return (
-    <section className="foodOrderItem">
+    <section className="foodOrderItem">             
       <h3 className="foodOrderItem__name">{foodDetailObject.name}</h3>
       <div className="foodOrderItem__Instructions">
         {foodItemObject.specialInstructions}
