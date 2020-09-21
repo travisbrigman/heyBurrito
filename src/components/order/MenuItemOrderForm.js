@@ -12,7 +12,7 @@ export const MenuItemForm = (props) => {
     getFoodItemIngredients,
     addToFoodItems,
     addToFoodItemIngredients,
-    postResponse,
+    //postResponse,
   } = useContext(FoodItemContext);
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { orders, getOrders, addToOrder } = useContext(OrderContext);
@@ -104,22 +104,18 @@ export const MenuItemForm = (props) => {
       foodItemData.push(foundIngredient);
     }
 
-    console.log(foodItemData)
-
-     addToFoodItems({
+    addToFoodItems({
       specialInstructions: specialInstructions.current.value,
       quantity: parseInt(quantity.current.value),
       detailId: foodItemObject.id,
-    }).then( 
-        
-        foodItemData
-          .forEach((i) =>
-            addToFoodItemIngredients({
-              ingredientId: i.id,
-              foodItemId: postResponse.id,
-            })
-          )
-    )
+    }).then( res => 
+        foodItemData.forEach((i) =>
+          addToFoodItemIngredients({
+            ingredientId: i.id,
+            foodItemId: res.id,
+          })
+        )
+      )
       .then(getFoodItems)
       .then(() => props.history.push("/"));
   };

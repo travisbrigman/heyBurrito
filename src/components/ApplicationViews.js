@@ -8,6 +8,7 @@ import { OrderProvider } from "./order/OrderProvider";
 import { IngredientProvider } from "./ingredients/IngredientProvider";
 import { FoodItemProvider } from "./foodItem/FoodItemProvider";
 import { OrderList } from "./order/OrderList";
+import { DeleteFoodOrderItem } from "./order/DeleteFoodOrderItem";
 const logo = require("/Users/travislaptop/workspace/hey-burrito/src/assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
@@ -54,19 +55,21 @@ export const ApplicationViews = (props) => {
           </FoodItemProvider>
         </article>
         <article className="body-right">
-          <OrderProvider>
-            <FoodItemProvider>
-              <FoodDetailProvider>
-                <IngredientProvider>
-                  <Route
-                    exact
-                    path="/"
-                    render={(props) => <OrderList {...props} />}
-                  />
-                </IngredientProvider>
-              </FoodDetailProvider>
-            </FoodItemProvider>
-          </OrderProvider>
+         
+            <OrderProvider>
+              <FoodItemProvider>
+                <FoodDetailProvider>
+                  <IngredientProvider>
+                    <Route
+                      exact
+                      path="/"
+                      render={(props) => <OrderList {...props} />}
+                    />
+                  </IngredientProvider>
+                </FoodDetailProvider>
+              </FoodItemProvider>
+            </OrderProvider>
+         
         </article>
       </div>
       <footer>

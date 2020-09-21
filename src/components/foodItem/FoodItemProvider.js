@@ -9,8 +9,8 @@ export const FoodItemContext = React.createContext();
 export const FoodItemProvider = (props) => {
   const [foodItems, setFoodItems] = useState([]);
   const [foodItemIngredients, setFoodItemIngredients] = useState([]);
-  const [postResponse, setPostResponse] = useState({});
-  
+  //const [postResponse, setPostResponse] = useState({});
+  //console.log(postResponse)
 
   const getFoodItems = () => {
     return fetch("http://localhost:8088/foodItems")
@@ -32,7 +32,7 @@ export const FoodItemProvider = (props) => {
       },
       body: JSON.stringify(foodItemObject),
     }).then(res => res.json())
-    .then(setPostResponse)
+    //.then(setPostResponse)
     //.then(getFoodItems)  
 };
 
@@ -46,7 +46,20 @@ export const FoodItemProvider = (props) => {
       
     })//.then(getFoodItems);
   };
+
+  const deleteFoodOrderItem = (FoodOrderItemId) => {
+    return fetch(`http://localhost:8088/foodItems/${FoodOrderItemId}`, {
+      method: "DELETE",
+    }).then(setFoodItems);
+  };
   
+  const deleteFoodItemIngredient = (itemIngredientId) => {
+    return fetch(`http://localhost:8088/foodItems/${itemIngredientId}`, {
+      method: "DELETE",
+    }).then(setFoodItemIngredients);
+  };
+  
+
   return (
     <FoodItemContext.Provider
     value={{
@@ -56,7 +69,10 @@ export const FoodItemProvider = (props) => {
       getFoodItemIngredients,
       addToFoodItems,
       addToFoodItemIngredients,
-      postResponse
+      //postResponse,
+      deleteFoodOrderItem,
+      deleteFoodItemIngredient
+      
     }}
     >
       {props.children}
