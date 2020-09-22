@@ -12,7 +12,6 @@ export const MenuItemForm = (props) => {
     getFoodItemIngredients,
     addToFoodItems,
     addToFoodItemIngredients,
-    //postResponse,
   } = useContext(FoodItemContext);
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { orders, getOrders, addToOrder } = useContext(OrderContext);
@@ -21,31 +20,44 @@ export const MenuItemForm = (props) => {
   const quantity = useRef(null);
   const specialInstructions = useRef(null);
 
+  const [foodDetailObject, setFoodDetailObject] = useState({})
   const [foodItemObject, setFoodItem] = useState({});
   const [tortillas, setTortillas] = useState([]);
   const [beans, setBeans] = useState([]);
   const [meats, setMeats] = useState([]);
   const [freebies, setFreebies] = useState([]);
 
-  //create a func , set parameter in state ==== value of what you just selected
+  const editMode = props.match.params.hasOwnProperty("foodItemObjectId")
 
-  function useInput(initialValue) {
-    const [value, setValue] = useState(initialValue);
-    function handleChange(e) {
-      setValue(e.target.value);
-    }
-    return [value, handleChange];
+  const handleControlledInputChange = (event) => {
+    /*
+        When changing a state object or array, always create a new one
+        and change state instead of modifying current one
+    */
+    const newFoodOrderItem = Object.assign({}, foodItemObject)
+    console.log(newFoodOrderItem)
+    newFoodOrderItem[event.target.name] = event.target.value
+    setFoodItem(newFoodOrderItem)
+}
+
+const getFoodItemInEditMode = () => {
+  if (editMode) {
+      const foodItemId = parseInt(props.match.params.foodItemObjectId)
+      const selectedFoodItem = foodItems.find(item => item.id === foodItemId) || {}
+      setFoodItem(selectedFoodItem)
   }
+}
 
-  const [tortilla, setTortilla] = useInput("");
-  const [beanType, setBeanType] = useInput("");
-  const [meatType, setMeatType] = useInput("");
+useEffect(() => {
+  getFoodItemInEditMode()
+},[foodItems])
 
   useEffect(() => {
     getIngredients();
     getFoodItemIngredients();
     getOrders();
     getFoodDetails();
+    getFoodItems()
   }, []);
 
   useEffect(() => {
@@ -75,7 +87,7 @@ export const MenuItemForm = (props) => {
     const FoodDetailObject =
       foodDetails.find((food) => food.name === "Burrito") || {}; //<-- this should be different
 
-    setFoodItem(FoodDetailObject);
+    setFoodDetailObject(FoodDetailObject);
   }, [foodDetails]);
 
   const constructNewOrderItem = () => {
@@ -99,10 +111,11 @@ export const MenuItemForm = (props) => {
     }
 
     addToFoodItems({
-      specialInstructions: specialInstructions.current.value,
-      quantity: parseInt(quantity.current.value),
-      detailId: foodItemObject.id,
-    }).then( res => 
+      specialInstructions: foodItemObject.specialInstructions,
+      quantity: foodItemObject.quantity,
+      detailId: foodDetailObject.id,
+    })
+      .then((res) =>
         foodItemData.forEach((i) =>
           addToFoodItemIngredients({
             ingredientId: i.id,
@@ -133,10 +146,23 @@ export const MenuItemForm = (props) => {
     // console.log("checkedItems: ", checkedItems);
   };
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
+  //create a func , set parameter in state ==== value of what you just selected
+  /*🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘RADIO BUTTON STUFF🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘*/
+  function useInput(initialValue) {
+    const [value, setValue] = useState(initialValue);
+    function handleChange(e) {
+      setValue(e.target.value);
+    }
+    return [value, handleChange];
+  }
+  const [tortilla, setTortilla] = useInput("");
+  const [beanType, setBeanType] = useInput("");
+  const [meatType, setMeatType] = useInput("");
+  /*🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘RADIO BUTTON STUFF🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘*/
 
   return (
     <form className="menuItemObjectOrderForm">
-      <h2 className="menuForm__title">Build Your {foodItemObject.name}</h2>
+      <h2 className="menuForm__title">Build Your {foodDetailObject.name}</h2>
       <fieldset>
         <div className="form-group__tortilla">
           <h5>Tortilla</h5>
@@ -197,13 +223,13 @@ export const MenuItemForm = (props) => {
       <fieldset>
         <div className="form-group">
           <label key="23">
-              Rice?
-              <Checkbox
-                name={"Rice"}
-                checked={checkedItems["Rice"]}
-                onChange={handleChange}
-              />
-            </label>
+            Rice?
+            <Checkbox
+              name={"Rice"}
+              checked={checkedItems["Rice"]}
+              onChange={handleChange}
+            />
+          </label>
         </div>
       </fieldset>
       <fieldset>
@@ -228,11 +254,14 @@ export const MenuItemForm = (props) => {
             id="quantity"
             min="1"
             max="6"
-            ref={quantity}
+            defaultValue="1"
+            
             required
             autoFocus
             className="form-quantity-selector"
             name="quantity"
+            value={foodItemObject.quantity}
+            onChange={handleControlledInputChange}
           />
         </div>
       </fieldset>
@@ -241,11 +270,14 @@ export const MenuItemForm = (props) => {
           <label htmlFor="specialInstructions">Special Instructions </label>
           <input
             type="text"
+            name="specialInstructions"
             id="specialInstructions"
-            ref={specialInstructions}
+            
             autoFocus
             className="form-instructions"
             placeholder="special instructions"
+            value={foodItemObject.specialInstructions}
+            onChange={handleControlledInputChange}
           />
         </div>
       </fieldset>

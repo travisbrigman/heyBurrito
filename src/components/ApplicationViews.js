@@ -49,27 +49,29 @@ export const ApplicationViews = (props) => {
                     path="/create"
                     render={(props) => <MenuItemForm {...props} />}
                   />
+                  <Route
+                    path="/edit/:foodItemObjectId(\d+)"
+                    render={(props) => <MenuItemForm {...props} />}
+                  />
                 </IngredientProvider>
               </OrderProvider>
             </FoodDetailProvider>
           </FoodItemProvider>
         </article>
         <article className="body-right">
-         
-            <OrderProvider>
-              <FoodItemProvider>
-                <FoodDetailProvider>
-                  <IngredientProvider>
-                    <Route
-                      exact
-                      path="/"
-                      render={(props) => <OrderList {...props} />}
-                    />
-                  </IngredientProvider>
-                </FoodDetailProvider>
-              </FoodItemProvider>
-            </OrderProvider>
-         
+          <OrderProvider>
+            <FoodItemProvider>
+              <FoodDetailProvider>
+                <IngredientProvider>
+                  <Route
+                    exact
+                    path="/"
+                    render={(props) => <OrderList {...props} />}
+                  />
+                </IngredientProvider>
+              </FoodDetailProvider>
+            </FoodItemProvider>
+          </OrderProvider>
         </article>
       </div>
       <footer>

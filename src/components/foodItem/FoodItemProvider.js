@@ -53,12 +53,21 @@ export const FoodItemProvider = (props) => {
     }).then(getFoodItems);
   };
   
-  const deleteFoodItemIngredient = (itemIngredientId) => {
-    return fetch(`http://localhost:8088/foodItems/${itemIngredientId}`, {
-      method: "DELETE",
-    }).then(getFoodItemIngredients);
-  };
+  // const deleteFoodItemIngredient = (itemIngredientId) => {
+  //   return fetch(`http://localhost:8088/foodItems/${itemIngredientId}`, {
+  //     method: "DELETE",
+  //   }).then(getFoodItemIngredients);
+  // };
   
+  const updateFoodItem = (foodItem) => {
+    return fetch(`http://localhost:8088/foodItems/${foodItem.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(foodItem),
+    }).then(getFoodItems);
+  };
 
   return (
     <FoodItemContext.Provider
@@ -69,10 +78,9 @@ export const FoodItemProvider = (props) => {
       getFoodItemIngredients,
       addToFoodItems,
       addToFoodItemIngredients,
-      //postResponse,
       deleteFoodOrderItem,
-      deleteFoodItemIngredient
-      
+      //deleteFoodItemIngredient
+      updateFoodItem
     }}
     >
       {props.children}

@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 
-
 export const FoodOrderItem = ({
   foodItemObject,
   foodDetails,
   ingredients,
   foodItemIngredients,
-
+  history
 }) => {
-  const { deleteFoodOrderItem } = useContext(FoodItemContext)
+  const { deleteFoodOrderItem } = useContext(FoodItemContext);
 
   const foodDetailObject =
     foodDetails.find(
@@ -38,11 +37,11 @@ export const FoodOrderItem = ({
       );
     });
   };
-  
+
   const deleteOrderItem = () => {
     deleteFoodOrderItem(foodItemObject.id);
   };
-  
+
   return (
     <section className="foodOrderItem">
       <h3 className="foodOrderItem__name">{foodDetailObject.name}</h3>
@@ -58,9 +57,14 @@ export const FoodOrderItem = ({
         foodItemObject={foodItemObject}
       />
 
-      {/* <button className="editFoodItem" onClick="">
+      <button
+        className="editFoodItem"
+        onClick={() => {
+          history.push(`/edit/${foodItemObject.id}`);
+        }}
+      >
         edit
-      </button> */}
+      </button>
       <button className="deleteFoodItem" onClick={deleteOrderItem}>
         delete
       </button>
@@ -68,16 +72,3 @@ export const FoodOrderItem = ({
   );
 };
 
-//-----------------------------------------------------------------------
-/*
-<button
-className="btn--release"
-onClick={() => {
-  releaseEmployee(employee.id).then(() => {
-    props.history.push("/employees");
-  });
-}}
->
-Release Employee
-</button>
-*/
