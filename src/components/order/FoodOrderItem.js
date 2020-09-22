@@ -5,16 +5,17 @@ export const FoodOrderItem = ({
   foodDetails,
   ingredients,
   foodItemIngredients,
-  deleteFoodItemIngredient
+  deleteFoodItemIngredient,
+  DeleteFoodOrderItem
 }) => {
+  //const { DeleteFoodOrderItem, deleteFoodItemIngredient } = useContext(FoodItemContext)
 
   const foodDetailObject =
     foodDetails.find(
       (foodDetailObject) => foodDetailObject.id === foodItemObject.detailId
     ) || {};
 
-    
-  const ItemIngredientList = ({ingredients}) => {
+  const ItemIngredientList = ({ ingredients }) => {
     //this will give me an array with just FoodItemIngredient Objects that match the ID of the current FoodItem.
     const ingredientIdList =
       foodItemIngredients.filter(
@@ -22,44 +23,45 @@ export const FoodOrderItem = ({
       ) || [];
 
     //this should take that array and and for each object in that array, match it with a food ingredient.
- 
-    const itemIngredientList =
-      ingredientIdList.map((ingredientIdObject) => {
-        return ingredients.find(
-          (ingredient) => ingredient.id === ingredientIdObject.ingredientId
-        );
-      })
-    return itemIngredientList.map(ingredient => {
-      return(
-        <div>{ingredient.ingredientCategory.categoryName}: {ingredient.name}</div>
-      )
-    })
+
+    const itemIngredientList = ingredientIdList.map((ingredientIdObject) => {
+      return ingredients.find(
+        (ingredient) => ingredient.id === ingredientIdObject.ingredientId
+      );
+    });
+    return itemIngredientList.map((ingredient) => {
+      return (
+        <div>
+          {ingredient.ingredientCategory.categoryName}: {ingredient.name}
+        </div>
+      );
+    });
   };
 
+  //find the id of the Food Order Item Clicked,
+  //pass that into the delete FoodItem function
+  //filter the FoodItemIngredients collection by matching foodItem.id and foodItemIngredients.id
+  //for each in new array, run deleteFoodItemIngredients
 
-//find the id of the Food Order Item Clicked,
-//pass that into the delete FoodItem function
-//filter the FoodItemIngredients collection by matching foodItem.id and foodItemIngredients.id
-//for each in new array, run deleteFoodItemIngredients
-// console.log(foodItemObject)
-const DeleteOrderItem = ({foodItemObject, foodItemIngredients}) => {
-  console.log(foodItemObject)
-  /*
-  DeleteOrderItem(foodItemObject.id)
+  //console.log(foodItemObject);
+  const DeleteOrderItem = ({ foodItemObject, foodItemIngredients }) => {
+    console.log(foodItemObject);
 
-  const matchedIngredients = foodItemIngredients.filter(matchedIngredient => {
-    return matchedIngredient.foodItemId === foodItemObject.id;
-  })
+    DeleteFoodOrderItem(foodItemObject.id);
 
-  matchedIngredients.forEach(ingredientObject => {
-    deleteFoodItemIngredient(ingredientObject.id)
-  })
-*/
+    const matchedIngredients = foodItemIngredients.filter(
+      (matchedIngredient) => {
+        return matchedIngredient.foodItemId === foodItemObject.id;
+      }
+    );
 
-}
+    matchedIngredients.forEach((ingredientObject) => {
+      deleteFoodItemIngredient(ingredientObject.id);
+    });
+  };
 
   return (
-    <section className="foodOrderItem">             
+    <section className="foodOrderItem">
       <h3 className="foodOrderItem__name">{foodDetailObject.name}</h3>
       <div className="foodOrderItem__Instructions">
         {foodItemObject.specialInstructions}
