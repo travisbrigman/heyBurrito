@@ -31,7 +31,6 @@ export const OrderList = (props) => {
         <FoodOrderItem
           key={foodItemObject.id}
           foodItemObject={foodItemObject}
-          deleteOrder={deleteOrder}
           foodDetails={foodDetails}
           ingredients={ingredients}
           foodItemIngredients={foodItemIngredients}

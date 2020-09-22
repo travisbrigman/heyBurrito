@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
+import { FoodItemContext } from "../foodItem/FoodItemProvider";
+
 
 export const FoodOrderItem = ({
   foodItemObject,
   foodDetails,
   ingredients,
   foodItemIngredients,
-  deleteFoodItemIngredient,
-  DeleteFoodOrderItem
+
 }) => {
-  //const { DeleteFoodOrderItem, deleteFoodItemIngredient } = useContext(FoodItemContext)
+  const { deleteFoodOrderItem } = useContext(FoodItemContext)
 
   const foodDetailObject =
     foodDetails.find(
@@ -37,29 +38,11 @@ export const FoodOrderItem = ({
       );
     });
   };
-
-  //find the id of the Food Order Item Clicked,
-  //pass that into the delete FoodItem function
-  //filter the FoodItemIngredients collection by matching foodItem.id and foodItemIngredients.id
-  //for each in new array, run deleteFoodItemIngredients
-
-  //console.log(foodItemObject);
-  const DeleteOrderItem = ({ foodItemObject, foodItemIngredients }) => {
-    console.log(foodItemObject);
-
-    DeleteFoodOrderItem(foodItemObject.id);
-
-    const matchedIngredients = foodItemIngredients.filter(
-      (matchedIngredient) => {
-        return matchedIngredient.foodItemId === foodItemObject.id;
-      }
-    );
-
-    matchedIngredients.forEach((ingredientObject) => {
-      deleteFoodItemIngredient(ingredientObject.id);
-    });
+  
+  const deleteOrderItem = () => {
+    deleteFoodOrderItem(foodItemObject.id);
   };
-
+  
   return (
     <section className="foodOrderItem">
       <h3 className="foodOrderItem__name">{foodDetailObject.name}</h3>
@@ -78,7 +61,7 @@ export const FoodOrderItem = ({
       {/* <button className="editFoodItem" onClick="">
         edit
       </button> */}
-      <button className="deleteFoodItem" onClick={DeleteOrderItem}>
+      <button className="deleteFoodItem" onClick={deleteOrderItem}>
         delete
       </button>
     </section>

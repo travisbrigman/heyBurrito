@@ -50,13 +50,13 @@ export const FoodItemProvider = (props) => {
   const deleteFoodOrderItem = (FoodOrderItemId) => {
     return fetch(`http://localhost:8088/foodItems/${FoodOrderItemId}`, {
       method: "DELETE",
-    }).then(setFoodItems);
+    }).then(getFoodItems);
   };
   
   const deleteFoodItemIngredient = (itemIngredientId) => {
     return fetch(`http://localhost:8088/foodItems/${itemIngredientId}`, {
       method: "DELETE",
-    }).then(setFoodItemIngredients);
+    }).then(getFoodItemIngredients);
   };
   
 

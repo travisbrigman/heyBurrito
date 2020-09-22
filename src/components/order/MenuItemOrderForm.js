@@ -18,7 +18,6 @@ export const MenuItemForm = (props) => {
   const { orders, getOrders, addToOrder } = useContext(OrderContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
-  const rice = useRef(null);
   const quantity = useRef(null);
   const specialInstructions = useRef(null);
 
@@ -89,13 +88,8 @@ export const MenuItemForm = (props) => {
     const meatIngredient = meats.find(
       (selectedMeat) => selectedMeat.name === meatType
     );
-    const riceObject = ingredients.find((rice) => rice.id === 23);
 
     const foodItemData = [tortillaIngredient, beanIngredient, meatIngredient];
-
-    if (rice.current.checked === true) {
-      foodItemData.push(riceObject);
-    }
 
     for (const [key, value] of Object.entries(checkedItems)) {
       const foundIngredient = ingredients.find(
@@ -122,7 +116,7 @@ export const MenuItemForm = (props) => {
 
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   const Checkbox = ({ type = "checkbox", name, checked = false, onChange }) => {
-    //console.log("Checkbox: ", name, checked);
+    // console.log("Checkbox: ", name, checked);
 
     return (
       <input type={type} name={name} checked={checked} onChange={onChange} />
@@ -136,7 +130,7 @@ export const MenuItemForm = (props) => {
       ...checkedItems,
       [event.target.name]: event.target.checked,
     });
-    //console.log("checkedItems: ", checkedItems);
+    // console.log("checkedItems: ", checkedItems);
   };
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
 
@@ -202,16 +196,14 @@ export const MenuItemForm = (props) => {
       </fieldset>
       <fieldset>
         <div className="form-group">
-          <label htmlFor="rice-check-box">rice? </label>
-          <input
-            type="checkbox"
-            id="rice"
-            ref={rice}
-            required
-            autoFocus
-            className="form-control"
-            name="rice"
-          />
+          <label key="23">
+              Rice?
+              <Checkbox
+                name={"Rice"}
+                checked={checkedItems["Rice"]}
+                onChange={handleChange}
+              />
+            </label>
         </div>
       </fieldset>
       <fieldset>
@@ -234,6 +226,8 @@ export const MenuItemForm = (props) => {
           <input
             type="number"
             id="quantity"
+            min="1"
+            max="6"
             ref={quantity}
             required
             autoFocus
