@@ -12,6 +12,8 @@ export const MenuItemForm = (props) => {
     getFoodItemIngredients,
     addToFoodItems,
     addToFoodItemIngredients,
+    updateFoodItem,
+    deleteFoodOrderItemIngredient,
   } = useContext(FoodItemContext);
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { orders, getOrders, addToOrder } = useContext(OrderContext);
@@ -40,8 +42,8 @@ export const MenuItemForm = (props) => {
 
   const [selectedIngredients, setSelectedIngredients] = useState([]);
 
+  const foodItemId = parseInt(props.match.params.foodItemObjectId);
   const getFoodItemInEditMode = () => {
-    const foodItemId = parseInt(props.match.params.foodItemObjectId);
     if (editMode) {
       const selectedFoodItem =
         foodItems.find((item) => item.id === foodItemId) || {};
@@ -77,11 +79,13 @@ export const MenuItemForm = (props) => {
     );
     //gets just ingredients that should be a checkbox
     const checkBoxIngredients = selected.filter(
-      (selectedObject) => selectedObject.ingredient.ingredientCategoryId === 4 || selectedObject.ingredient.ingredientCategoryId === 6 
+      (selectedObject) =>
+        selectedObject.ingredient.ingredientCategoryId === 4 ||
+        selectedObject.ingredient.ingredientCategoryId === 6
     );
-    console.log(checkBoxIngredients)
+    console.log(checkBoxIngredients);
     //creates an array of objects that are {name : true}
-     checkBoxIngredients.forEach((ingredientObject) => {
+    checkBoxIngredients.forEach((ingredientObject) => {
       x[ingredientObject.ingredient.name] = true;
     });
     setSelectedIngredients(selected);
@@ -149,22 +153,44 @@ export const MenuItemForm = (props) => {
       );
       foodItemData.push(foundIngredient);
     }
+    console.log(foodItemData)
 
-    addToFoodItems({
-      specialInstructions: foodItemObject.specialInstructions,
-      quantity: parseInt(foodItemObject.quantity),
-      detailId: foodDetailObject.id,
-    })
-      .then((res) =>
-        foodItemData.forEach((i) =>
-          addToFoodItemIngredients({
-            ingredientId: i.id,
-            foodItemId: res.id,
-          })
+    if (editMode) {
+      updateFoodItem({
+        id: foodItemId,
+        specialInstructions: foodItemObject.specialInstructions,
+        quantity: parseInt(foodItemObject.quantity),
+        detailId: foodDetailObject.id,
+      })
+        .then(deleteFoodOrderItemIngredient(foodItemId))
+        .then(
+          foodItemData.forEach((i) =>
+            addToFoodItemIngredients({
+              ingredientId: i.id,
+              foodItemId: foodItemId,
+            })
+          )
         )
-      )
-      .then(getFoodItems)
-      .then(() => props.history.push("/"));
+        .then(getFoodItems)
+        .then(() => props.history.push("/"));
+    } else {
+      addToFoodItems({
+        specialInstructions: foodItemObject.specialInstructions,
+        quantity: parseInt(foodItemObject.quantity),
+        detailId: foodDetailObject.id,
+      })
+        .then((res) =>
+          foodItemData.forEach((i) =>
+            addToFoodItemIngredients({
+              ingredientId: i.id,
+              foodItemId: res.id,
+            })
+          )
+        )
+        .then(getFoodItems)
+        .then(() => props.history.push("/"));
+    }
+
   };
 
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */

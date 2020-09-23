@@ -47,6 +47,11 @@ export const FoodItemProvider = (props) => {
     })//.then(getFoodItems);
   };
 
+  const deleteFoodOrderItemIngredient = (FoodOrderItemId) => {
+    return fetch(`http://localhost:8088/foodItems/${FoodOrderItemId}`, {
+      method: "DELETE",
+    })
+  };
   const deleteFoodOrderItem = (FoodOrderItemId) => {
     return fetch(`http://localhost:8088/foodItems/${FoodOrderItemId}`, {
       method: "DELETE",
@@ -79,7 +84,7 @@ export const FoodItemProvider = (props) => {
       addToFoodItems,
       addToFoodItemIngredients,
       deleteFoodOrderItem,
-      //deleteFoodItemIngredient
+      deleteFoodOrderItemIngredient,
       updateFoodItem
     }}
     >
