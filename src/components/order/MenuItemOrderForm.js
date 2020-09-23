@@ -24,7 +24,7 @@ export const MenuItemForm = (props) => {
   const [meats, setMeats] = useState([]);
   const [freebies, setFreebies] = useState([]);
 
-  const [checkedItems, setCheckedItems] = useState([]);
+  const [checkedItems, setCheckedItems] = useState({});
 
   const [tortilla, setTortilla] = useInput("");
   const [beanType, setBeanType] = useInput("");
@@ -37,11 +37,11 @@ export const MenuItemForm = (props) => {
     newFoodOrderItem[event.target.name] = event.target.value;
     setFoodItem(newFoodOrderItem);
   };
-  const foodItemId = parseInt(props.match.params.foodItemObjectId);
-  const selectedIngredients = foodItemIngredients.filter(
-    (ingredient) => ingredient.foodItemId === foodItemId
-  );
+
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+
   const getFoodItemInEditMode = () => {
+    const foodItemId = parseInt(props.match.params.foodItemObjectId);
     if (editMode) {
       const selectedFoodItem =
         foodItems.find((item) => item.id === foodItemId) || {};
@@ -59,40 +59,33 @@ export const MenuItemForm = (props) => {
           (selectedObject) =>
             selectedObject.ingredient.ingredientCategoryId === 3
         );
-        const riceEdit = selectedIngredients.find(
-          (selectedObject) =>
-            selectedObject.ingredient.ingredientCategoryId === 6
-        );
 
-        const convertToCheckBoxObject = (object) => {
-          return { [object.ingredient.name]: true };
-        };
-
-        const riceEditCheck = convertToCheckBoxObject(riceEdit);
-        setCheckedItems(riceEditCheck)
-
-        setTortilla(tortillaToEdit.ingredient.name)
-        setBeanType(beanToEdit.ingredient.name)
-        setMeatType(meatToEdit.ingredient.name)
+        setTortilla(tortillaToEdit.ingredient.name);
+        setBeanType(beanToEdit.ingredient.name);
+        setMeatType(meatToEdit.ingredient.name);
 
         console.log(checkedItems);
       }
     }
   };
 
-  //gets just ingredients that should be a checkbox
-  const checkBoxIngredients = selectedIngredients.filter(
-    (selectedObject) => selectedObject.ingredient.ingredientCategoryId === 4
-  );
-
-  //creates an array of objects that are {name : true}
-  const checkBoxItems = checkBoxIngredients.map((ingredientObject) => {
-    return { [ingredientObject.ingredient.name]: true };
-  });
-
-
   useEffect(() => {
-    setCheckedItems(checkBoxItems)
+    const x = {};
+    const foodItemId = parseInt(props.match.params.foodItemObjectId);
+    const selected = foodItemIngredients.filter(
+      (ingredient) => ingredient.foodItemId === foodItemId
+    );
+    //gets just ingredients that should be a checkbox
+    const checkBoxIngredients = selected.filter(
+      (selectedObject) => selectedObject.ingredient.ingredientCategoryId === 4 || selectedObject.ingredient.ingredientCategoryId === 6 
+    );
+    console.log(checkBoxIngredients)
+    //creates an array of objects that are {name : true}
+     checkBoxIngredients.forEach((ingredientObject) => {
+      x[ingredientObject.ingredient.name] = true;
+    });
+    setSelectedIngredients(selected);
+    setCheckedItems(x);
   }, [foodItemIngredients]);
 
   useEffect(() => {
@@ -159,7 +152,7 @@ export const MenuItemForm = (props) => {
 
     addToFoodItems({
       specialInstructions: foodItemObject.specialInstructions,
-      quantity: foodItemObject.quantity,
+      quantity: parseInt(foodItemObject.quantity),
       detailId: foodDetailObject.id,
     })
       .then((res) =>
@@ -197,7 +190,7 @@ export const MenuItemForm = (props) => {
     const [value, setValue] = useState(initialValue);
     function handleChange(e) {
       if (editMode) {
-        setValue(e)
+        setValue(e);
       } else {
         setValue(e.target.value);
       }
