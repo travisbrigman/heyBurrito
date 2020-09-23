@@ -1,19 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
+import { IngredientContext } from "../ingredients/IngredientProvider";
 
 export const FoodOrderItem = ({
   foodItemObject,
   foodDetails,
-  ingredients,
-  foodItemIngredients,
   history
 }) => {
-  const { deleteFoodOrderItem } = useContext(FoodItemContext);
+  const { deleteFoodOrderItem, getFoodItemIngredients, foodItemIngredients } = useContext(FoodItemContext);
+  const { getIngredients, ingredients } = useContext(IngredientContext)
 
   const foodDetailObject =
     foodDetails.find(
       (foodDetailObject) => foodDetailObject.id === foodItemObject.detailId
     ) || {};
+
+    useEffect(() => {
+      getIngredients()
+      getFoodItemIngredients()
+    },[])
 
   const ItemIngredientList = ({ ingredients }) => {
     //this will give me an array with just FoodItemIngredient Objects that match the ID of the current FoodItem.
@@ -37,7 +42,6 @@ export const FoodOrderItem = ({
       );
     });
   };
-
   const deleteOrderItem = () => {
     deleteFoodOrderItem(foodItemObject.id);
   };

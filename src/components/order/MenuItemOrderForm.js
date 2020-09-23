@@ -17,9 +17,6 @@ export const MenuItemForm = (props) => {
   const { orders, getOrders, addToOrder } = useContext(OrderContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
-  const quantity = useRef(null);
-  const specialInstructions = useRef(null);
-
   const [foodDetailObject, setFoodDetailObject] = useState({})
   const [foodItemObject, setFoodItem] = useState({});
   const [tortillas, setTortillas] = useState([]);
@@ -30,21 +27,17 @@ export const MenuItemForm = (props) => {
   const editMode = props.match.params.hasOwnProperty("foodItemObjectId")
 
   const handleControlledInputChange = (event) => {
-    /*
-        When changing a state object or array, always create a new one
-        and change state instead of modifying current one
-    */
     const newFoodOrderItem = Object.assign({}, foodItemObject)
-    console.log(newFoodOrderItem)
     newFoodOrderItem[event.target.name] = event.target.value
     setFoodItem(newFoodOrderItem)
 }
-
 const getFoodItemInEditMode = () => {
   if (editMode) {
       const foodItemId = parseInt(props.match.params.foodItemObjectId)
       const selectedFoodItem = foodItems.find(item => item.id === foodItemId) || {}
       setFoodItem(selectedFoodItem)
+      const selectedIngredients = foodItemIngredients.filter(ingredient => ingredient.foodItemId === foodItemId)
+      console.log(selectedIngredients)
   }
 }
 
@@ -129,7 +122,7 @@ useEffect(() => {
 
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   const Checkbox = ({ type = "checkbox", name, checked = false, onChange }) => {
-    // console.log("Checkbox: ", name, checked);
+    console.log("Checkbox: ", name, checked);
 
     return (
       <input type={type} name={name} checked={checked} onChange={onChange} />
@@ -143,7 +136,7 @@ useEffect(() => {
       ...checkedItems,
       [event.target.name]: event.target.checked,
     });
-    // console.log("checkedItems: ", checkedItems);
+     console.log("checkedItems: ", checkedItems);
   };
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   //create a func , set parameter in state ==== value of what you just selected
