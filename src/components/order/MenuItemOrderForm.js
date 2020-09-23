@@ -24,6 +24,12 @@ export const MenuItemForm = (props) => {
   const [meats, setMeats] = useState([]);
   const [freebies, setFreebies] = useState([]);
 
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const [tortilla, setTortilla] = useInput("");
+  const [beanType, setBeanType] = useInput("");
+  const [meatType, setMeatType] = useInput("");
+
   const editMode = props.match.params.hasOwnProperty("foodItemObjectId");
 
   const handleControlledInputChange = (event) => {
@@ -31,15 +37,15 @@ export const MenuItemForm = (props) => {
     newFoodOrderItem[event.target.name] = event.target.value;
     setFoodItem(newFoodOrderItem);
   };
+  const foodItemId = parseInt(props.match.params.foodItemObjectId);
+  const selectedIngredients = foodItemIngredients.filter(
+    (ingredient) => ingredient.foodItemId === foodItemId
+  );
   const getFoodItemInEditMode = () => {
     if (editMode) {
-      const foodItemId = parseInt(props.match.params.foodItemObjectId);
       const selectedFoodItem =
         foodItems.find((item) => item.id === foodItemId) || {};
       setFoodItem(selectedFoodItem);
-      const selectedIngredients = foodItemIngredients.filter(
-        (ingredient) => ingredient.foodItemId === foodItemId
-      );
       if (selectedIngredients.length > 0) {
         const tortillaToEdit = selectedIngredients.find(
           (selectedObject) =>
@@ -57,39 +63,37 @@ export const MenuItemForm = (props) => {
           (selectedObject) =>
             selectedObject.ingredient.ingredientCategoryId === 6
         );
-        const checkBoxIngredients = selectedIngredients.filter(
-          (selectedObject) =>
-            selectedObject.ingredient.ingredientCategoryId === 4
-        );
 
-        const checkBoxItems = checkBoxIngredients.map((ingredientObject) => {
-          return { [ingredientObject.ingredient.name]: true };
-        });
-        
-        const checkBoxSet = () => {checkBoxItems.forEach((item) => {
-          console.log(item)
-          setCheckedItems(item);
-        });
-      }
-      //setCheckedItems(checkBoxSet)
+        const convertToCheckBoxObject = (object) => {
+          return { [object.ingredient.name]: true };
+        };
 
-        checkBoxSet()
+        const riceEditCheck = convertToCheckBoxObject(riceEdit);
+        setCheckedItems(riceEditCheck)
 
-        // console.log(checkBoxCopy)
+        setTortilla(tortillaToEdit.ingredient.name)
+        setBeanType(beanToEdit.ingredient.name)
+        setMeatType(meatToEdit.ingredient.name)
 
-        // const convertToCheckBoxObject = (object) => {
-        //   return { [object.ingredient.name]: true };
-        // };
-
-        // const riceEditCheck = convertToCheckBoxObject(riceEdit);
-        // console.log(riceEditCheck)
-        //setCheckedItems(riceEditCheck)
-        //setTortilla(tortillaToEdit.ingredient.name)
-        // setBeanType(beanToEdit)
-        // setMeatType(meatToEdit)
+        console.log(checkedItems);
       }
     }
   };
+
+  //gets just ingredients that should be a checkbox
+  const checkBoxIngredients = selectedIngredients.filter(
+    (selectedObject) => selectedObject.ingredient.ingredientCategoryId === 4
+  );
+
+  //creates an array of objects that are {name : true}
+  const checkBoxItems = checkBoxIngredients.map((ingredientObject) => {
+    return { [ingredientObject.ingredient.name]: true };
+  });
+
+
+  useEffect(() => {
+    setCheckedItems(checkBoxItems)
+  }, [foodItemIngredients]);
 
   useEffect(() => {
     getFoodItemInEditMode();
@@ -179,8 +183,6 @@ export const MenuItemForm = (props) => {
     );
   };
 
-  const [checkedItems, setCheckedItems] = useState([]);
-
   const handleChange = (event) => {
     setCheckedItems({
       ...checkedItems,
@@ -194,14 +196,15 @@ export const MenuItemForm = (props) => {
   function useInput(initialValue) {
     const [value, setValue] = useState(initialValue);
     function handleChange(e) {
-      console.log(e);
-      setValue(e.target.value);
+      if (editMode) {
+        setValue(e)
+      } else {
+        setValue(e.target.value);
+      }
     }
     return [value, handleChange];
   }
-  const [tortilla, setTortilla] = useInput("");
-  const [beanType, setBeanType] = useInput("");
-  const [meatType, setMeatType] = useInput("");
+
   /*🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘RADIO BUTTON STUFF🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘*/
 
   return (
