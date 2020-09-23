@@ -17,40 +17,90 @@ export const MenuItemForm = (props) => {
   const { orders, getOrders, addToOrder } = useContext(OrderContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
-  const [foodDetailObject, setFoodDetailObject] = useState({})
+  const [foodDetailObject, setFoodDetailObject] = useState({});
   const [foodItemObject, setFoodItem] = useState({});
   const [tortillas, setTortillas] = useState([]);
   const [beans, setBeans] = useState([]);
   const [meats, setMeats] = useState([]);
   const [freebies, setFreebies] = useState([]);
 
-  const editMode = props.match.params.hasOwnProperty("foodItemObjectId")
+  const editMode = props.match.params.hasOwnProperty("foodItemObjectId");
 
   const handleControlledInputChange = (event) => {
-    const newFoodOrderItem = Object.assign({}, foodItemObject)
-    newFoodOrderItem[event.target.name] = event.target.value
-    setFoodItem(newFoodOrderItem)
-}
-const getFoodItemInEditMode = () => {
-  if (editMode) {
-      const foodItemId = parseInt(props.match.params.foodItemObjectId)
-      const selectedFoodItem = foodItems.find(item => item.id === foodItemId) || {}
-      setFoodItem(selectedFoodItem)
-      const selectedIngredients = foodItemIngredients.filter(ingredient => ingredient.foodItemId === foodItemId)
-      console.log(selectedIngredients)
-  }
-}
+    const newFoodOrderItem = Object.assign({}, foodItemObject);
+    newFoodOrderItem[event.target.name] = event.target.value;
+    setFoodItem(newFoodOrderItem);
+  };
+  const getFoodItemInEditMode = () => {
+    if (editMode) {
+      const foodItemId = parseInt(props.match.params.foodItemObjectId);
+      const selectedFoodItem =
+        foodItems.find((item) => item.id === foodItemId) || {};
+      setFoodItem(selectedFoodItem);
+      const selectedIngredients = foodItemIngredients.filter(
+        (ingredient) => ingredient.foodItemId === foodItemId
+      );
+      if (selectedIngredients.length > 0) {
+        const tortillaToEdit = selectedIngredients.find(
+          (selectedObject) =>
+            selectedObject.ingredient.ingredientCategoryId === 1
+        );
+        const beanToEdit = selectedIngredients.find(
+          (selectedObject) =>
+            selectedObject.ingredient.ingredientCategoryId === 2
+        );
+        const meatToEdit = selectedIngredients.find(
+          (selectedObject) =>
+            selectedObject.ingredient.ingredientCategoryId === 3
+        );
+        const riceEdit = selectedIngredients.find(
+          (selectedObject) =>
+            selectedObject.ingredient.ingredientCategoryId === 6
+        );
+        const checkBoxIngredients = selectedIngredients.filter(
+          (selectedObject) =>
+            selectedObject.ingredient.ingredientCategoryId === 4
+        );
 
-useEffect(() => {
-  getFoodItemInEditMode()
-},[foodItems])
+        const checkBoxItems = checkBoxIngredients.map((ingredientObject) => {
+          return { [ingredientObject.ingredient.name]: true };
+        });
+        
+        const checkBoxSet = () => {checkBoxItems.forEach((item) => {
+          console.log(item)
+          setCheckedItems(item);
+        });
+      }
+      //setCheckedItems(checkBoxSet)
+
+        checkBoxSet()
+
+        // console.log(checkBoxCopy)
+
+        // const convertToCheckBoxObject = (object) => {
+        //   return { [object.ingredient.name]: true };
+        // };
+
+        // const riceEditCheck = convertToCheckBoxObject(riceEdit);
+        // console.log(riceEditCheck)
+        //setCheckedItems(riceEditCheck)
+        //setTortilla(tortillaToEdit.ingredient.name)
+        // setBeanType(beanToEdit)
+        // setMeatType(meatToEdit)
+      }
+    }
+  };
+
+  useEffect(() => {
+    getFoodItemInEditMode();
+  }, [foodItems]);
 
   useEffect(() => {
     getIngredients();
     getFoodItemIngredients();
     getOrders();
     getFoodDetails();
-    getFoodItems()
+    getFoodItems();
   }, []);
 
   useEffect(() => {
@@ -122,21 +172,21 @@ useEffect(() => {
 
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   const Checkbox = ({ type = "checkbox", name, checked = false, onChange }) => {
-    console.log("Checkbox: ", name, checked);
+    // console.log("Checkbox: ", name, checked);
 
     return (
       <input type={type} name={name} checked={checked} onChange={onChange} />
     );
   };
 
-  const [checkedItems, setCheckedItems] = useState({});
+  const [checkedItems, setCheckedItems] = useState([]);
 
   const handleChange = (event) => {
     setCheckedItems({
       ...checkedItems,
       [event.target.name]: event.target.checked,
     });
-     console.log("checkedItems: ", checkedItems);
+    console.log("checkedItems: ", checkedItems);
   };
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   //create a func , set parameter in state ==== value of what you just selected
@@ -144,6 +194,7 @@ useEffect(() => {
   function useInput(initialValue) {
     const [value, setValue] = useState(initialValue);
     function handleChange(e) {
+      console.log(e);
       setValue(e.target.value);
     }
     return [value, handleChange];
@@ -248,7 +299,6 @@ useEffect(() => {
             min="1"
             max="6"
             defaultValue="1"
-            
             required
             autoFocus
             className="form-quantity-selector"
@@ -265,7 +315,6 @@ useEffect(() => {
             type="text"
             name="specialInstructions"
             id="specialInstructions"
-            
             autoFocus
             className="form-instructions"
             placeholder="special instructions"
