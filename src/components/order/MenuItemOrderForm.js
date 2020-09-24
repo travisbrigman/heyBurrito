@@ -28,10 +28,13 @@ export const MenuItemForm = (props) => {
 
   const [checkedItems, setCheckedItems] = useState({});
 
+  const tortilla = useRef(null);
+  const tortillaId = parseInt(tortilla.current.value)
+  /*
   const [tortilla, setTortilla] = useInput("");
   const [beanType, setBeanType] = useInput("");
   const [meatType, setMeatType] = useInput("");
-
+*/
   const editMode = props.match.params.hasOwnProperty("foodItemObjectId");
 
   const handleControlledInputChange = (event) => {
@@ -61,12 +64,11 @@ export const MenuItemForm = (props) => {
           (selectedObject) =>
             selectedObject.ingredient.ingredientCategoryId === 3
         );
-
+        /*
         setTortilla(tortillaToEdit.ingredient.name);
         setBeanType(beanToEdit.ingredient.name);
         setMeatType(meatToEdit.ingredient.name);
-
-        console.log(checkedItems);
+        */
       }
     }
   };
@@ -83,7 +85,7 @@ export const MenuItemForm = (props) => {
         selectedObject.ingredient.ingredientCategoryId === 4 ||
         selectedObject.ingredient.ingredientCategoryId === 6
     );
-    console.log(checkBoxIngredients);
+
     //creates an array of objects that are {name : true}
     checkBoxIngredients.forEach((ingredientObject) => {
       x[ingredientObject.ingredient.name] = true;
@@ -135,6 +137,7 @@ export const MenuItemForm = (props) => {
   }, [foodDetails]);
 
   const constructNewOrderItem = () => {
+    /*
     const tortillaIngredient = tortillas.find(
       (selectedTortilla) => selectedTortilla.name === tortilla
     );
@@ -144,8 +147,10 @@ export const MenuItemForm = (props) => {
     const meatIngredient = meats.find(
       (selectedMeat) => selectedMeat.name === meatType
     );
+*/
 
-    const foodItemData = [tortillaIngredient, beanIngredient, meatIngredient];
+    //const foodItemData = [tortillaIngredient, beanIngredient, meatIngredient];
+    const foodItemData = [];
 
     for (const [key, value] of Object.entries(checkedItems)) {
       const foundIngredient = ingredients.find(
@@ -153,7 +158,7 @@ export const MenuItemForm = (props) => {
       );
       foodItemData.push(foundIngredient);
     }
-    console.log(foodItemData)
+    console.log(foodItemData);
 
     if (editMode) {
       updateFoodItem({
@@ -190,7 +195,6 @@ export const MenuItemForm = (props) => {
         .then(getFoodItems)
         .then(() => props.history.push("/"));
     }
-
   };
 
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
@@ -207,34 +211,41 @@ export const MenuItemForm = (props) => {
       ...checkedItems,
       [event.target.name]: event.target.checked,
     });
-    console.log("checkedItems: ", checkedItems);
+    //console.log("checkedItems: ", checkedItems);
   };
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   //create a func , set parameter in state ==== value of what you just selected
   /*🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘RADIO BUTTON STUFF🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘*/
+  /*
   function useInput(initialValue) {
     const [value, setValue] = useState(initialValue);
     function handleChange(e) {
-      if (editMode) {
-        setValue(e);
-      } else {
-        setValue(e.target.value);
-      }
+      setValue(e.target.value);
     }
     return [value, handleChange];
   }
+  */
 
   /*🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘RADIO BUTTON STUFF🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘*/
 
+  
   return (
     <form className="menuItemObjectOrderForm">
       <h2 className="menuForm__title">Build Your {foodDetailObject.name}</h2>
       <fieldset>
         <div className="form-group__tortilla">
           <h5>Tortilla</h5>
-          {tortillas.map((ingredientObject) => (
-            <div>
-              <input
+          <select
+            defaultValue=""
+            name="tortilla"
+            ref={tortilla}
+            id="tortilla"
+            className="form-control"
+          >
+            <option value="0">Select a Tortilla</option>
+            {tortillas.map((ingredientObject) => (
+              <option key={ingredientObject.id} value={ingredientObject.id}>
+                {/* <input
                 type="radio"
                 id={ingredientObject.id}
                 value={ingredientObject.name}
@@ -243,9 +254,11 @@ export const MenuItemForm = (props) => {
               />
               <label htmlFor={ingredientObject.name}>
                 {ingredientObject.name}
-              </label>
-            </div>
-          ))}
+              </label> */}
+                {ingredientObject.name}
+              </option>
+            ))}
+          </select>
         </div>
       </fieldset>
       <fieldset>
@@ -253,13 +266,13 @@ export const MenuItemForm = (props) => {
           <h5>Beans</h5>
           {beans.map((ingredientObject) => (
             <div>
-              <input
+              {/* <input
                 type="radio"
                 id={ingredientObject.id}
                 value={ingredientObject.name}
                 checked={ingredientObject.name === beanType}
                 onChange={setBeanType}
-              />
+              /> */}
               <label htmlFor={ingredientObject.name}>
                 {ingredientObject.name}
               </label>
@@ -272,13 +285,13 @@ export const MenuItemForm = (props) => {
           <h5>Meats</h5>
           {meats.map((ingredientObject) => (
             <div>
-              <input
+              {/* <input
                 type="radio"
                 id={ingredientObject.id}
                 value={ingredientObject.name}
                 checked={ingredientObject.name === meatType}
                 onChange={setMeatType}
-              />
+              /> */}
               <label htmlFor={ingredientObject.name}>
                 {ingredientObject.name}
               </label>
