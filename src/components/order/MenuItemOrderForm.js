@@ -29,7 +29,9 @@ export const MenuItemForm = (props) => {
   const [checkedItems, setCheckedItems] = useState({});
 
   const tortilla = useRef(null);
-  const tortillaId = parseInt(tortilla.current.value)
+  const beanType = useRef(null);
+  const meatType = useRef(null);
+
   /*
   const [tortilla, setTortilla] = useInput("");
   const [beanType, setBeanType] = useInput("");
@@ -137,20 +139,33 @@ export const MenuItemForm = (props) => {
   }, [foodDetails]);
 
   const constructNewOrderItem = () => {
+    
+    const selectedTortillaObject = {
+      id: parseInt(tortilla.current.value),
+    };
+    const selectedBeanObject = {
+      id: parseInt(beanType.current.value)
+    }
+    const selectedMeatObject = {
+      id: parseInt(meatType.current.value)
+    }
+
+
     /*
     const tortillaIngredient = tortillas.find(
       (selectedTortilla) => selectedTortilla.name === tortilla
-    );
-    const beanIngredient = beans.find(
-      (selectedBean) => selectedBean.name === beanType
-    );
-    const meatIngredient = meats.find(
-      (selectedMeat) => selectedMeat.name === meatType
-    );
-*/
+      );
+      const beanIngredient = beans.find(
+        (selectedBean) => selectedBean.name === beanType
+        );
+        const meatIngredient = meats.find(
+          (selectedMeat) => selectedMeat.name === meatType
+          );
+          */
 
     //const foodItemData = [tortillaIngredient, beanIngredient, meatIngredient];
-    const foodItemData = [];
+    const foodItemData = [selectedTortillaObject, selectedBeanObject, selectedMeatObject];
+    
 
     for (const [key, value] of Object.entries(checkedItems)) {
       const foundIngredient = ingredients.find(
@@ -228,7 +243,6 @@ export const MenuItemForm = (props) => {
 
   /*🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘RADIO BUTTON STUFF🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘*/
 
-  
   return (
     <form className="menuItemObjectOrderForm">
       <h2 className="menuForm__title">Build Your {foodDetailObject.name}</h2>
@@ -264,39 +278,59 @@ export const MenuItemForm = (props) => {
       <fieldset>
         <div className="form-group__beans">
           <h5>Beans</h5>
+          <select
+            defaultValue=""
+            name="tortilla"
+            ref={tortilla}
+            id="tortilla"
+            className="form-control"
+          >
+            <option value="0">Select a Meat</option>
           {beans.map((ingredientObject) => (
-            <div>
+            <option key={ingredientObject.id} value={ingredientObject.id}>
               {/* <input
                 type="radio"
                 id={ingredientObject.id}
                 value={ingredientObject.name}
                 checked={ingredientObject.name === beanType}
                 onChange={setBeanType}
-              /> */}
+              />
               <label htmlFor={ingredientObject.name}>
                 {ingredientObject.name}
-              </label>
-            </div>
+              </label> */}
+              {ingredientObject.name}
+            </option>
           ))}
+          </select>
         </div>
       </fieldset>
       <fieldset>
         <div className="form-group__meats">
           <h5>Meats</h5>
+          <select
+            defaultValue=""
+            name="tortilla"
+            ref={tortilla}
+            id="tortilla"
+            className="form-control"
+          >
+            <option value="0">Select a Bean Type</option>
           {meats.map((ingredientObject) => (
-            <div>
+            <option key={ingredientObject.id} value={ingredientObject.id}>
               {/* <input
                 type="radio"
                 id={ingredientObject.id}
                 value={ingredientObject.name}
                 checked={ingredientObject.name === meatType}
                 onChange={setMeatType}
-              /> */}
+              />
               <label htmlFor={ingredientObject.name}>
                 {ingredientObject.name}
-              </label>
-            </div>
+              </label> */}
+              {ingredientObject.name}
+            </option>
           ))}
+          </select>
         </div>
       </fieldset>
       <fieldset>
