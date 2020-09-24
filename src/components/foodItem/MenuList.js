@@ -4,14 +4,12 @@ import { MenuItem } from "./MenuItem";
 import "./MenuItem.css";
 
 export const MenuList = (props) => {
-  // This state changes when `getAnimals()` is invoked below
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
   useEffect(() => {
     getFoodDetails();
   }, []);
 
-  //TODO::finish route on line 19
   return (
     <div className="menu">
       <h1>Our Menu</h1>
@@ -21,6 +19,7 @@ export const MenuList = (props) => {
           <MenuItem
             key={foodDetailObject.id}
             foodDetailObject={foodDetailObject}
+            {...props}
           />
         ))}
       </article>
