@@ -1,9 +1,9 @@
-import React, { useContext, useRef, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 
-export const BurritoItemOrderForm = (props) => {
+export const TacoItemOrderForm = (props) => {
   const {
     foodItems,
     getFoodItems,
@@ -17,7 +17,7 @@ export const BurritoItemOrderForm = (props) => {
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
-  
+
 
   //🎛 🎛 🎛 COMPONENT STATE STUFF 🎛 🎛 🎛
   const [state, setState] = useState({});
@@ -94,13 +94,19 @@ export const BurritoItemOrderForm = (props) => {
 
   //✅ 🔘 ✍🏼 FORM DATA SETUP ✅ 🔘 ✍🏼
   const tortillaTypes = ingredients.filter(
-    (ingredient) => ingredient.ingredientCategoryId === 1
+    (ingredient) => ingredient.id === 1 || ingredient.id === 25
   );
+  console.log(tortillaTypes)
   const beanTypes = ingredients.filter(
     (ingredient) => ingredient.ingredientCategoryId === 2
   );
   const meatTypes = ingredients.filter(
-    (ingredient) => ingredient.ingredientCategoryId === 3
+    (ingredient) => ingredient.id === 3 || 
+    ingredient.id === 8 || 
+    ingredient.id === 9 || 
+    ingredient.id === 10 || 
+    ingredient.id === 21 || 
+    ingredient.id === 24
   );
   const freebies = ingredients.filter(
     (ingredient) => ingredient.ingredientCategoryId === 4
@@ -169,7 +175,7 @@ export const BurritoItemOrderForm = (props) => {
 
   return (
     <form>
-      <div>{foodDetails[1].name}</div>
+      {/* <div>{foodDetails[1].name}</div> */}
 
       <fieldset>
         <h3>Tortilla</h3>
