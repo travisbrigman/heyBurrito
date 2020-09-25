@@ -13,7 +13,7 @@ export const FoodItemProvider = (props) => {
   //console.log(postResponse)
 
   const getFoodItems = () => {
-    return fetch("http://localhost:8088/foodItems")
+    return fetch("http://localhost:8088/foodItems?_embed=foodItemIngredients")
       .then((res) => res.json())
       .then(setFoodItems);
   };
