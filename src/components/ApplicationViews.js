@@ -57,7 +57,7 @@ export const ApplicationViews = (props) => {
                   />
                   <Route
                     path="/edit/:foodItemObjectId(\d+)"
-                    render={(props) => <MenuItemForm {...props} />}
+                    render={(props) => <BurritoItemOrderForm {...props} />}
                   />
                 </IngredientProvider>
               </OrderProvider>

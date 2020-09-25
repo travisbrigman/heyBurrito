@@ -36,7 +36,7 @@ export const FoodOrderItem = ({
     });
     return itemIngredientList.map((ingredient) => {
       return (
-        <div>
+        <div key={ingredient.id}>
           {ingredient.ingredientCategory.categoryName}: {ingredient.name}
         </div>
       );
