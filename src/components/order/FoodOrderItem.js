@@ -49,17 +49,17 @@ export const FoodOrderItem = ({
   return (
     <section className="foodOrderItem">
       <h3 className="foodOrderItem__name">{foodDetailObject.name}</h3>
-      <div className="foodOrderItem__Instructions">
-        {foodItemObject.specialInstructions}
-      </div>
       <div className="foodOrderItem__Combo">{}</div>
-      <div className="foodOrderItem__Quantity">{foodItemObject.quantity}</div>
       <ItemIngredientList
         key={foodItemIngredients.id}
         foodItemIngredients={foodItemIngredients}
         ingredients={ingredients}
         foodItemObject={foodItemObject}
       />
+      <div className="foodOrderItem__Quantity">Quantity {foodItemObject.quantity}</div>
+      <div className="foodOrderItem__Instructions">
+        Special Instructions{foodItemObject.specialInstructions}
+      </div>
 
       <button
         className="editFoodItem"

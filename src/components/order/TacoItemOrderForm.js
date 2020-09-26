@@ -17,10 +17,11 @@ export const TacoItemOrderForm = (props) => {
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
-
-
   //🎛 🎛 🎛 COMPONENT STATE STUFF 🎛 🎛 🎛
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    "Shredded Cheese": true,
+    "Lettuce": true
+});
 
   function handleChange(evt) {
     const value =
@@ -38,10 +39,6 @@ export const TacoItemOrderForm = (props) => {
     getFoodItems();
     getFoodItemIngredients();
   }, []);
-
-  // useEffect(() => {
-  //   getFoodItemInEditMode();
-  // }, [foodItems]);
 
   //📝 📝 📝 EDIT MODE STUFF 📝 📝 📝
 
@@ -88,28 +85,31 @@ export const TacoItemOrderForm = (props) => {
   const editMode = props.match.params.hasOwnProperty("foodItemObjectId");
   const foodItemId = parseInt(props.match.params.foodItemObjectId);
 
-  // const getFoodItemInEditMode = () => {
-  //   const currentState = Object.assign({}, state);
-  // };
-
   //✅ 🔘 ✍🏼 FORM DATA SETUP ✅ 🔘 ✍🏼
   const tortillaTypes = ingredients.filter(
     (ingredient) => ingredient.id === 1 || ingredient.id === 25
   );
-  console.log(tortillaTypes)
+
   const beanTypes = ingredients.filter(
     (ingredient) => ingredient.ingredientCategoryId === 2
   );
   const meatTypes = ingredients.filter(
-    (ingredient) => ingredient.id === 3 || 
-    ingredient.id === 8 || 
-    ingredient.id === 9 || 
-    ingredient.id === 10 || 
-    ingredient.id === 21 || 
-    ingredient.id === 24
+    (ingredient) =>
+      ingredient.id === 3 ||
+      ingredient.id === 8 ||
+      ingredient.id === 9 ||
+      ingredient.id === 10 ||
+      ingredient.id === 21 ||
+      ingredient.id === 24
   );
   const freebies = ingredients.filter(
     (ingredient) => ingredient.ingredientCategoryId === 4
+  );
+
+  freebies.splice(0, 3);
+  const salsas = ingredients.filter(
+    (ingredient) =>
+      ingredient.id === 13 || ingredient.id === 14 || ingredient.id === 15
   );
 
   //📡 📡 FORM SUBMISSION FUNCTION 📡 📡
@@ -157,7 +157,7 @@ export const TacoItemOrderForm = (props) => {
             id: foodItemId,
             specialInstructions: state.specialInstructions,
             quantity: parseInt(state.quantity),
-            detailId: foodDetails[0].id,
+            detailId: foodDetails[1].id,
           })
         )
         .then(
@@ -201,7 +201,7 @@ export const TacoItemOrderForm = (props) => {
               type="radio"
               name="bean"
               value={bean.name}
-              checked={state.tortilla === bean.name}
+              checked={state.bean === bean.name}
               onChange={handleChange}
             />
           </label>
@@ -216,7 +216,21 @@ export const TacoItemOrderForm = (props) => {
               type="radio"
               name="meat"
               value={meat.name}
-              checked={state.tortilla === meat.name}
+              checked={state.meat === meat.name}
+              onChange={handleChange}
+            />
+          </label>
+        ))}
+      </fieldset>
+      <fieldset>
+        <h3>Salsa</h3>
+        {salsas.map((salsas) => (
+          <label key={salsas.id}>
+            {salsas.name}
+            <input
+              type="checkbox"
+              name={salsas.name}
+              checked={state[salsas.name]}
               onChange={handleChange}
             />
           </label>

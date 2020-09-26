@@ -68,6 +68,12 @@ export const BurritoItemOrderForm = (props) => {
         if (radioObject.ingredient.ingredientCategoryId === 1) {
           editState["tortilla"] = radioObject.ingredient.name;
         }
+        if (radioObject.ingredient.ingredientCategoryId === 2) {
+          editState["bean"] = radioObject.ingredient.name;
+        }
+        if (radioObject.ingredient.ingredientCategoryId === 3) {
+          editState["meat"] = radioObject.ingredient.name;
+        }
       });
       //gets just ingredients that should be a checkbox
       const checkBoxIngredients = selected.filter(
@@ -193,7 +199,7 @@ export const BurritoItemOrderForm = (props) => {
               type="radio"
               name="bean"
               value={bean.name}
-              checked={state.tortilla === bean.name}
+              checked={state.bean === bean.name}
               onChange={handleChange}
             />
           </label>
@@ -208,7 +214,7 @@ export const BurritoItemOrderForm = (props) => {
               type="radio"
               name="meat"
               value={meat.name}
-              checked={state.tortilla === meat.name}
+              checked={state.meat === meat.name}
               onChange={handleChange}
             />
           </label>
