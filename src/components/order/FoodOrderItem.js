@@ -64,7 +64,11 @@ export const FoodOrderItem = ({
       <button
         className="editFoodItem"
         onClick={() => {
-          history.push(`/edit/${foodItemObject.id}`);
+          if (foodItemObject.detailId === 1) {
+            history.push(`/editBurrito/${foodItemObject.id}`);
+          } else if (foodItemObject.detailId === 2) {
+            history.push(`/editTacos/${foodItemObject.id}`)
+          }
         }}
       >
         edit

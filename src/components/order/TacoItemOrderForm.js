@@ -17,12 +17,15 @@ export const TacoItemOrderForm = (props) => {
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
+  
   //🎛 🎛 🎛 COMPONENT STATE STUFF 🎛 🎛 🎛
   const [state, setState] = useState({
     "Shredded Cheese": true,
-    "Lettuce": true
-});
-
+    Lettuce: true,
+    quantity: 1
+  });
+  const [meatState, setMeatState] = useState([]);
+  
   function handleChange(evt) {
     const value =
       evt.target.type === "checkbox" ? evt.target.checked : evt.target.value;
@@ -40,7 +43,13 @@ export const TacoItemOrderForm = (props) => {
     getFoodItemIngredients();
   }, []);
 
+  useEffect(() => {
+    setMeatState(meatTypes);
+  }, [ingredients]);
+
   //📝 📝 📝 EDIT MODE STUFF 📝 📝 📝
+
+  //TODO: when guac is posted as meat/protein, make it show as such in OrderList and when editing make it come up in the guac radio button.
 
   useEffect(() => {
     if (editMode) {
@@ -50,6 +59,7 @@ export const TacoItemOrderForm = (props) => {
 
       editState["specialInstructions"] = selectedFoodItem.specialInstructions;
       editState["quantity"] = selectedFoodItem.quantity;
+      editState["combo"] = selectedFoodItem.combo
 
       //creates an array of ingredients that are associated with the selected food item
       const selected = foodItemIngredients.filter(
@@ -68,10 +78,21 @@ export const TacoItemOrderForm = (props) => {
           editState["tortilla"] = radioObject.ingredient.name;
         }
       });
+      radioButtonIngredients.forEach((radioObject) => {
+        if (radioObject.ingredient.ingredientCategoryId === 2) {
+          editState["bean"] = radioObject.ingredient.name;
+        }
+      });
+      radioButtonIngredients.forEach((radioObject) => {
+        if (radioObject.ingredient.ingredientCategoryId === 3) {
+          editState["meat"] = radioObject.ingredient.name;
+        }
+      });
       //gets just ingredients that should be a checkbox
       const checkBoxIngredients = selected.filter(
         (selectedObject) =>
           selectedObject.ingredient.ingredientCategoryId === 4 ||
+          selectedObject.ingredient.ingredientCategoryId === 5 ||
           selectedObject.ingredient.ingredientCategoryId === 6
       );
       //creates an array of objects that are {name : true}
@@ -79,7 +100,6 @@ export const TacoItemOrderForm = (props) => {
         editState[ingredientObject.ingredient.name] = true;
       });
       setState(editState);
-      console.log(editState);
     }
   }, [foodItems, foodItemIngredients]);
   const editMode = props.match.params.hasOwnProperty("foodItemObjectId");
@@ -102,6 +122,7 @@ export const TacoItemOrderForm = (props) => {
       ingredient.id === 21 ||
       ingredient.id === 24
   );
+
   const freebies = ingredients.filter(
     (ingredient) => ingredient.ingredientCategoryId === 4
   );
@@ -111,6 +132,15 @@ export const TacoItemOrderForm = (props) => {
     (ingredient) =>
       ingredient.id === 13 || ingredient.id === 14 || ingredient.id === 15
   );
+
+  const premiumIngredients = ingredients.filter(
+    (ingredient) => ingredient.ingredientCategoryId === 5
+  );
+
+  //this removes guac as premium ingredient if guac is selected as a meat
+  if (Object.values(state).indexOf("Guacamole") > -1) {
+    premiumIngredients.splice(0, 1);
+  }
 
   //📡 📡 FORM SUBMISSION FUNCTION 📡 📡
   const constructNewOrderItem = () => {
@@ -124,19 +154,21 @@ export const TacoItemOrderForm = (props) => {
     const foodItemData = [tortillaToPost, beanToPost, meatToPost];
 
     for (const [key, value] of Object.entries(state)) {
-      if (value === true) {
+      if (value === true && key !== "combo") {
         const foundIngredient = ingredients.find(
           (ingredient) => ingredient.name === key
         );
         foodItemData.push(foundIngredient);
       }
     }
-
+console.log(foodItemData)
+debugger
     //Actual post request
     addToFoodItems({
       specialInstructions: state.specialInstructions,
       quantity: parseInt(state.quantity),
       detailId: foodDetails[1].id,
+      combo: state.combo
     })
       .then((res) =>
         foodItemData.forEach((i) =>
@@ -158,6 +190,7 @@ export const TacoItemOrderForm = (props) => {
             specialInstructions: state.specialInstructions,
             quantity: parseInt(state.quantity),
             detailId: foodDetails[1].id,
+            combo: state.combo
           })
         )
         .then(
@@ -249,6 +282,31 @@ export const TacoItemOrderForm = (props) => {
             />
           </label>
         ))}
+      </fieldset>
+      <fieldset>
+        <h3>Premium Ingredients</h3>
+        {premiumIngredients.map((premium) => (
+          <label key={premium.id}>
+            {premium.name}
+            <input
+              type="checkbox"
+              name={premium.name}
+              checked={state[premium.name]}
+              onChange={handleChange}
+            />
+          </label>
+        ))}
+      </fieldset>
+      <fieldset>
+        <h3>Combo Meal?</h3>
+          <label>
+            <input
+              type="checkbox"
+              name="combo"
+              checked={state["combo"]}
+              onChange={handleChange}
+            />
+          </label>
       </fieldset>
       <fieldset>
         <div className="form-quantity">

@@ -57,8 +57,12 @@ export const ApplicationViews = (props) => {
                     render={(props) => <BurritoItemOrderForm {...props} />}
                   />
                   <Route
-                    path="/edit/:foodItemObjectId(\d+)"
+                    path="/editBurrito/:foodItemObjectId(\d+)"
                     render={(props) => <BurritoItemOrderForm {...props} />}
+                  />
+                  <Route
+                    path="/editTacos/:foodItemObjectId(\d+)"
+                    render={(props) => <TacoItemOrderForm {...props} />}
                   />
                 </IngredientProvider>
               </OrderProvider>

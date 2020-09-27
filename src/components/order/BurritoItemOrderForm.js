@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
@@ -18,7 +18,9 @@ export const BurritoItemOrderForm = (props) => {
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
 
   //🎛 🎛 🎛 COMPONENT STATE STUFF 🎛 🎛 🎛
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+      quantity: 1
+  });
 
   function handleChange(evt) {
     const value =
@@ -37,10 +39,6 @@ export const BurritoItemOrderForm = (props) => {
     getFoodItemIngredients();
   }, []);
 
-  useEffect(() => {
-    getFoodItemInEditMode();
-  }, [foodItems]);
-
   //📝 📝 📝 EDIT MODE STUFF 📝 📝 📝
 
   useEffect(() => {
@@ -51,6 +49,7 @@ export const BurritoItemOrderForm = (props) => {
 
       editState["specialInstructions"] = selectedFoodItem.specialInstructions;
       editState["quantity"] = selectedFoodItem.quantity;
+      editState["combo"] = selectedFoodItem.combo
 
       //creates an array of ingredients that are associated with the selected food item
       const selected = foodItemIngredients.filter(
@@ -92,10 +91,6 @@ export const BurritoItemOrderForm = (props) => {
   const editMode = props.match.params.hasOwnProperty("foodItemObjectId");
   const foodItemId = parseInt(props.match.params.foodItemObjectId);
 
-  const getFoodItemInEditMode = () => {
-    const currentState = Object.assign({}, state);
-  };
-
   //✅ 🔘 ✍🏼 FORM DATA SETUP ✅ 🔘 ✍🏼
   const tortillaTypes = ingredients.filter(
     (ingredient) => ingredient.ingredientCategoryId === 1
@@ -109,7 +104,9 @@ export const BurritoItemOrderForm = (props) => {
   const freebies = ingredients.filter(
     (ingredient) => ingredient.ingredientCategoryId === 4
   );
-
+  const premiumIngredients = ingredients.filter(
+    (ingredient) => ingredient.ingredientCategoryId === 5
+  );
   //📡 📡 FORM SUBMISSION FUNCTION 📡 📡
   const constructNewOrderItem = () => {
     // This is basically a meat grinder that finds all the properties in the state object and matches them with the appropriate ingredient object
@@ -122,7 +119,7 @@ export const BurritoItemOrderForm = (props) => {
     const foodItemData = [tortillaToPost, beanToPost, meatToPost];
 
     for (const [key, value] of Object.entries(state)) {
-      if (value === true) {
+      if (value === true && key !== "combo") {
         const foundIngredient = ingredients.find(
           (ingredient) => ingredient.name === key
         );
@@ -135,6 +132,7 @@ export const BurritoItemOrderForm = (props) => {
       specialInstructions: state.specialInstructions,
       quantity: parseInt(state.quantity),
       detailId: foodDetails[0].id,
+      combo: state.combo
     })
       .then((res) =>
         foodItemData.forEach((i) =>
@@ -156,6 +154,7 @@ export const BurritoItemOrderForm = (props) => {
             specialInstructions: state.specialInstructions,
             quantity: parseInt(state.quantity),
             detailId: foodDetails[0].id,
+            combo: state.combo
           })
         )
         .then(
@@ -233,6 +232,31 @@ export const BurritoItemOrderForm = (props) => {
             />
           </label>
         ))}
+      </fieldset>
+      <fieldset>
+        <h3>Premium Ingredients</h3>
+        {premiumIngredients.map((premium) => (
+          <label key={premium.id}>
+            {premium.name}
+            <input
+              type="checkbox"
+              name={premium.name}
+              checked={state[premium.name]}
+              onChange={handleChange}
+            />
+          </label>
+        ))}
+      </fieldset>
+      <fieldset>
+        <h3>Combo Meal?</h3>
+          <label>
+            <input
+              type="checkbox"
+              name="combo"
+              checked={state["combo"]}
+              onChange={handleChange}
+            />
+          </label>
       </fieldset>
       <fieldset>
         <div className="form-quantity">
