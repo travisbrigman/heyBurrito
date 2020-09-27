@@ -161,8 +161,7 @@ export const TacoItemOrderForm = (props) => {
         foodItemData.push(foundIngredient);
       }
     }
-console.log(foodItemData)
-debugger
+
     //Actual post request
     addToFoodItems({
       specialInstructions: state.specialInstructions,
