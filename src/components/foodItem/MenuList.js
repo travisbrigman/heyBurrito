@@ -1,3 +1,4 @@
+import { Box, Heading } from "grommet";
 import React, { useContext, useEffect } from "react";
 import { FoodDetailContext } from "./FoodDetailProvider";
 import { MenuItem } from "./MenuItem";
@@ -11,18 +12,19 @@ export const MenuList = (props) => {
   }, []);
 
   return (
-    <div className="menu">
-      <h1>Our Menu</h1>
-      <article className="menuList">
+    <Box className="menu">
+      <Heading level="3">Our Menu</Heading>
+      <Box className="menuList">
 
         {foodDetails.map((foodDetailObject) => (
           <MenuItem
             key={foodDetailObject.id}
             foodDetailObject={foodDetailObject}
+            foodDetails={foodDetails}
             {...props}
           />
         ))}
-      </article>
-    </div>
+      </Box>
+    </Box>
   );
 };

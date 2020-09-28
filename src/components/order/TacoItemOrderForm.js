@@ -3,6 +3,7 @@ import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 
+
 export const TacoItemOrderForm = (props) => {
   const {
     foodItems,
@@ -315,7 +316,7 @@ export const TacoItemOrderForm = (props) => {
             id="quantity"
             min="1"
             max="6"
-            defaultValue="1"
+            // defaultValue="1"
             required
             autoFocus
             className="form-quantity-selector"

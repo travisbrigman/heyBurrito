@@ -11,9 +11,25 @@ import { OrderList } from "./order/OrderList";
 import { DeleteFoodOrderItem } from "./order/DeleteFoodOrderItem";
 import { BurritoItemOrderForm } from "./order/BurritoItemOrderForm";
 import { TacoItemOrderForm } from "./order/TacoItemOrderForm";
+import {
+  Box,
+  Button,
+  Heading,
+  Grommet,
+  ResponsiveContext, Footer, Header, Text
+} from "grommet";
 const logo = require("/Users/travislaptop/workspace/hey-burrito/src/assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
+  const theme = {
+    global: {
+      font: {
+        family: "Roboto",
+        size: "18px",
+        height: "20px",
+      },
+    },
+  };
   const { getCustomers, signedInCustomer } = useContext(CustomerContext);
 
   useEffect(() => {
@@ -26,80 +42,95 @@ export const ApplicationViews = (props) => {
   };
 
   return (
-    <>
-      <header>
-        <h1>HeyBurrito!</h1>
-        <img src={logo} alt="a tasty looking burrito" height="80 px"></img>
-        <div>Hello {signedInCustomer.name}</div>
-        {/* <img src={ signedInCustomer.avatar.path } alt="customer avatar"/> */}
-        <button onClick={() => handleLogout()}>Log Out</button>
-      </header>
-      <div>
-        <article className="body-left"></article>
-        <article className="body-center">
-          <FoodDetailProvider>
-            {/* Render the location list when http://localhost:3000/ */}
-            <Route exact path="/" render={(props) => <MenuList {...props} />} />
-          </FoodDetailProvider>
-
-          <FoodItemProvider>
+    <Grommet theme={theme}>  
+        <Header direction="row" justify="between" align="center">
+          <Box direction="row">
+          <Heading>HeyBurrito!</Heading>
+          <Box>
+          <img src={logo} alt="a tasty looking burrito" height="80 px"></img>
+          </Box>
+          </Box>
+          <Box direction="column">
+          <Text>Hello {signedInCustomer.name}</Text>
+          {/* <img src={ signedInCustomer.avatar.path } alt="customer avatar"/> */}
+          <Button label="Log Out" onClick={() => handleLogout()} {...props} />
+          </Box>
+        </Header>
+        <Box direction="row-responsive" justify="between">
+          <article className="body-left"></article>
+          <Box className="body-center">
             <FoodDetailProvider>
-              <OrderProvider>
-                <IngredientProvider>
-                  <Route
-                    exact
-                    path="/createTacos"
-                    render={(props) => <TacoItemOrderForm {...props} />}
-                  />
-                  <Route
-                    exact
-                    path="/createBurrito"
-                    render={(props) => <BurritoItemOrderForm {...props} />}
-                  />
-                  <Route
-                    path="/editBurrito/:foodItemObjectId(\d+)"
-                    render={(props) => <BurritoItemOrderForm {...props} />}
-                  />
-                  <Route
-                    path="/editTacos/:foodItemObjectId(\d+)"
-                    render={(props) => <TacoItemOrderForm {...props} />}
-                  />
-                </IngredientProvider>
-              </OrderProvider>
+              {/* Render the location list when http://localhost:3000/ */}
+              <Route
+                exact
+                path="/"
+                render={(props) => <MenuList {...props} />}
+              />
             </FoodDetailProvider>
-          </FoodItemProvider>
-        </article>
-        <article className="body-right">
-          <OrderProvider>
+
             <FoodItemProvider>
               <FoodDetailProvider>
-                <IngredientProvider>
-                  <Route
-                    exact
-                    path="/"
-                    render={(props) => <OrderList {...props} />}
-                  />
-                </IngredientProvider>
+                <OrderProvider>
+                  <IngredientProvider>
+                    <Route
+                      exact
+                      path="/createTacos"
+                      render={(props) => <TacoItemOrderForm {...props} />}
+                    />
+                    <Route
+                      exact
+                      path="/createBurrito"
+                      render={(props) => <BurritoItemOrderForm {...props} />}
+                    />
+                    <Route
+                      path="/editBurrito/:foodItemObjectId(\d+)"
+                      render={(props) => <BurritoItemOrderForm {...props} />}
+                    />
+                    <Route
+                      path="/editTacos/:foodItemObjectId(\d+)"
+                      render={(props) => <TacoItemOrderForm {...props} />}
+                    />
+                  </IngredientProvider>
+                </OrderProvider>
               </FoodDetailProvider>
             </FoodItemProvider>
-          </OrderProvider>
-        </article>
-      </div>
-      <footer>
-        <small>
-          <div>
-            Icons made by{" "}
-            <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
-              Freepik
-            </a>{" "}
-            from{" "}
-            <a href="https://www.flaticon.com/" title="Flaticon">
-              {" "}
-              www.flaticon.com
-            </a>
-          </div>
-        </small>
-      </footer>
-    </>
+          </Box>
+          <Box className="body-right">
+            <Heading level="3">Current Order</Heading>
+            <OrderProvider>
+              <FoodItemProvider>
+                <FoodDetailProvider>
+                  <IngredientProvider>
+                    <Route
+                      exact
+                      path="/"
+                      render={(props) => <OrderList {...props} />}
+                    />
+                  </IngredientProvider>
+                </FoodDetailProvider>
+              </FoodItemProvider>
+            </OrderProvider>
+          </Box>
+        </Box>
+        <Footer>
+          <small>
+            <div>
+              Icons made by{" "}
+              <a
+                href="https://www.flaticon.com/authors/freepik"
+                title="Freepik"
+              >
+                Freepik
+              </a>{" "}
+              from{" "}
+              <a href="https://www.flaticon.com/" title="Flaticon">
+                {" "}
+                www.flaticon.com
+              </a>
+            </div>
+          </small>
+        </Footer>
+
+    </Grommet>
   );
 };

@@ -2,6 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
+import {
+  Box,
+  Button,
+  CheckBox,
+  FormField,
+  Heading,
+  Main,
+  RadioButton,
+  TextInput,
+} from "grommet";
+import { NumberInput } from "grommet-controls";
 
 export const BurritoItemOrderForm = (props) => {
   const {
@@ -19,12 +30,14 @@ export const BurritoItemOrderForm = (props) => {
 
   //🎛 🎛 🎛 COMPONENT STATE STUFF 🎛 🎛 🎛
   const [state, setState] = useState({
-      quantity: 1
+    quantity: 1,
   });
 
   function handleChange(evt) {
     const value =
       evt.target.type === "checkbox" ? evt.target.checked : evt.target.value;
+    console.log(evt);
+    console.log(evt.target);
     setState({
       ...state,
       [evt.target.name]: value,
@@ -49,7 +62,7 @@ export const BurritoItemOrderForm = (props) => {
 
       editState["specialInstructions"] = selectedFoodItem.specialInstructions;
       editState["quantity"] = selectedFoodItem.quantity;
-      editState["combo"] = selectedFoodItem.combo
+      editState["combo"] = selectedFoodItem.combo;
 
       //creates an array of ingredients that are associated with the selected food item
       const selected = foodItemIngredients.filter(
@@ -78,6 +91,7 @@ export const BurritoItemOrderForm = (props) => {
       const checkBoxIngredients = selected.filter(
         (selectedObject) =>
           selectedObject.ingredient.ingredientCategoryId === 4 ||
+          selectedObject.ingredient.ingredientCategoryId === 5 ||
           selectedObject.ingredient.ingredientCategoryId === 6
       );
       //creates an array of objects that are {name : true}
@@ -132,7 +146,7 @@ export const BurritoItemOrderForm = (props) => {
       specialInstructions: state.specialInstructions,
       quantity: parseInt(state.quantity),
       detailId: foodDetails[0].id,
-      combo: state.combo
+      combo: state.combo,
     })
       .then((res) =>
         foodItemData.forEach((i) =>
@@ -154,7 +168,7 @@ export const BurritoItemOrderForm = (props) => {
             specialInstructions: state.specialInstructions,
             quantity: parseInt(state.quantity),
             detailId: foodDetails[0].id,
-            combo: state.combo
+            combo: state.combo,
           })
         )
         .then(
@@ -171,131 +185,161 @@ export const BurritoItemOrderForm = (props) => {
   };
 
   return (
-    <form>
-      <div>{foodDetails[0].name}</div>
-
-      <fieldset>
-        <h3>Tortilla</h3>
-        {tortillaTypes.map((tortilla) => (
-          <label key={tortilla.id}>
-            {tortilla.name}
-            <input
-              type="radio"
+    <Main>
+      <Heading>{foodDetails[0].name}</Heading>
+      <Box direction="column">
+        <Heading level="5">Tortilla</Heading>
+        <Box
+          direction="row-responsive"
+          justify="start"
+          align="center"
+          pad="medium"
+          gap="large"
+        >
+          {tortillaTypes.map((tortilla) => (
+            <RadioButton
+              key={tortilla.id}
+              label={tortilla.name}
               name="tortilla"
               value={tortilla.name}
               checked={state.tortilla === tortilla.name}
               onChange={handleChange}
             />
-          </label>
-        ))}
-      </fieldset>
-      <fieldset>
-        <h3>Beans</h3>
-        {beanTypes.map((bean) => (
-          <label key={bean.id}>
-            {bean.name}
-            <input
-              type="radio"
+          ))}
+        </Box>
+      </Box>
+      <Box direction="column">
+        <Heading level="5">Beans</Heading>
+        <Box
+          direction="row-responsive"
+          justify="start"
+          align="center"
+          pad="medium"
+          gap="large"
+        >
+          {beanTypes.map((bean) => (
+            <RadioButton
+              key={bean.id}
+              label={bean.name}
               name="bean"
               value={bean.name}
               checked={state.bean === bean.name}
               onChange={handleChange}
             />
-          </label>
-        ))}
-      </fieldset>
-      <fieldset>
-        <h3>Meats</h3>
-        {meatTypes.map((meat) => (
-          <label key={meat.id}>
-            {meat.name}
-            <input
-              type="radio"
+          ))}
+        </Box>
+      </Box>
+      <Box direction="column">
+        <Heading level="5">Meat</Heading>
+
+        <Box
+          direction="row-responsive"
+          justify="start"
+          align="center"
+          pad="medium"
+          gap="large"
+        >
+          {meatTypes.map((meat) => (
+            <RadioButton
+              key={meat.id}
+              label={meat.name}
               name="meat"
               value={meat.name}
               checked={state.meat === meat.name}
               onChange={handleChange}
             />
-          </label>
-        ))}
-      </fieldset>
-      <fieldset>
-        <h3>Free Ingredients</h3>
-        {freebies.map((freebie) => (
-          <label key={freebie.id}>
-            {freebie.name}
-            <input
-              type="checkbox"
-              name={freebie.name}
-              checked={state[freebie.name]}
-              onChange={handleChange}
-            />
-          </label>
-        ))}
-      </fieldset>
-      <fieldset>
-        <h3>Premium Ingredients</h3>
-        {premiumIngredients.map((premium) => (
-          <label key={premium.id}>
-            {premium.name}
-            <input
-              type="checkbox"
-              name={premium.name}
-              checked={state[premium.name]}
-              onChange={handleChange}
-            />
-          </label>
-        ))}
-      </fieldset>
-      <fieldset>
-        <h3>Combo Meal?</h3>
-          <label>
-            <input
-              type="checkbox"
-              name="combo"
-              checked={state["combo"]}
-              onChange={handleChange}
-            />
-          </label>
-      </fieldset>
-      <fieldset>
-        <div className="form-quantity">
-          <label htmlFor="quantity-selector">Quantity </label>
-          <input
-            type="number"
-            id="quantity"
-            min="1"
-            max="6"
-            defaultValue="1"
-            required
-            autoFocus
-            className="form-quantity-selector"
-            name="quantity"
-            value={state.quantity}
+          ))}
+        </Box>
+      </Box>
+      <Box direction="row-responsive">
+        <Box>
+          <h3>Free Ingredients</h3>
+          {freebies.map((freebie) => (
+            <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+              <CheckBox
+                key={freebie.id}
+                type="checkbox"
+                id={`freebie-${freebie.id}`}
+                name={freebie.name}
+                label={freebie.name}
+                checked={state[freebie.name]}
+                onChange={handleChange}
+              />
+            </Box>
+          ))}
+        </Box>
+
+        <Box>
+          <h3>Premium Ingredients</h3>
+          {premiumIngredients.map((premium) => (
+            <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+              <CheckBox
+                key={premium.id}
+                type="checkbox"
+                id={`premium-${premium.id}`}
+                name={premium.name}
+                label={premium.name}
+                checked={state[premium.name]}
+                onChange={handleChange}
+              />
+            </Box>
+          ))}
+        </Box>
+      </Box>
+
+      <FormField name="comboField" htmlFor="comboField" required pad="medium">
+        <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+          <CheckBox
+            reverse="true"
+            id="combo"
+            name="combo"
+            label="Combo Meal?"
+            checked={state["combo"]}
             onChange={handleChange}
           />
-        </div>
-      </fieldset>
+        </Box>
+      </FormField>
+      <Box direction="row" justify="start" align="center">
+        <Heading level="4">Quantity </Heading>
+        <Box pad="small" width="small">
+          <NumberInput
+            value={state.quantity}
+            onChange={({ target: { value } }) =>
+              setState({
+                ...state,
+                quantity: value,
+              })
+            }
+            min="1"
+            max="6"
+          />
+        </Box>
+      </Box>
 
-      <label>
-        <div className="specialInstructions">Special Instructions</div>
-        <input
-          type="text"
+      <FormField
+        label="Special Instructions"
+        htmlFor="specialInstructions"
+        {...props}
+      >
+        <TextInput
+          id="specialInstructions"
           name="specialInstructions"
+          placeholder="e.g. light on the beans..."
           value={state.specialInstructions}
           onChange={handleChange}
+          onSelect={handleChange}
+          // suggestions={state.suggestions}
         />
-      </label>
-      <button
-        type="submit"
+      </FormField>
+
+      <Button
+        label="Add To Order"
         onClick={(evt) => {
           evt.preventDefault(); // Prevent browser from submitting the form
           constructNewOrderItem();
         }}
-        className="btn btn-primary"
-      >
-        Add to Order
-      </button>
-    </form>
+        {...props}
+      />
+    </Main>
   );
 };
