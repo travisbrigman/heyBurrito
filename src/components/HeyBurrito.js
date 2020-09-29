@@ -16,7 +16,6 @@ export const HeyBurrito = () => (
           return (
             <>
               <CustomerProvider>
-                <Route render={(props) => <NavBar {...props} />} />
                 <Route render={(props) => <ApplicationViews {...props} />} />
               </CustomerProvider>
             </>

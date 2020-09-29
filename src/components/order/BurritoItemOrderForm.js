@@ -31,6 +31,8 @@ export const BurritoItemOrderForm = (props) => {
   //🎛 🎛 🎛 COMPONENT STATE STUFF 🎛 🎛 🎛
   const [state, setState] = useState({
     quantity: 1,
+    combo: null,
+    specialInstructions: null
   });
 
   function handleChange(evt) {
@@ -184,6 +186,11 @@ export const BurritoItemOrderForm = (props) => {
     }
   };
 
+  //❌ ❌ ❌ Cancel Button ❌ ❌ ❌
+  const cancel = () => {
+    props.history.push("/");
+  };
+
   return (
     <Main>
       <Heading>{foodDetails[0].name}</Heading>
@@ -193,8 +200,8 @@ export const BurritoItemOrderForm = (props) => {
           direction="row-responsive"
           justify="start"
           align="center"
-          pad="medium"
-          gap="large"
+          pad="small"
+          gap="medium"
         >
           {tortillaTypes.map((tortilla) => (
             <RadioButton
@@ -204,6 +211,7 @@ export const BurritoItemOrderForm = (props) => {
               value={tortilla.name}
               checked={state.tortilla === tortilla.name}
               onChange={handleChange}
+              required="true"
             />
           ))}
         </Box>
@@ -214,8 +222,8 @@ export const BurritoItemOrderForm = (props) => {
           direction="row-responsive"
           justify="start"
           align="center"
-          pad="medium"
-          gap="large"
+          pad="small"
+          gap="medium"
         >
           {beanTypes.map((bean) => (
             <RadioButton
@@ -225,6 +233,7 @@ export const BurritoItemOrderForm = (props) => {
               value={bean.name}
               checked={state.bean === bean.name}
               onChange={handleChange}
+              required="true"
             />
           ))}
         </Box>
@@ -236,8 +245,8 @@ export const BurritoItemOrderForm = (props) => {
           direction="row-responsive"
           justify="start"
           align="center"
-          pad="medium"
-          gap="large"
+          pad="small"
+          gap="medium"
         >
           {meatTypes.map((meat) => (
             <RadioButton
@@ -247,6 +256,7 @@ export const BurritoItemOrderForm = (props) => {
               value={meat.name}
               checked={state.meat === meat.name}
               onChange={handleChange}
+              required="true"
             />
           ))}
         </Box>
@@ -285,61 +295,78 @@ export const BurritoItemOrderForm = (props) => {
             </Box>
           ))}
         </Box>
-      </Box>
 
-      <FormField name="comboField" htmlFor="comboField" required pad="medium">
-        <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
-          <CheckBox
-            reverse="true"
-            id="combo"
-            name="combo"
-            label="Combo Meal?"
-            checked={state["combo"]}
-            onChange={handleChange}
+        <Box direction="column" align="end" fill="horizontal">
+          <FormField
+            name="comboField"
+            htmlFor="comboField"
+            required
+            pad="medium"
+          >
+            <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+              <CheckBox
+                reverse="true"
+                id="combo"
+                name="combo"
+                label="Combo Meal?"
+                checked={state["combo"]}
+                onChange={handleChange}
+                required="true"
+              />
+            </Box>
+          </FormField>
+          <Box direction="row" justify="start" align="center">
+            <Heading level="4">Quantity </Heading>
+            <Box pad="small" width="small">
+              <NumberInput
+                value={state.quantity}
+                onChange={({ target: { value } }) =>
+                  setState({
+                    ...state,
+                    quantity: value,
+                  })
+                }
+                min="1"
+                max="6"
+              />
+            </Box>
+          </Box>
+
+          <FormField
+            label="Special Instructions"
+            htmlFor="specialInstructions"
+            {...props}
+          >
+            <TextInput
+              id="specialInstructions"
+              name="specialInstructions"
+              placeholder="e.g. light on the beans..."
+              value={state.specialInstructions}
+              onChange={handleChange}
+              onSelect={handleChange}
+              // suggestions={state.suggestions}
+            />
+          </FormField>
+
+          <Button
+            margin="small"
+            pad="small"
+            label="Add To Order"
+            onClick={(evt) => {
+              evt.preventDefault(); // Prevent browser from submitting the form
+              constructNewOrderItem();
+            }}
+            {...props}
+          />
+          <Button
+            margin="small"
+            pad="small"
+            label="cancel"
+            onClick={cancel}
+            className="btn btn-cancel"
           />
         </Box>
-      </FormField>
-      <Box direction="row" justify="start" align="center">
-        <Heading level="4">Quantity </Heading>
-        <Box pad="small" width="small">
-          <NumberInput
-            value={state.quantity}
-            onChange={({ target: { value } }) =>
-              setState({
-                ...state,
-                quantity: value,
-              })
-            }
-            min="1"
-            max="6"
-          />
-        </Box>
       </Box>
-
-      <FormField
-        label="Special Instructions"
-        htmlFor="specialInstructions"
-        {...props}
-      >
-        <TextInput
-          id="specialInstructions"
-          name="specialInstructions"
-          placeholder="e.g. light on the beans..."
-          value={state.specialInstructions}
-          onChange={handleChange}
-          onSelect={handleChange}
-          // suggestions={state.suggestions}
-        />
-      </FormField>
-
-      <Button
-        label="Add To Order"
-        onClick={(evt) => {
-          evt.preventDefault(); // Prevent browser from submitting the form
-          constructNewOrderItem();
-        }}
-        {...props}
-      />
     </Main>
   );
 };

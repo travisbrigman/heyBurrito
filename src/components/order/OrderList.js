@@ -4,6 +4,7 @@ import { FoodItemContext } from "../foodItem/FoodItemProvider";
 import { FoodOrderItem } from "./FoodOrderItem";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
+import { Box } from "grommet";
 
 export const OrderList = (props) => {
   const { orders, getOrders } = useContext(OrderContext);
@@ -26,7 +27,7 @@ export const OrderList = (props) => {
   }, []);
 
   return (
-    <div className="orders">
+    <Box className="orders">
       {foodItems.map((foodItemObject) => (
         <FoodOrderItem
           key={foodItemObject.id}
@@ -37,6 +38,6 @@ export const OrderList = (props) => {
           {...props}
         />
       ))}
-    </div>
+    </Box>
   );
 };

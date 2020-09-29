@@ -90,6 +90,7 @@ export const ApplicationViews = (props) => {
           </Box>
           <Box className="body-right">
             <Heading level="3">Current Order</Heading>
+            {/* <Box height={{ max: 'large' }} overflow="auto"> */}
             <OrderProvider>
               <FoodItemProvider>
                 <FoodDetailProvider>
@@ -103,6 +104,7 @@ export const ApplicationViews = (props) => {
                 </FoodDetailProvider>
               </FoodItemProvider>
             </OrderProvider>
+            {/* </Box> */}
           </Box>
         </Box>
         <Footer>

@@ -56,15 +56,7 @@ export const FoodOrderItem = ({
 
   return (
     <Box className="foodOrderItem">
-      <Heading level="4" className="foodOrderItem__name">
-        {foodDetailObject.name}
-      </Heading>
-      {/* <ItemIngredientList
-        key={foodItemIngredients.id}
-        foodItemIngredients={foodItemIngredients}
-        ingredients={ingredients}
-        foodItemObject={foodItemObject}
-      /> */}
+      <Heading level="4" className="foodOrderItem__name"> {foodDetailObject.name} </Heading>
       <List
         pad="xsmall"
         data={itemIngredientList}
@@ -80,11 +72,11 @@ export const FoodOrderItem = ({
         )}
       />
       <Box direction="column">
-        <Text className="foodOrderItem__Combo">Combo: {foodItemObject.combo}</Text>
-        <Text className="foodOrderItem__Quantity">
+        <Text size="small"  className="foodOrderItem__Combo">Combo: {foodItemObject.combo ? 'Yes' : 'No'}</Text>
+        <Text size="small" className="foodOrderItem__Quantity">
           Quantity: {foodItemObject.quantity}
         </Text>
-        <Text className="foodOrderItem__Instructions">
+        <Text size="small" className="foodOrderItem__Instructions">
           Special Instructions: {foodItemObject.specialInstructions}
         </Text>
         <Box direction="row">
