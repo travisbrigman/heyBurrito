@@ -66,7 +66,7 @@ export const FoodOrderItem = ({
           </Text>
         )}
         secondaryKey={(item) => (
-          <Text size="small" color="dark-4">
+          <Text size="small" color="text-weak">
             {item.name}
           </Text>
         )}

@@ -389,6 +389,7 @@ export const TacoItemOrderForm = (props) => {
             />
           </FormField>
           <Button
+            primary="true"
             label="Add To Order"
             margin="small"
             pad="small"

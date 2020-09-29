@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   CheckBox,
+  Form,
   FormField,
   Heading,
   Main,
@@ -31,22 +32,35 @@ export const BurritoItemOrderForm = (props) => {
   //🎛 🎛 🎛 COMPONENT STATE STUFF 🎛 🎛 🎛
   const [state, setState] = useState({
     quantity: 1,
-    combo: null,
-    specialInstructions: null
+    combo: false,
+    specialInstructions: null,
   });
 
   function handleChange(evt) {
     const value =
       evt.target.type === "checkbox" ? evt.target.checked : evt.target.value;
-    console.log(evt);
-    console.log(evt.target);
     setState({
       ...state,
       [evt.target.name]: value,
     });
     console.log(state);
   }
-
+  const [buttonState, setButtonState] = useState(true);
+  useEffect(() => {
+    const requiredProperties = ["tortilla", "bean", "meat", "combo"];
+    const buttonProps = []
+    requiredProperties.forEach((prop) => {
+      console.log(buttonProps)
+      if (state.hasOwnProperty(prop)) {
+        buttonProps.push(prop)
+      }
+      if (buttonProps.length === requiredProperties.length) {
+        console.log(requiredProperties)
+        setButtonState(false);
+      }
+      
+    });
+  });
   useEffect(() => {
     getIngredients();
     getFoodDetails();
@@ -101,7 +115,6 @@ export const BurritoItemOrderForm = (props) => {
         editState[ingredientObject.ingredient.name] = true;
       });
       setState(editState);
-      console.log(editState);
     }
   }, [foodItems, foodItemIngredients]);
   const editMode = props.match.params.hasOwnProperty("foodItemObjectId");
@@ -193,180 +206,186 @@ export const BurritoItemOrderForm = (props) => {
 
   return (
     <Main>
-      <Heading>{foodDetails[0].name}</Heading>
-      <Box direction="column">
-        <Heading level="5">Tortilla</Heading>
-        <Box
-          direction="row-responsive"
-          justify="start"
-          align="center"
-          pad="small"
-          gap="medium"
-        >
-          {tortillaTypes.map((tortilla) => (
-            <RadioButton
-              key={tortilla.id}
-              label={tortilla.name}
-              name="tortilla"
-              value={tortilla.name}
-              checked={state.tortilla === tortilla.name}
-              onChange={handleChange}
-              required="true"
-            />
-          ))}
-        </Box>
-      </Box>
-      <Box direction="column">
-        <Heading level="5">Beans</Heading>
-        <Box
-          direction="row-responsive"
-          justify="start"
-          align="center"
-          pad="small"
-          gap="medium"
-        >
-          {beanTypes.map((bean) => (
-            <RadioButton
-              key={bean.id}
-              label={bean.name}
-              name="bean"
-              value={bean.name}
-              checked={state.bean === bean.name}
-              onChange={handleChange}
-              required="true"
-            />
-          ))}
-        </Box>
-      </Box>
-      <Box direction="column">
-        <Heading level="5">Meat</Heading>
-
-        <Box
-          direction="row-responsive"
-          justify="start"
-          align="center"
-          pad="small"
-          gap="medium"
-        >
-          {meatTypes.map((meat) => (
-            <RadioButton
-              key={meat.id}
-              label={meat.name}
-              name="meat"
-              value={meat.name}
-              checked={state.meat === meat.name}
-              onChange={handleChange}
-              required="true"
-            />
-          ))}
-        </Box>
-      </Box>
-      <Box direction="row-responsive">
-        <Box>
-          <h3>Free Ingredients</h3>
-          {freebies.map((freebie) => (
-            <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
-              <CheckBox
-                key={freebie.id}
-                type="checkbox"
-                id={`freebie-${freebie.id}`}
-                name={freebie.name}
-                label={freebie.name}
-                checked={state[freebie.name]}
-                onChange={handleChange}
-              />
-            </Box>
-          ))}
-        </Box>
-
-        <Box>
-          <h3>Premium Ingredients</h3>
-          {premiumIngredients.map((premium) => (
-            <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
-              <CheckBox
-                key={premium.id}
-                type="checkbox"
-                id={`premium-${premium.id}`}
-                name={premium.name}
-                label={premium.name}
-                checked={state[premium.name]}
-                onChange={handleChange}
-              />
-            </Box>
-          ))}
-        </Box>
-
-        <Box direction="column" align="end" fill="horizontal">
-          <FormField
-            name="comboField"
-            htmlFor="comboField"
-            required
-            pad="medium"
+      <Form>
+        <Heading>{foodDetails[0].name}</Heading>
+        <Box direction="column">
+          <Heading level="5">Tortilla</Heading>
+          <Box
+            direction="row-responsive"
+            justify="start"
+            align="center"
+            pad="small"
+            gap="medium"
           >
-            <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
-              <CheckBox
-                reverse="true"
-                id="combo"
-                name="combo"
-                label="Combo Meal?"
-                checked={state["combo"]}
+            <FormField>
+              {tortillaTypes.map((tortilla) => (
+                <RadioButton
+                  key={tortilla.id}
+                  label={tortilla.name}
+                  name="tortilla"
+                  value={tortilla.name}
+                  checked={state.tortilla === tortilla.name}
+                  onChange={handleChange}
+                  required
+                />
+              ))}
+            </FormField>
+          </Box>
+        </Box>
+        <Box direction="column">
+          <Heading level="5">Beans</Heading>
+          <Box
+            direction="row-responsive"
+            justify="start"
+            align="center"
+            pad="small"
+            gap="medium"
+          >
+            {beanTypes.map((bean) => (
+              <RadioButton
+                key={bean.id}
+                label={bean.name}
+                name="bean"
+                value={bean.name}
+                checked={state.bean === bean.name}
                 onChange={handleChange}
                 required="true"
               />
-            </Box>
-          </FormField>
-          <Box direction="row" justify="start" align="center">
-            <Heading level="4">Quantity </Heading>
-            <Box pad="small" width="small">
-              <NumberInput
-                value={state.quantity}
-                onChange={({ target: { value } }) =>
-                  setState({
-                    ...state,
-                    quantity: value,
-                  })
-                }
-                min="1"
-                max="6"
+            ))}
+          </Box>
+        </Box>
+        <Box direction="column">
+          <Heading level="5">Meat</Heading>
+
+          <Box
+            direction="row-responsive"
+            justify="start"
+            align="center"
+            pad="small"
+            gap="medium"
+          >
+            {meatTypes.map((meat) => (
+              <RadioButton
+                key={meat.id}
+                label={meat.name}
+                name="meat"
+                value={meat.name}
+                checked={state.meat === meat.name}
+                onChange={handleChange}
+                required="true"
               />
-            </Box>
+            ))}
+          </Box>
+        </Box>
+        <Box direction="row-responsive">
+          <Box>
+            <h3>Free Ingredients</h3>
+            {freebies.map((freebie) => (
+              <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+                <CheckBox
+                  key={freebie.id}
+                  type="checkbox"
+                  id={`freebie-${freebie.id}`}
+                  name={freebie.name}
+                  label={freebie.name}
+                  checked={state[freebie.name]}
+                  onChange={handleChange}
+                />
+              </Box>
+            ))}
           </Box>
 
-          <FormField
-            label="Special Instructions"
-            htmlFor="specialInstructions"
-            {...props}
-          >
-            <TextInput
-              id="specialInstructions"
-              name="specialInstructions"
-              placeholder="e.g. light on the beans..."
-              value={state.specialInstructions}
-              onChange={handleChange}
-              onSelect={handleChange}
-              // suggestions={state.suggestions}
-            />
-          </FormField>
+          <Box>
+            <h3>Premium Ingredients</h3>
+            {premiumIngredients.map((premium) => (
+              <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+                <CheckBox
+                  key={premium.id}
+                  type="checkbox"
+                  id={`premium-${premium.id}`}
+                  name={premium.name}
+                  label={premium.name}
+                  checked={state[premium.name]}
+                  onChange={handleChange}
+                />
+              </Box>
+            ))}
+          </Box>
 
-          <Button
-            margin="small"
-            pad="small"
-            label="Add To Order"
-            onClick={(evt) => {
-              evt.preventDefault(); // Prevent browser from submitting the form
-              constructNewOrderItem();
-            }}
-            {...props}
-          />
-          <Button
-            margin="small"
-            pad="small"
-            label="cancel"
-            onClick={cancel}
-            className="btn btn-cancel"
-          />
+          <Box direction="column" align="end" fill="horizontal">
+            <FormField
+              name="comboField"
+              htmlFor="comboField"
+              required
+              pad="medium"
+            >
+              <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+                <CheckBox
+                  reverse="true"
+                  id="combo"
+                  name="combo"
+                  label="Combo Meal?"
+                  checked={state["combo"]}
+                  onChange={handleChange}
+                  required="true"
+                />
+              </Box>
+            </FormField>
+            <Box direction="row" justify="start" align="center">
+              <Heading level="4">Quantity </Heading>
+              <Box pad="small" width="small">
+                <NumberInput
+                  value={state.quantity}
+                  onChange={({ target: { value } }) =>
+                    setState({
+                      ...state,
+                      quantity: value,
+                    })
+                  }
+                  min="1"
+                  max="6"
+                />
+              </Box>
+            </Box>
+
+            <FormField
+              label="Special Instructions"
+              htmlFor="specialInstructions"
+              {...props}
+            >
+              <TextInput
+                id="specialInstructions"
+                name="specialInstructions"
+                placeholder="e.g. light on the beans..."
+                value={state.specialInstructions}
+                onChange={handleChange}
+                onSelect={handleChange}
+                // suggestions={state.suggestions}
+              />
+            </FormField>
+
+            <Button
+              disabled={buttonState}
+              primary="true"
+              margin="small"
+              pad="small"
+              label="Add To Order"
+              onClick={(evt) => {
+                evt.preventDefault(); // Prevent browser from submitting the form
+                constructNewOrderItem();
+              }}
+              {...props}
+            />
+            <Button
+              margin="small"
+              pad="small"
+              label="cancel"
+              onClick={cancel}
+              className="btn btn-cancel"
+            />
+          </Box>
         </Box>
-      </Box>
+      </Form>
     </Main>
   );
 };

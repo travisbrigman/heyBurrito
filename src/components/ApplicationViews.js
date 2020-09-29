@@ -49,7 +49,7 @@ export const ApplicationViews = (props) => {
           <Button label="Log Out" onClick={() => handleLogout()} {...props} />
           </Box>
         </Header>
-        <Box direction="row-responsive" justify="between">
+        <Box margin="medium" direction="row-responsive" justify="between">
           <article className="body-left"></article>
           <Box className="body-center">
             <FoodDetailProvider>
