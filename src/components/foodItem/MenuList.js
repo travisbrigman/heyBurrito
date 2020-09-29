@@ -14,9 +14,9 @@ export const MenuList = (props) => {
   return (
     <Box className="menu">
       <Heading level="3">Our Menu</Heading>
-      <Box className="menuList">
+      <Box direction="row-responsive"className="menuList">
         {foodDetails.map((foodDetailObject) => (
-          <Box gap="small">
+          <Box gap="small" margin="small">
           <MenuItem
             key={foodDetailObject.id}
             foodDetailObject={foodDetailObject}

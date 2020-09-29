@@ -4,6 +4,9 @@ import {
     Box,
     Button,
     Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
     Heading,
     Image
   } from "grommet";
@@ -18,15 +21,16 @@ import {
           image = taco
       }
     return (
-        <Card pad="xsmall">
-        <Box direction= "column" className="menuItem">
-        <Heading level="4" className="menuItem__name">{ foodDetailObject.name }</Heading>
-        <Box width="medium" height="medium">
+        <Card pad="xsmall" height="medium" width="small">
+        <CardBody direction= "column" className="menuItem">
+        <CardHeader pad="xsmall" level="5" className="menuItem__name">{ foodDetailObject.name }</CardHeader>
+        <Box width="small" height="small">
         <Image fit="cover" className="menuItem__image" src={image} alt={ foodDetailObject.altImgDesc} />
         </Box>
-        <Box pad="small" className="menuItem__description">{ foodDetailObject.description }</Box>
-        <Button pad="xsmall" label="Customize & Add" onClick={() => history.push(`/create${foodDetailObject.name}`)} {...props} />
-    </Box>
+    </CardBody>
+        <CardFooter direction="column" pad="xsmall" className="menuItem__description">{ foodDetailObject.description }
+        <Button pad="xsmall" label="Add" onClick={() => history.push(`/create${foodDetailObject.name}`)} {...props} />
+        </CardFooter>
     </Card>
     )
 }

@@ -89,6 +89,8 @@ export const FoodOrderItem = ({
         </Text>
         <Box direction="row">
           <Button
+          secondary="true"
+          margin="small"
             label="edit"
             onClick={() => {
               if (foodItemObject.detailId === 1) {
@@ -99,7 +101,7 @@ export const FoodOrderItem = ({
             }}
             {...props}
           />
-          <Button label="Delete" onClick={deleteOrderItem} {...props} />
+          <Button margin="small" label="Delete" onClick={deleteOrderItem} {...props} />
         </Box>
       </Box>
     </Box>

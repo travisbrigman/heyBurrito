@@ -18,18 +18,11 @@ import {
   Grommet,
   ResponsiveContext, Footer, Header, Text
 } from "grommet";
+import { burritoTheme } from "./CustomGrommetTheme"
 const logo = require("/Users/travislaptop/workspace/hey-burrito/src/assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
-  const theme = {
-    global: {
-      font: {
-        family: "Roboto",
-        size: "18px",
-        height: "20px",
-      },
-    },
-  };
+  
   const { getCustomers, signedInCustomer } = useContext(CustomerContext);
 
   useEffect(() => {
@@ -42,15 +35,15 @@ export const ApplicationViews = (props) => {
   };
 
   return (
-    <Grommet theme={theme}>  
+    <Grommet theme={burritoTheme}>  
         <Header direction="row" justify="between" align="center">
-          <Box direction="row">
+          <Box margin="small" direction="row">
           <Heading>HeyBurrito!</Heading>
           <Box>
           <img src={logo} alt="a tasty looking burrito" height="80 px"></img>
           </Box>
           </Box>
-          <Box direction="column">
+          <Box margin="small" gap="small" justify="start" direction="column">
           <Text>Hello {signedInCustomer.name}</Text>
           {/* <img src={ signedInCustomer.avatar.path } alt="customer avatar"/> */}
           <Button label="Log Out" onClick={() => handleLogout()} {...props} />
