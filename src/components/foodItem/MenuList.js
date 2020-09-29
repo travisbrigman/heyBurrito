@@ -15,14 +15,15 @@ export const MenuList = (props) => {
     <Box className="menu">
       <Heading level="3">Our Menu</Heading>
       <Box className="menuList">
-
         {foodDetails.map((foodDetailObject) => (
+          <Box gap="small">
           <MenuItem
             key={foodDetailObject.id}
             foodDetailObject={foodDetailObject}
             foodDetails={foodDetails}
             {...props}
           />
+          </Box>
         ))}
       </Box>
     </Box>
