@@ -85,6 +85,15 @@ export const burritoTheme =
     }
 
   },
+
+  "radioButton": {
+    "hover": {
+      "border": {
+        "color": "text-weak"
+      }
+    }
+  },
+
   "chart": {},
   "diagram": {
     "line": {}
@@ -104,7 +113,8 @@ export const burritoTheme =
       "style": "solid"
     },
     "content": {
-      "pad": "small"
+      "pad": "medium",
+      "margin": "large"
     },
     "disabled": {
       "background": {
@@ -135,11 +145,11 @@ export const burritoTheme =
     "label": {
       "margin": {
         "vertical": "xsmall",
-        "horizontal": "small"
+        "horizontal": "xsmall"
       }
     },
     "margin": {
-      "bottom": "small"
+      "bottom": "xsmall"
     }
   },
   "heading": {

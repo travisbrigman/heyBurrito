@@ -34,7 +34,7 @@ export const TacoItemOrderForm = (props) => {
     Lettuce: true,
     quantity: 1,
   });
-  const [meatState, setMeatState] = useState([]);
+  //const [meatState, setMeatState] = useState([]);
 
   function handleChange(evt) {
     const value =
@@ -45,6 +45,20 @@ export const TacoItemOrderForm = (props) => {
     });
     console.log(state);
   }
+  const [buttonState, setButtonState] = useState(true);
+
+  useEffect(() => {
+    const requiredProperties = ["tortilla", "bean", "meat"];
+    const buttonProps = [];
+    requiredProperties.forEach((prop) => {
+      if (state.hasOwnProperty(prop)) {
+        buttonProps.push(prop);
+      }
+      if (buttonProps.length === requiredProperties.length) {
+        setButtonState(false);
+      }
+    });
+  });
 
   useEffect(() => {
     getIngredients();
@@ -53,13 +67,7 @@ export const TacoItemOrderForm = (props) => {
     getFoodItemIngredients();
   }, []);
 
-  useEffect(() => {
-    setMeatState(meatTypes);
-  }, [ingredients]);
-
   //📝 📝 📝 EDIT MODE STUFF 📝 📝 📝
-
-  //TODO: when guac is posted as meat/protein, make it show as such in OrderList and when editing make it come up in the guac radio button.
 
   useEffect(() => {
     if (editMode) {
@@ -75,6 +83,7 @@ export const TacoItemOrderForm = (props) => {
       const selected = foodItemIngredients.filter(
         (ingredient) => ingredient.foodItemId === foodItemId
       );
+
       //creates radio button state values
       const radioButtonIngredients = selected.filter(
         (selectedObject) =>
@@ -129,8 +138,8 @@ export const TacoItemOrderForm = (props) => {
       ingredient.id === 8 ||
       ingredient.id === 9 ||
       ingredient.id === 10 ||
-      ingredient.id === 21 ||
-      ingredient.id === 24
+      ingredient.id === 24 ||
+      ingredient.id === 27
   );
 
   const freebies = ingredients.filter(
@@ -147,9 +156,13 @@ export const TacoItemOrderForm = (props) => {
     (ingredient) => ingredient.ingredientCategoryId === 5
   );
 
-  //this removes guac as premium ingredient if guac is selected as a meat
-  if (Object.values(state).indexOf("Guacamole") > -1) {
+  //this removes guacamole as premium ingredient if guac is selected as a meat
+  if (Object.values(state).indexOf("Guac") > -1) {
     premiumIngredients.splice(0, 1);
+  }
+  //this removes guac as meat if guacamole is selected as a meat
+  if (Object.values(state).indexOf("Guacamole") > -1) {
+    meatTypes.splice(5, 1);
   }
 
   //📡 📡 FORM SUBMISSION FUNCTION 📡 📡
@@ -219,28 +232,32 @@ export const TacoItemOrderForm = (props) => {
   const cancel = () => {
     props.history.push("/");
   };
-
   return (
     <Main>
       {/* <Heading>{foodDetails[1].name}</Heading> */}
       <Box direction="column">
-        <Heading level="5">Tortilla</Heading>
+        <Heading margin="xsmall" level="5">
+          Tortilla
+        </Heading>
         <Box
+          className="taco-tortillas"
           direction="row-responsive"
           justify="start"
           align="center"
-          pad="small"
           gap="medium"
+          margin="small"
+          pad="small"
+          required={true}
         >
           {tortillaTypes.map((tortilla) => (
-            <RadioButton
-              key={tortilla.id}
-              label={tortilla.name}
-              name="tortilla"
-              value={tortilla.name}
-              checked={state.tortilla === tortilla.name}
-              onChange={handleChange}
-            />
+              <RadioButton
+                key={tortilla.id}
+                label={tortilla.name}
+                name="tortilla"
+                value={tortilla.name}
+                checked={state.tortilla === tortilla.name}
+                onChange={handleChange}
+              />
           ))}
         </Box>
       </Box>
@@ -347,7 +364,7 @@ export const TacoItemOrderForm = (props) => {
           >
             <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
               <CheckBox
-                reverse="true"
+                reverse={true}
                 id="combo"
                 name="combo"
                 label="Combo Meal?"
@@ -389,7 +406,8 @@ export const TacoItemOrderForm = (props) => {
             />
           </FormField>
           <Button
-            primary="true"
+            disabled={buttonState}
+            primary={true}
             label="Add To Order"
             margin="small"
             pad="small"

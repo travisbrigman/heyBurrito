@@ -28,7 +28,7 @@ export const OrderList = (props) => {
 
   return (
     <Box>
-    {/* <Heading level="3">Current Order</Heading> */}
+    <Heading level="3">Current Order</Heading>
     <Box className="orders">
       {foodItems.map((foodItemObject) => (
         <FoodOrderItem

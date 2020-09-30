@@ -24,7 +24,6 @@ export const BurritoItemOrderForm = (props) => {
     getFoodItemIngredients,
     addToFoodItems,
     addToFoodItemIngredients,
-    // updateFoodItem,
     deleteFoodOrderItemIngredient,
   } = useContext(FoodItemContext);
   const { ingredients, getIngredients } = useContext(IngredientContext);
