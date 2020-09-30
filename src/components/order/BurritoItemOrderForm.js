@@ -11,6 +11,7 @@ import {
   Heading,
   Main,
   RadioButton,
+  Text,
   TextInput,
 } from "grommet";
 import { NumberInput } from "grommet-controls";
@@ -23,7 +24,7 @@ export const BurritoItemOrderForm = (props) => {
     getFoodItemIngredients,
     addToFoodItems,
     addToFoodItemIngredients,
-    updateFoodItem,
+    // updateFoodItem,
     deleteFoodOrderItemIngredient,
   } = useContext(FoodItemContext);
   const { ingredients, getIngredients } = useContext(IngredientContext);
@@ -33,8 +34,9 @@ export const BurritoItemOrderForm = (props) => {
   const [state, setState] = useState({
     quantity: 1,
     combo: false,
-    specialInstructions: null,
+    // specialInstructions: null,
   });
+
 
   function handleChange(evt) {
     const value =
@@ -45,17 +47,16 @@ export const BurritoItemOrderForm = (props) => {
     });
     console.log(state);
   }
+
   const [buttonState, setButtonState] = useState(true);
   useEffect(() => {
-    const requiredProperties = ["tortilla", "bean", "meat", "combo"];
+    const requiredProperties = ["tortilla", "bean", "meat"];
     const buttonProps = []
     requiredProperties.forEach((prop) => {
-      console.log(buttonProps)
       if (state.hasOwnProperty(prop)) {
         buttonProps.push(prop)
       }
       if (buttonProps.length === requiredProperties.length) {
-        console.log(requiredProperties)
         setButtonState(false);
       }
       
@@ -178,8 +179,8 @@ export const BurritoItemOrderForm = (props) => {
     if (editMode) {
       deleteFoodOrderItemIngredient(foodItemId)
         .then(
-          updateFoodItem({
-            id: foodItemId,
+          addToFoodItems({
+            foodItemId,
             specialInstructions: state.specialInstructions,
             quantity: parseInt(state.quantity),
             detailId: foodDetails[0].id,
@@ -217,7 +218,8 @@ export const BurritoItemOrderForm = (props) => {
             pad="small"
             gap="medium"
           >
-            <FormField>
+            <Text label={state.error}>{state.error}</Text>
+            <FormField required>
               {tortillaTypes.map((tortilla) => (
                 <RadioButton
                   key={tortilla.id}
@@ -226,7 +228,6 @@ export const BurritoItemOrderForm = (props) => {
                   value={tortilla.name}
                   checked={state.tortilla === tortilla.name}
                   onChange={handleChange}
-                  required
                 />
               ))}
             </FormField>
@@ -249,7 +250,7 @@ export const BurritoItemOrderForm = (props) => {
                 value={bean.name}
                 checked={state.bean === bean.name}
                 onChange={handleChange}
-                required="true"
+                required={true}
               />
             ))}
           </Box>
@@ -272,7 +273,7 @@ export const BurritoItemOrderForm = (props) => {
                 value={meat.name}
                 checked={state.meat === meat.name}
                 onChange={handleChange}
-                required="true"
+                required={true}
               />
             ))}
           </Box>
@@ -281,7 +282,7 @@ export const BurritoItemOrderForm = (props) => {
           <Box>
             <h3>Free Ingredients</h3>
             {freebies.map((freebie) => (
-              <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+              <Box key={freebie.id}pad={{ horizontal: "small", vertical: "xsmall" }}>
                 <CheckBox
                   key={freebie.id}
                   type="checkbox"
@@ -298,7 +299,7 @@ export const BurritoItemOrderForm = (props) => {
           <Box>
             <h3>Premium Ingredients</h3>
             {premiumIngredients.map((premium) => (
-              <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
+              <Box key={premium.id} pad={{ horizontal: "small", vertical: "xsmall" }}>
                 <CheckBox
                   key={premium.id}
                   type="checkbox"
@@ -316,18 +317,16 @@ export const BurritoItemOrderForm = (props) => {
             <FormField
               name="comboField"
               htmlFor="comboField"
-              required
-              pad="medium"
             >
               <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
                 <CheckBox
-                  reverse="true"
+                  reverse={true}
                   id="combo"
                   name="combo"
                   label="Combo Meal?"
                   checked={state["combo"]}
                   onChange={handleChange}
-                  required="true"
+                  required={true}
                 />
               </Box>
             </FormField>
@@ -342,8 +341,8 @@ export const BurritoItemOrderForm = (props) => {
                       quantity: value,
                     })
                   }
-                  min="1"
-                  max="6"
+                  min={1}
+                  max={6}
                 />
               </Box>
             </Box>
@@ -366,7 +365,7 @@ export const BurritoItemOrderForm = (props) => {
 
             <Button
               disabled={buttonState}
-              primary="true"
+              primary={true}
               margin="small"
               pad="small"
               label="Add To Order"

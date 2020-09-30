@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import "./MenuItem.css"
 import {
     Box,
@@ -7,7 +7,6 @@ import {
     CardBody,
     CardFooter,
     CardHeader,
-    Heading,
     Image
   } from "grommet";
   import burrito from "/Users/travislaptop/workspace/hey-burrito/src/assets/MenuItems/Burrito-500x375.jpg"

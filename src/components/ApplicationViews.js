@@ -2,21 +2,18 @@ import React, { useContext, useEffect } from "react";
 import { Route } from "react-router-dom";
 import { MenuList } from "./foodItem/MenuList";
 import { CustomerContext } from "./customers/CustomerProvider";
-import { MenuItemForm } from "./order/MenuItemOrderForm";
 import { FoodDetailProvider } from "./foodItem/FoodDetailProvider";
 import { OrderProvider } from "./order/OrderProvider";
 import { IngredientProvider } from "./ingredients/IngredientProvider";
 import { FoodItemProvider } from "./foodItem/FoodItemProvider";
 import { OrderList } from "./order/OrderList";
-import { DeleteFoodOrderItem } from "./order/DeleteFoodOrderItem";
 import { BurritoItemOrderForm } from "./order/BurritoItemOrderForm";
 import { TacoItemOrderForm } from "./order/TacoItemOrderForm";
 import {
   Box,
   Button,
   Heading,
-  Grommet,
-  ResponsiveContext, Footer, Header, Text
+  Grommet, Footer, Header, Text
 } from "grommet";
 import { burritoTheme } from "./CustomGrommetTheme"
 const logo = require("/Users/travislaptop/workspace/hey-burrito/src/assets/burrito256.png");
@@ -89,7 +86,6 @@ export const ApplicationViews = (props) => {
             </FoodItemProvider>
           </Box>
           <Box className="body-right">
-            <Heading level="3">Current Order</Heading>
             {/* <Box height={{ max: 'large' }} overflow="auto"> */}
             <OrderProvider>
               <FoodItemProvider>
