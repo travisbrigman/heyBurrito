@@ -217,8 +217,6 @@ export const BurritoItemOrderForm = (props) => {
             pad="small"
             gap="medium"
           >
-            <Text label={state.error}>{state.error}</Text>
-            <FormField required>
               {tortillaTypes.map((tortilla) => (
                 <RadioButton
                   key={tortilla.id}
@@ -229,7 +227,6 @@ export const BurritoItemOrderForm = (props) => {
                   onChange={handleChange}
                 />
               ))}
-            </FormField>
           </Box>
         </Box>
         <Box direction="column">

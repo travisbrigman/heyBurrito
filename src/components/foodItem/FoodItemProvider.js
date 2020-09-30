@@ -32,8 +32,16 @@ export const FoodItemProvider = (props) => {
       },
       body: JSON.stringify(foodItemObject),
     }).then(res => res.json())
-    //.then(setPostResponse)
-    //.then(getFoodItems)  
+};
+
+  const patchFoodItem = (foodItemObject) => {
+    return fetch(`http://localhost:8088/foodItems/${foodItemObject.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(foodItemObject),
+    }).then(res => res.json())
 };
 
   const addToFoodItemIngredients = (foodItemIngredientObject) => {
@@ -85,7 +93,8 @@ export const FoodItemProvider = (props) => {
       addToFoodItemIngredients,
       deleteFoodOrderItem,
       deleteFoodOrderItemIngredient,
-      updateFoodItem
+      updateFoodItem,
+      patchFoodItem
     }}
     >
       {props.children}

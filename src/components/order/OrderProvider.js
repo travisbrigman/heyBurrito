@@ -20,7 +20,7 @@ export const OrderProvider = (props) => {
       .then((res) => res.json())
       .then(setOrders);
   };
-
+/*
   const addToOrder = (orderObject) => {
     return fetch("http://localhost:8088/orders", {
       method: "POST",
@@ -28,11 +28,25 @@ export const OrderProvider = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(orderObject),
-      
-    }).then(getOrders);
+    })
+      .then((res) => res.json())
+      .then(getOrders);
   };
+  */
 
-
+  const addToOrder = async (orderObject) => {
+    let data = await (
+      await fetch("http://localhost:8088/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderObject)
+      })
+    ).json();
+    return data;
+  };
+  
 
   return (
     <OrderContext.Provider
@@ -40,7 +54,7 @@ export const OrderProvider = (props) => {
         orders,
         addToOrder,
         getOrders,
-        deleteOrder
+        deleteOrder,
       }}
     >
       {props.children}
