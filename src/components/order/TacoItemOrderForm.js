@@ -43,7 +43,6 @@ export const TacoItemOrderForm = (props) => {
       ...state,
       [evt.target.name]: value,
     });
-    console.log(state);
   }
   const [buttonState, setButtonState] = useState(true);
 

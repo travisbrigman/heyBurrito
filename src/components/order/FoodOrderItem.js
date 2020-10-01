@@ -81,7 +81,7 @@ export const FoodOrderItem = ({
         </Text>
         <Box direction="row">
           <Button
-          secondary="true"
+          secondary={true}
           margin="small"
             label="edit"
             onClick={() => {

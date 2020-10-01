@@ -9,7 +9,9 @@ import { CustomerContext } from "../customers/CustomerProvider";
 
 export const OrderList = (props) => {
   const { addToOrder, getOrders } = useContext(OrderContext);
-  const { foodItems, getFoodItems, patchFoodItem } = useContext(FoodItemContext);
+  const { foodItems, getFoodItems, patchFoodItem } = useContext(
+    FoodItemContext
+  );
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
   const {
     ingredients,
@@ -18,16 +20,17 @@ export const OrderList = (props) => {
     getFoodItemIngredients,
   } = useContext(IngredientContext);
 
-  const{ getCustomers, signedInCustomer } = useContext(CustomerContext)
+  const { getCustomers, signedInCustomer } = useContext(CustomerContext);
+ 
+  const [currentOrderList, setCurrentOrderList] = useState([]);
+  console.log(currentOrderList);
 
-  const [ currentOrderList, setCurrentOrderList ] = useState([])
-
-  
-  const filteredFoodItems = foodItems.filter( item => item['orderId'] === undefined )
+  const filteredFoodItems = foodItems.filter(
+    (item) => item["orderId"] === undefined
+  );
   useEffect(() => {
-    setCurrentOrderList(filteredFoodItems)
-    
-  },[foodItems])
+    setCurrentOrderList(filteredFoodItems);
+  }, [foodItems]);
 
   useEffect(() => {
     getOrders();
@@ -35,7 +38,7 @@ export const OrderList = (props) => {
     getFoodDetails();
     getIngredients();
     getFoodItemIngredients();
-    getCustomers()
+    getCustomers();
   }, []);
 
   const sendOrder = () => {
@@ -58,9 +61,9 @@ export const OrderList = (props) => {
     addToOrder({
       userId: signedInCustomer.id,
       time,
-      completed: false
+      completed: false,
     })
-    .then((res) =>
+      .then((res) =>
         foodItems.forEach((item) =>
           patchFoodItem({
             id: item.id,
@@ -68,35 +71,36 @@ export const OrderList = (props) => {
           })
         )
       )
-    .then(getOrders())   
-    .then(setCurrentOrderList(filteredFoodItems))
-  }
+      .then(getFoodItems())
+      .then(getOrders())
+      .then(setCurrentOrderList([]))    
+  };
 
   return (
     <Box>
-    <Heading level="3">Current Order</Heading>
-    <Box className="orders">
-      {currentOrderList.map((foodItemObject) => (
-        <FoodOrderItem
-          key={foodItemObject.id}
-          foodItemObject={foodItemObject}
-          foodDetails={foodDetails}
-          ingredients={ingredients}
-          foodItemIngredients={foodItemIngredients}
-          {...props}
-        />
-      ))}
-    </Box>
-    <Button
-              primary={true}
-              margin="small"
-              pad="small"
-              label="Send To Burrito Shop!"
-              onClick={(evt) => {
-                sendOrder();
-              }}
-              {...props}
-            />
+      <Heading level="3">Current Order</Heading>
+      <Box className="orders">
+        {currentOrderList.map((foodItemObject) => (
+          <FoodOrderItem
+            key={foodItemObject.id}
+            foodItemObject={foodItemObject}
+            foodDetails={foodDetails}
+            ingredients={ingredients}
+            foodItemIngredients={foodItemIngredients}
+            {...props}
+          />
+        ))}
+      </Box>
+      <Button
+        primary={true}
+        margin="small"
+        pad="small"
+        label="Send To Burrito Shop!"
+        onClick={(evt) => {
+          sendOrder();
+        }}
+        {...props}
+      />
     </Box>
   );
 };
