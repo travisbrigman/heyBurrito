@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { Box, Button, Heading, List, Text } from "grommet";
+import { Edit, Trash } from "grommet-icons"
 
 export const FoodOrderItem = ({
   foodItemObject,
@@ -26,7 +27,6 @@ export const FoodOrderItem = ({
     getFoodItemIngredients();
   }, []);
 
-  //const ItemIngredientList = ({ ingredients }) => {
   //this will give me an array with just FoodItemIngredient Objects that match the ID of the current FoodItem.
   const ingredientIdList =
     foodItemIngredients.filter(
@@ -40,15 +40,6 @@ export const FoodOrderItem = ({
       (ingredient) => ingredient.id === ingredientIdObject.ingredientId
     );
   });
-  //return itemIngredientList.map((ingredient) => {
-  //return (
-  // <div key={ingredient.id}>
-  //   {ingredient.ingredientCategory.categoryName}: {ingredient.name}
-
-  // </div>
-  //);
-  //});
-  //};
 
   const deleteOrderItem = () => {
     deleteFoodOrderItem(foodItemObject.id);
@@ -56,7 +47,10 @@ export const FoodOrderItem = ({
 
   return (
     <Box className="foodOrderItem">
-      <Heading level="4" className="foodOrderItem__name"> {foodDetailObject.name} </Heading>
+      <Heading level="4" className="foodOrderItem__name">
+        {" "}
+        {foodDetailObject.name}{" "}
+      </Heading>
       <List
         pad="xsmall"
         data={itemIngredientList}
@@ -72,17 +66,41 @@ export const FoodOrderItem = ({
         )}
       />
       <Box direction="column">
-        <Text size="small"  className="foodOrderItem__Combo">Combo: {foodItemObject.combo ? 'Yes' : 'No'}</Text>
+        <Box className="comboBlock" direction="row">
+          <Text
+            size="small"
+            weight="bold"
+            margin={{right:"xsmall"}}
+            className="foodOrderItem__Combo__text"
+          >
+            {" "}
+            Combo:{" "}
+          </Text>
+          <Text size="small" className="foodOrderItem__Combo">
+            {" "}
+            {foodItemObject.combo ? "Yes" : "No"}
+          </Text>
+        </Box>
+        <Box className="quantityBlock" direction="row">
+        <Text size="small" weight="bold" margin={{right:"xsmall"}} className="foodOrderItem__Quantity_text">
+          Quantity:  
+        </Text>
         <Text size="small" className="foodOrderItem__Quantity">
-          Quantity: {foodItemObject.quantity}
+          {foodItemObject.quantity}
+        </Text>
+        </Box>
+        <Box className="quantityBlock" direction="row">
+        <Text size="small" weight="bold" margin={{right:"xsmall"}} className="foodOrderItem__Instructions_text">
+          Special Instructions:  
         </Text>
         <Text size="small" className="foodOrderItem__Instructions">
-          Special Instructions: {foodItemObject.specialInstructions}
+          {foodItemObject.specialInstructions}
         </Text>
+        </Box>
         <Box direction="row">
           <Button
-          secondary={true}
-          margin="small"
+            secondary={true}
+            margin="small"
             label="edit"
             onClick={() => {
               if (foodItemObject.detailId === 1) {
@@ -92,8 +110,15 @@ export const FoodOrderItem = ({
               }
             }}
             {...props}
+            icon={<Edit/>}
           />
-          <Button margin="small" label="Delete" onClick={deleteOrderItem} {...props} />
+          <Button
+            margin="small"
+            label="Delete"
+            onClick={deleteOrderItem}
+            {...props}
+            icon={<Trash/>}
+          />
         </Box>
       </Box>
     </Box>

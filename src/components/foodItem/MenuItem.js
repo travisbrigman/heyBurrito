@@ -11,6 +11,7 @@ import {
   } from "grommet";
   import burrito from "/Users/travislaptop/workspace/hey-burrito/src/assets/MenuItems/Burrito-500x375.jpg"
   import taco from "/Users/travislaptop/workspace/hey-burrito/src/assets/MenuItems/fish-tacos.jpg"
+  import { Add } from "grommet-icons"
 
   export const MenuItem = ( { foodDetails, foodDetailObject, history, props }  ) => {
       let image = ""
@@ -28,7 +29,7 @@ import {
         </Box>
     </CardBody>
         <CardFooter direction="column" pad="xsmall" className="menuItem__description">{ foodDetailObject.description }
-        <Button pad="xsmall" label="Add" onClick={() => history.push(`/create${foodDetailObject.name}`)} {...props} />
+    <Button pad="xsmall" label="Add" onClick={() => history.push(`/create${foodDetailObject.name}`)} {...props} icon={<Add/>} />
         </CardFooter>
     </Card>
     )

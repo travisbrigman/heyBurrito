@@ -7,6 +7,9 @@ import { IngredientContext } from "../ingredients/IngredientProvider";
 import { Box, Button, Heading } from "grommet";
 import { CustomerContext } from "../customers/CustomerProvider";
 
+import { Send } from 'grommet-icons';
+
+
 export const OrderList = (props) => {
   const { addToOrder, getOrders } = useContext(OrderContext);
   const { foodItems, getFoodItems, patchFoodItem } = useContext(
@@ -95,6 +98,7 @@ export const OrderList = (props) => {
         pad="small"
         label="Send To Burrito Shop!"
         onClick={sendOrder}
+        icon={<Send />}
       />
     </Box>
   );

@@ -14,6 +14,8 @@ import {
 } from "grommet";
 import { NumberInput } from "grommet-controls";
 
+import { Add, Close } from "grommet-icons"
+
 export const TacoItemOrderForm = (props) => {
   const {
     foodItems,
@@ -415,6 +417,7 @@ export const TacoItemOrderForm = (props) => {
               constructNewOrderItem();
             }}
             {...props}
+            icon={<Add/>}
           />
           <Button
             margin="small"
@@ -422,6 +425,7 @@ export const TacoItemOrderForm = (props) => {
             label="cancel"
             onClick={cancel}
             className="btn btn-cancel"
+            icon={<Close/>}
           />
         </Box>
       </Box>
