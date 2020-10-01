@@ -20,7 +20,7 @@ export const OrderProvider = (props) => {
       .then((res) => res.json())
       .then(setOrders);
   };
-/*
+  /*
   const addToOrder = (orderObject) => {
     return fetch("http://localhost:8088/orders", {
       method: "POST",
@@ -41,12 +41,11 @@ export const OrderProvider = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(orderObject)
+        body: JSON.stringify(orderObject),
       })
     ).json();
     return data;
   };
-  
 
   return (
     <OrderContext.Provider

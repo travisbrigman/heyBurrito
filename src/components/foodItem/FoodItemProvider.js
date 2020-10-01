@@ -31,8 +31,8 @@ export const FoodItemProvider = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(foodItemObject),
-    }).then(res => res.json())
-};
+    }).then((res) => res.json());
+  };
 
   const patchFoodItem = (foodItemObject) => {
     return fetch(`http://localhost:8088/foodItems/${foodItemObject.id}`, {
@@ -41,8 +41,10 @@ export const FoodItemProvider = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(foodItemObject),
-    }).then(res => res.json())
-};
+    })
+      .then((res) => res.json())
+      .then(getFoodItems);
+  };
 
   const addToFoodItemIngredients = (foodItemIngredientObject) => {
     return fetch("http://localhost:8088/foodItemIngredients", {
@@ -51,27 +53,26 @@ export const FoodItemProvider = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(foodItemIngredientObject),
-      
-    })//.then(getFoodItems);
+    }); //.then(getFoodItems);
   };
 
   const deleteFoodOrderItemIngredient = (FoodOrderItemId) => {
     return fetch(`http://localhost:8088/foodItems/${FoodOrderItemId}`, {
       method: "DELETE",
-    })
+    });
   };
   const deleteFoodOrderItem = (FoodOrderItemId) => {
     return fetch(`http://localhost:8088/foodItems/${FoodOrderItemId}`, {
       method: "DELETE",
     }).then(getFoodItems);
   };
-  
+
   // const deleteFoodItemIngredient = (itemIngredientId) => {
   //   return fetch(`http://localhost:8088/foodItems/${itemIngredientId}`, {
   //     method: "DELETE",
   //   }).then(getFoodItemIngredients);
   // };
-  
+
   const updateFoodItem = (foodItem) => {
     return fetch(`http://localhost:8088/foodItems/${foodItem.id}`, {
       method: "PUT",
@@ -84,18 +85,18 @@ export const FoodItemProvider = (props) => {
 
   return (
     <FoodItemContext.Provider
-    value={{
-      foodItems,
-      getFoodItems,
-      foodItemIngredients,
-      getFoodItemIngredients,
-      addToFoodItems,
-      addToFoodItemIngredients,
-      deleteFoodOrderItem,
-      deleteFoodOrderItemIngredient,
-      updateFoodItem,
-      patchFoodItem
-    }}
+      value={{
+        foodItems,
+        getFoodItems,
+        foodItemIngredients,
+        getFoodItemIngredients,
+        addToFoodItems,
+        addToFoodItemIngredients,
+        deleteFoodOrderItem,
+        deleteFoodOrderItemIngredient,
+        updateFoodItem,
+        patchFoodItem,
+      }}
     >
       {props.children}
     </FoodItemContext.Provider>

@@ -93,6 +93,13 @@ export const burritoTheme =
       }
     }
   },
+  "checkBox": {
+    "hover": {
+      "border": {
+        "color": "text-weak"
+      }
+    }
+  },
 
   "chart": {},
   "diagram": {

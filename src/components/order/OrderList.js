@@ -13,6 +13,7 @@ export const OrderList = (props) => {
     FoodItemContext
   );
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
+  const { getCustomers, signedInCustomer } = useContext(CustomerContext);
   const {
     ingredients,
     getIngredients,
@@ -20,17 +21,25 @@ export const OrderList = (props) => {
     getFoodItemIngredients,
   } = useContext(IngredientContext);
 
-  const { getCustomers, signedInCustomer } = useContext(CustomerContext);
- 
+  //sets the state of the list of items to be rendered
   const [currentOrderList, setCurrentOrderList] = useState([]);
   console.log(currentOrderList);
 
-  const filteredFoodItems = foodItems.filter(
-    (item) => item["orderId"] === undefined
-  );
+  //finds items in foodItem array that have not be sent to Orders array
   useEffect(() => {
+    setCurrentOrderList([])
+    const filteredFoodItems = foodItems.filter(
+      (item) => item["orderId"] === undefined
+    );
+   console.log("filteredFoodItems", filteredFoodItems)
+
     setCurrentOrderList(filteredFoodItems);
   }, [foodItems]);
+
+  // useEffect(() => {
+  //   console.log(currentOrderList)
+  // },[currentOrderList])
+
 
   useEffect(() => {
     getOrders();
@@ -41,20 +50,9 @@ export const OrderList = (props) => {
     getCustomers();
   }, []);
 
+//sends the list of items to the orders array
   const sendOrder = () => {
-    /*construct an object to post to the Orders collection. 
-    Object will have the following properties:
-    {
-      id: int,
-      userId: int,
-      time: timestamp,
-      completed: Boolean
-    }
-    - Post that object,
-    - get the OrderId and patch the related FoodItems
-    - clear the current list of order items
-    - show a cool alert
-    */
+    console.log("send order clicked")
     var date = new Date();
     var time = date.getTime();
 
@@ -64,16 +62,16 @@ export const OrderList = (props) => {
       completed: false,
     })
       .then((res) =>
-        foodItems.forEach((item) =>
+        { console.log("response ID", res.id)
+        currentOrderList.forEach((item) =>
           patchFoodItem({
             id: item.id,
             orderId: res.id,
           })
         )
+        }
       )
-      .then(getFoodItems())
-      .then(getOrders())
-      .then(setCurrentOrderList([]))    
+      
   };
 
   return (
@@ -96,11 +94,10 @@ export const OrderList = (props) => {
         margin="small"
         pad="small"
         label="Send To Burrito Shop!"
-        onClick={(evt) => {
-          sendOrder();
-        }}
-        {...props}
+        onClick={sendOrder}
       />
     </Box>
   );
 };
+
+
