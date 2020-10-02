@@ -9,8 +9,9 @@ import {
     CardHeader,
     Image
   } from "grommet";
-  import burrito from "../assets/MenuItems/Burrito-500x375.jpg"
-  import taco from "../assets/MenuItems/fish-tacos.jpg"
+  
+  import burrito from "./MenuItems/Burrito-500x375.jpg"
+  import taco from "./MenuItems/fish-tacos.jpg"
   import { Add } from "grommet-icons"
 
   export const MenuItem = ( { foodDetails, foodDetailObject, history, props }  ) => {
