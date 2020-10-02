@@ -22,7 +22,7 @@ import {
 } from "grommet";
 import { Logout } from "grommet-icons";
 import { burritoTheme } from "./CustomGrommetTheme";
-const logo = require("/Users/travislaptop/workspace/hey-burrito/src/assets/burrito256.png");
+const logo = require("../assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
   const { getCustomers, signedInCustomer } = useContext(CustomerContext);
