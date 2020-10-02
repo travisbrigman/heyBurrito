@@ -16,7 +16,6 @@ export const HeyBurrito = () => (
           return (
             <>
               <CustomerProvider>
-                <Route render={(props) => <NavBar {...props} />} />
                 <Route render={(props) => <ApplicationViews {...props} />} />
               </CustomerProvider>
             </>
@@ -31,13 +30,3 @@ export const HeyBurrito = () => (
     <Route path="/register" render={(props) => <Register {...props} />} />
   </>
 );
-
-/*
-export const HeyBurrito = () => (
-    <>
-    <h2>HeyBurrito!</h2>
-    <small>your hometown burrito shop since 2001</small>
-    <small><div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></small>
-    </>
-)
-*/

@@ -2,13 +2,26 @@ import React, { useContext, useEffect } from "react";
 import { Route } from "react-router-dom";
 import { MenuList } from "./foodItem/MenuList";
 import { CustomerContext } from "./customers/CustomerProvider";
-import { MenuItemForm } from "./order/MenuItemOrderForm";
 import { FoodDetailProvider } from "./foodItem/FoodDetailProvider";
 import { OrderProvider } from "./order/OrderProvider";
 import { IngredientProvider } from "./ingredients/IngredientProvider";
 import { FoodItemProvider } from "./foodItem/FoodItemProvider";
 import { OrderList } from "./order/OrderList";
-import { DeleteFoodOrderItem } from "./order/DeleteFoodOrderItem";
+import { BurritoItemOrderForm } from "./order/BurritoItemOrderForm";
+import { TacoItemOrderForm } from "./order/TacoItemOrderForm";
+import {
+  Box,
+  Button,
+  Heading,
+  Grommet,
+  Footer,
+  Header,
+  Image,
+  Text,
+  Anchor,
+} from "grommet";
+import { Logout } from "grommet-icons";
+import { burritoTheme } from "./CustomGrommetTheme";
 const logo = require("/Users/travislaptop/workspace/hey-burrito/src/assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
@@ -24,17 +37,33 @@ export const ApplicationViews = (props) => {
   };
 
   return (
-    <>
-      <header>
-        <h1>HeyBurrito!</h1>
-        <img src={logo} alt="a tasty looking burrito" height="80 px"></img>
-        <div>Hello {signedInCustomer.name}</div>
-        {/* <img src={ signedInCustomer.avatar.path } alt="customer avatar"/> */}
-        <button onClick={() => handleLogout()}>Log Out</button>
-      </header>
-      <div>
-        <article className="body-left"></article>
-        <article className="body-center">
+    <Grommet theme={burritoTheme}>
+      <Header direction="row" justify="between" align="center">
+        <Box margin="small" direction="row">
+          <Heading>HeyBurrito!</Heading>
+          <Box>
+            <Image
+              src={logo}
+              alt="a tasty looking burrito"
+              height="80 px"
+              width="80 px"
+            ></Image>
+          </Box>
+        </Box>
+        <Box margin="small" gap="small" justify="start" direction="column">
+          <Text>Hello {signedInCustomer.name}</Text>
+          {/* <img src={ signedInCustomer.avatar.path } alt="customer avatar"/> */}
+          <Button
+            label="Log Out"
+            onClick={() => handleLogout()}
+            {...props}
+            icon={<Logout />}
+          />
+        </Box>
+      </Header>
+      <Box margin="medium" direction="row-responsive" justify="between">
+        <Box className="body-left"></Box>
+        <Box className="body-center">
           <FoodDetailProvider>
             {/* Render the location list when http://localhost:3000/ */}
             <Route exact path="/" render={(props) => <MenuList {...props} />} />
@@ -46,19 +75,29 @@ export const ApplicationViews = (props) => {
                 <IngredientProvider>
                   <Route
                     exact
-                    path="/create"
-                    render={(props) => <MenuItemForm {...props} />}
+                    path="/createTacos"
+                    render={(props) => <TacoItemOrderForm {...props} />}
                   />
                   <Route
-                    path="/edit/:foodItemObjectId(\d+)"
-                    render={(props) => <MenuItemForm {...props} />}
+                    exact
+                    path="/createBurrito"
+                    render={(props) => <BurritoItemOrderForm {...props} />}
+                  />
+                  <Route
+                    path="/editBurrito/:foodItemObjectId(\d+)"
+                    render={(props) => <BurritoItemOrderForm {...props} />}
+                  />
+                  <Route
+                    path="/editTacos/:foodItemObjectId(\d+)"
+                    render={(props) => <TacoItemOrderForm {...props} />}
                   />
                 </IngredientProvider>
               </OrderProvider>
             </FoodDetailProvider>
           </FoodItemProvider>
-        </article>
-        <article className="body-right">
+        </Box>
+        <Box className="body-right">
+          {/* <Box height={{ max: 'large' }} overflow="auto"> */}
           <OrderProvider>
             <FoodItemProvider>
               <FoodDetailProvider>
@@ -72,23 +111,36 @@ export const ApplicationViews = (props) => {
               </FoodDetailProvider>
             </FoodItemProvider>
           </OrderProvider>
-        </article>
-      </div>
-      <footer>
-        <small>
-          <div>
-            Icons made by{" "}
-            <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
-              Freepik
-            </a>{" "}
-            from{" "}
-            <a href="https://www.flaticon.com/" title="Flaticon">
-              {" "}
-              www.flaticon.com
-            </a>
-          </div>
-        </small>
-      </footer>
-    </>
+          {/* </Box> */}
+        </Box>
+      </Box>
+      <Footer>
+        <Box direction="row-responsive" margin="small" justify="center">
+          Icons made by{" "}
+          <Anchor
+            href="https://www.flaticon.com/authors/freepik"
+            title="Freepik"
+            alignSelf="center"
+            size="small"
+            justify="center"
+            margin={{"horizontal": "xsmall"}}
+          >
+            Freepik
+          </Anchor>{" "}
+          from{" "}
+          <Anchor
+            href="https://www.flaticon.com/"
+            title="Flaticon"
+            alignSelf="center"
+            size="small"
+            justify="center"
+            margin={{"horizontal": "xsmall"}}
+          >
+            {" "}
+            www.flaticon.com
+          </Anchor>
+        </Box>
+      </Footer>
+    </Grommet>
   );
 };
