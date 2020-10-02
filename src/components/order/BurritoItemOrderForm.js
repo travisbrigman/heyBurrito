@@ -11,12 +11,11 @@ import {
   Heading,
   Main,
   RadioButton,
-  Text,
   TextInput,
 } from "grommet";
 import { NumberInput } from "grommet-controls";
 
-import { Add, Close } from "grommet-icons"
+import { Add, Close, Edit } from "grommet-icons"
 
 export const BurritoItemOrderForm = (props) => {
   const {
@@ -206,6 +205,7 @@ export const BurritoItemOrderForm = (props) => {
     props.history.push("/");
   };
 
+  console.log("freebies",freebies)
   return (
     <Main>
       <Form>
@@ -366,13 +366,13 @@ export const BurritoItemOrderForm = (props) => {
               primary={true}
               margin="small"
               pad="small"
-              label="Add To Order"
+              label={editMode ? "Make Changes" : "Add To Order"}
               onClick={(evt) => {
                 evt.preventDefault(); // Prevent browser from submitting the form
                 constructNewOrderItem();
               }}
               {...props}
-              icon={<Add />}
+              icon={editMode ? <Edit/> : <Add />}
             />
             <Button
               margin="small"

@@ -46,6 +46,7 @@ export const ApplicationViews = (props) => {
               src={logo}
               alt="a tasty looking burrito"
               height="80 px"
+              width="80 px"
             ></Image>
           </Box>
         </Box>

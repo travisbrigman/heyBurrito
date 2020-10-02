@@ -14,7 +14,7 @@ import {
 } from "grommet";
 import { NumberInput } from "grommet-controls";
 
-import { Add, Close } from "grommet-icons"
+import { Add, Close, Edit } from "grommet-icons"
 
 export const TacoItemOrderForm = (props) => {
   const {
@@ -409,7 +409,7 @@ export const TacoItemOrderForm = (props) => {
           <Button
             disabled={buttonState}
             primary={true}
-            label="Add To Order"
+            label={editMode ? "Make Changes" : "Add To Order"}
             margin="small"
             pad="small"
             onClick={(evt) => {
@@ -417,7 +417,7 @@ export const TacoItemOrderForm = (props) => {
               constructNewOrderItem();
             }}
             {...props}
-            icon={<Add/>}
+            icon={editMode ? <Edit/> : <Add />}
           />
           <Button
             margin="small"
