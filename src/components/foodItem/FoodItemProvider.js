@@ -9,23 +9,23 @@ export const FoodItemContext = React.createContext();
 export const FoodItemProvider = (props) => {
   const [foodItems, setFoodItems] = useState([]);
   const [foodItemIngredients, setFoodItemIngredients] = useState([]);
-  //const [postResponse, setPostResponse] = useState({});
-  //console.log(postResponse)
+  //http://db-hey-burrito.heroku.com/customers
 
+  //http://localhost:8088/foodItems?_embed=foodItemIngredients
   const getFoodItems = () => {
-    return fetch("http://localhost:8088/foodItems?_embed=foodItemIngredients")
+    return fetch("http://db-hey-burrito.heroku.com/foodItems?_embed=foodItemIngredients")
       .then((res) => res.json())
       .then(setFoodItems);
   };
-
+//http://localhost:8088/foodItemIngredients?_expand=ingredient
   const getFoodItemIngredients = () => {
-    return fetch("http://localhost:8088/foodItemIngredients?_expand=ingredient")
+    return fetch("http://db-hey-burrito.heroku.com/foodItemIngredients?_expand=ingredient")
       .then((res) => res.json())
       .then(setFoodItemIngredients);
   };
-
+//http://localhost:8088/foodItems
   const addToFoodItems = (foodItemObject) => {
-    return fetch("http://localhost:8088/foodItems", {
+    return fetch("http://db-hey-burrito.heroku.com/foodItems", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,9 +33,9 @@ export const FoodItemProvider = (props) => {
       body: JSON.stringify(foodItemObject),
     }).then((res) => res.json());
   };
-
+//http://localhost:8088/foodItems/${foodItemObject.id}
   const patchFoodItem = (foodItemObject) => {
-    return fetch(`http://localhost:8088/foodItems/${foodItemObject.id}`, {
+    return fetch(`http://db-hey-burrito.heroku.com/foodItems/${foodItemObject.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -45,9 +45,9 @@ export const FoodItemProvider = (props) => {
       .then((res) => res.json())
       .then(getFoodItems);
   };
-
+//http://localhost:8088/foodItemIngredients
   const addToFoodItemIngredients = (foodItemIngredientObject) => {
-    return fetch("http://localhost:8088/foodItemIngredients", {
+    return fetch("http://db-hey-burrito.heroku.com/foodItemIngredients", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,26 +55,23 @@ export const FoodItemProvider = (props) => {
       body: JSON.stringify(foodItemIngredientObject),
     }); //.then(getFoodItems);
   };
-
+//http://localhost:8088/foodItems/${FoodOrderItemId}
   const deleteFoodOrderItemIngredient = (FoodOrderItemId) => {
-    return fetch(`http://localhost:8088/foodItems/${FoodOrderItemId}`, {
+    return fetch(`http://db-hey-burrito.heroku.com/foodItems/${FoodOrderItemId}`, {
       method: "DELETE",
     });
   };
+  //http://localhost:8088/foodItems/${FoodOrderItemId}
   const deleteFoodOrderItem = (FoodOrderItemId) => {
-    return fetch(`http://localhost:8088/foodItems/${FoodOrderItemId}`, {
+    return fetch(`http://db-hey-burrito.heroku.com/${FoodOrderItemId}`, {
       method: "DELETE",
     }).then(getFoodItems);
   };
 
-  // const deleteFoodItemIngredient = (itemIngredientId) => {
-  //   return fetch(`http://localhost:8088/foodItems/${itemIngredientId}`, {
-  //     method: "DELETE",
-  //   }).then(getFoodItemIngredients);
-  // };
 
+//http://localhost:8088/foodItems/${foodItem.id}
   const updateFoodItem = (foodItem) => {
-    return fetch(`http://localhost:8088/foodItems/${foodItem.id}`, {
+    return fetch(`http://db-hey-burrito.heroku.com/${foodItem.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -9,14 +9,15 @@ export const CustomerContext = React.createContext();
 export const CustomerProvider = (props) => {
   const [customers, setCustomers] = useState([]);
 
+  //"http://localhost:8088/customers"
   const getCustomers = () => {
-    return fetch("http://localhost:8088/customers")
+    return fetch("http://db-hey-burrito.heroku.com/customers")
       .then((res) => res.json())
       .then(setCustomers);
   };
 
   const addCustomer = (customer) => {
-    return fetch("http://localhost:8088/customers", {
+    return fetch("http://db-hey-burrito.heroku.com/customers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

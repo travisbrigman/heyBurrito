@@ -9,14 +9,18 @@ export const IngredientContext = React.createContext();
 export const IngredientProvider = (props) => {
   const [ingredients, setIngredients] = useState([]);
   const [foodItemIngredients, setFoodItemIngredients] = useState([]);
+  //http://db-hey-burrito.heroku.com
 
+  //http://localhost:8088/ingredients?_expand=ingredientCategory
   const getIngredients = () => {
-    return fetch("http://localhost:8088/ingredients?_expand=ingredientCategory")
+    return fetch("http://db-hey-burrito.heroku.com/ingredients?_expand=ingredientCategory")
       .then((res) => res.json())
       .then(setIngredients);
   };
+
+  //http://localhost:8088/foodItemIngredients?_expand=ingredient
   const getFoodItemIngredients = () => {
-    return fetch("http://localhost:8088/foodItemIngredients?_expand=ingredient")
+    return fetch("http://db-hey-burrito.heroku.com/foodItemIngredients?_expand=ingredient")
       .then((res) => res.json())
       .then(setFoodItemIngredients);
   };

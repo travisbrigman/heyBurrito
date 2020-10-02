@@ -33,10 +33,13 @@ export const OrderProvider = (props) => {
       .then(getOrders);
   };
   */
+ //http://db-hey-burrito.heroku.com
+
+ //http://localhost:8088/orders
 
   const addToOrder = async (orderObject) => {
     let data = await (
-      await fetch("http://localhost:8088/orders", {
+      await fetch("http://db-hey-burrito.heroku.com/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
