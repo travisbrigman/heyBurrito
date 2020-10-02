@@ -9,14 +9,16 @@ export const OrderContext = React.createContext();
 export const OrderProvider = (props) => {
   const [orders, setOrders] = useState([]);
 
+  //http://localhost:8088/orders/${orderId}
   const deleteOrder = (orderId) => {
-    return fetch(`http://localhost:8088/orders/${orderId}`, {
+    return fetch(`http://db-hey-burrito.heroku.com/orders/${orderId}`, {
       method: "DELETE",
     }).then(getOrders);
   };
 
+  //http://localhost:8088/orders
   const getOrders = () => {
-    return fetch("http://localhost:8088/orders")
+    return fetch("http://db-hey-burrito.heroku.com/orders")
       .then((res) => res.json())
       .then(setOrders);
   };

@@ -8,9 +8,10 @@ export const FoodDetailContext = React.createContext();
 
 export const FoodDetailProvider = (props) => {
   const [foodDetails, setFoodDetails] = useState([{name:""}]);
-
+  //http://db-hey-burrito.heroku.com
+  //http://localhost:8088/foodDetails
   const getFoodDetails = () => {
-    return fetch("http://localhost:8088/foodDetails")
+    return fetch("http://db-hey-burrito.heroku.com/foodDetails")
       .then((res) => res.json())
       .then(setFoodDetails);
   };
