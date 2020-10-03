@@ -8,9 +8,9 @@ export const Login = props => {
     const password = useRef()
     const existDialog = useRef()
     const passwordDialog = useRef()
-
+//http://localhost:8088/customers?email=${email.current.value}
     const existingUserCheck = () => {
-        return fetch(`http://localhost:8088/customers?email=${email.current.value}`)
+        return fetch(`https://db-hey-burrito.herokuapp.com/customers?email=${email.current.value}`)
             .then(_ => _.json())
             .then(user => user.length ? user[0] : false)
     }

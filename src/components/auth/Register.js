@@ -9,19 +9,22 @@ export const Register = (props) => {
     const verifyPassword = useRef()
     const passwordDialog = useRef()
 
+    //http://localhost:8088/customers?email=${email.current.value}
+
     const existingUserCheck = () => {
-        return fetch(`http://localhost:8088/customers?email=${email.current.value}`)
+        return fetch(`https://db-hey-burrito.herokuapp.com/customers?email=${email.current.value}`)
             .then(_ => _.json())
             .then(user => !!user.length)
     }
 
     const handleRegister = (e) => {
         e.preventDefault()
+        //http://localhost:8088/customers
 
         if (password.current.value === verifyPassword.current.value) {
             existingUserCheck()
                 .then(() => {
-                    fetch("http://localhost:8088/customers", {
+                    fetch("https://db-hey-burrito.herokuapp.com/customers", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"

@@ -11,13 +11,13 @@ export const CustomerProvider = (props) => {
 
   //"http://localhost:8088/customers"
   const getCustomers = () => {
-    return fetch("http://db-hey-burrito.heroku.com/customers")
+    return fetch("https://db-hey-burrito.herokuapp.com/customers")
       .then((res) => res.json())
       .then(setCustomers);
   };
 
   const addCustomer = (customer) => {
-    return fetch("http://db-hey-burrito.heroku.com/customers", {
+    return fetch("https://db-hey-burrito.herokuapp.com/customers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

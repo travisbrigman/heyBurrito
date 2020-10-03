@@ -13,14 +13,14 @@ export const IngredientProvider = (props) => {
 
   //http://localhost:8088/ingredients?_expand=ingredientCategory
   const getIngredients = () => {
-    return fetch("http://db-hey-burrito.heroku.com/ingredients?_expand=ingredientCategory")
+    return fetch("https://db-hey-burrito.herokuapp.com/ingredients?_expand=ingredientCategory")
       .then((res) => res.json())
       .then(setIngredients);
   };
 
   //http://localhost:8088/foodItemIngredients?_expand=ingredient
   const getFoodItemIngredients = () => {
-    return fetch("http://db-hey-burrito.heroku.com/foodItemIngredients?_expand=ingredient")
+    return fetch("https://db-hey-burrito.herokuapp.com/foodItemIngredients?_expand=ingredient")
       .then((res) => res.json())
       .then(setFoodItemIngredients);
   };
