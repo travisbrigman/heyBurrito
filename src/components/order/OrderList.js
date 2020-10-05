@@ -7,8 +7,7 @@ import { IngredientContext } from "../ingredients/IngredientProvider";
 import { Box, Button, Heading } from "grommet";
 import { CustomerContext } from "../customers/CustomerProvider";
 
-import { Send } from 'grommet-icons';
-
+import { Send } from "grommet-icons";
 
 export const OrderList = (props) => {
   const { addToOrder, getOrders } = useContext(OrderContext);
@@ -30,11 +29,11 @@ export const OrderList = (props) => {
 
   //finds items in foodItem array that have not be sent to Orders array
   useEffect(() => {
-    setCurrentOrderList([])
+    setCurrentOrderList([]);
     const filteredFoodItems = foodItems.filter(
       (item) => item["orderId"] === undefined
     );
-   console.log("filteredFoodItems", filteredFoodItems)
+    console.log("filteredFoodItems", filteredFoodItems);
 
     setCurrentOrderList(filteredFoodItems);
   }, [foodItems]);
@@ -42,7 +41,6 @@ export const OrderList = (props) => {
   // useEffect(() => {
   //   console.log(currentOrderList)
   // },[currentOrderList])
-
 
   useEffect(() => {
     getOrders();
@@ -53,9 +51,9 @@ export const OrderList = (props) => {
     getCustomers();
   }, []);
 
-//sends the list of items to the orders array
+  //sends the list of items to the orders array
   const sendOrder = () => {
-    console.log("send order clicked")
+    console.log("send order clicked");
     var date = new Date();
     var time = date.getTime();
 
@@ -63,18 +61,15 @@ export const OrderList = (props) => {
       userId: signedInCustomer.id,
       time,
       completed: false,
-    })
-      .then((res) =>
-        { console.log("response ID", res.id)
-        currentOrderList.forEach((item) =>
-          patchFoodItem({
-            id: item.id,
-            orderId: res.id,
-          })
-        )
-        }
-      )
-      
+    }).then((res) => {
+      console.log("response ID", res.id);
+      currentOrderList.forEach((item) =>
+        patchFoodItem({
+          id: item.id,
+          orderId: res.id,
+        })
+      );
+    });
   };
 
   return (
@@ -103,5 +98,3 @@ export const OrderList = (props) => {
     </Box>
   );
 };
-
-
