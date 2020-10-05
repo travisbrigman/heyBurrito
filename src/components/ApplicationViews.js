@@ -38,7 +38,7 @@ export const ApplicationViews = (props) => {
   };
 
   return (
-    <Grommet theme={burritoTheme}>
+    <Grommet full theme={burritoTheme}>
       <Header wrap={true} direction="row" justify="between" align="center">
         <Box margin="small" direction="row">
           <Heading>HeyBurrito!</Heading>
