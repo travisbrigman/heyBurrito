@@ -57,13 +57,13 @@ export const FoodItemProvider = (props) => {
   };
 //http://localhost:8088/foodItems/${FoodOrderItemId}
   const deleteFoodOrderItemIngredient = (FoodOrderItemId) => {
-    return fetch(`https://db-hey-burrito.herokuapp.com/foodItems/${FoodOrderItemId}`, {
+    return fetch(`https://db-hey-burrito.herokuapp.com/foodItemIngredients/${FoodOrderItemId}`, {
       method: "DELETE",
     });
   };
   //http://localhost:8088/foodItems/${FoodOrderItemId}
   const deleteFoodOrderItem = (FoodOrderItemId) => {
-    return fetch(`https://db-hey-burrito.herokuapp.com/${FoodOrderItemId}`, {
+    return fetch(`https://db-hey-burrito.herokuapp.com/foodItems/${FoodOrderItemId}`, {
       method: "DELETE",
     }).then(getFoodItems);
   };

@@ -25,7 +25,6 @@ export const OrderList = (props) => {
 
   //sets the state of the list of items to be rendered
   const [currentOrderList, setCurrentOrderList] = useState([]);
-  console.log(currentOrderList);
 
   //finds items in foodItem array that have not be sent to Orders array
   useEffect(() => {
@@ -33,14 +32,9 @@ export const OrderList = (props) => {
     const filteredFoodItems = foodItems.filter(
       (item) => item["orderId"] === undefined
     );
-    console.log("filteredFoodItems", filteredFoodItems);
 
     setCurrentOrderList(filteredFoodItems);
   }, [foodItems]);
-
-  // useEffect(() => {
-  //   console.log(currentOrderList)
-  // },[currentOrderList])
 
   useEffect(() => {
     getOrders();
@@ -53,7 +47,6 @@ export const OrderList = (props) => {
 
   //sends the list of items to the orders array
   const sendOrder = () => {
-    console.log("send order clicked");
     var date = new Date();
     var time = date.getTime();
 
@@ -62,7 +55,6 @@ export const OrderList = (props) => {
       time,
       completed: false,
     }).then((res) => {
-      console.log("response ID", res.id);
       currentOrderList.forEach((item) =>
         patchFoodItem({
           id: item.id,
@@ -74,8 +66,9 @@ export const OrderList = (props) => {
 
   return (
     <Box>
+      <Box className="order_list">
       <Heading level="3">Current Order</Heading>
-      <Box className="orders">
+      <Box wrap={true} flex="grow" direction="column" className="orders">
         {currentOrderList.map((foodItemObject) => (
           <FoodOrderItem
             key={foodItemObject.id}
@@ -95,6 +88,7 @@ export const OrderList = (props) => {
         onClick={sendOrder}
         icon={<Send />}
       />
+      </Box>
     </Box>
   );
 };

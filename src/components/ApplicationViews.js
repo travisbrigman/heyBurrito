@@ -39,7 +39,7 @@ export const ApplicationViews = (props) => {
 
   return (
     <Grommet theme={burritoTheme}>
-      <Header direction="row" justify="between" align="center">
+      <Header wrap={true} direction="row" justify="between" align="center">
         <Box margin="small" direction="row">
           <Heading>HeyBurrito!</Heading>
           <Box>
@@ -62,7 +62,7 @@ export const ApplicationViews = (props) => {
           />
         </Box>
       </Header>
-      <Box margin="medium" direction="row-responsive" justify="between">
+      <Box direction="row-responsive" justify="between">
         <Box className="body-left"></Box>
         <Box className="body-center">
           <FoodDetailProvider>
@@ -102,7 +102,7 @@ export const ApplicationViews = (props) => {
           </FoodItemProvider>
         </Box>
         <Box className="body-right">
-          {/* <Box height={{ max: 'large' }} overflow="auto"> */}
+          <Box height={{ max: 'large' }} overflow="auto" wrap={true} direction="column">
           <OrderProvider>
             <FoodItemProvider>
               <FoodDetailProvider>
@@ -116,7 +116,7 @@ export const ApplicationViews = (props) => {
               </FoodDetailProvider>
             </FoodItemProvider>
           </OrderProvider>
-          {/* </Box> */}
+          </Box>
         </Box>
       </Box>
       <Footer>
