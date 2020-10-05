@@ -46,7 +46,7 @@ export const FoodOrderItem = ({
   };
 
   return (
-    <Box className="foodOrderItem">
+    <Box className="foodOrderItem" wrap={true} direction="column">
       <Heading level="4" className="foodOrderItem__name">
         {" "}
         {foodDetailObject.name}{" "}

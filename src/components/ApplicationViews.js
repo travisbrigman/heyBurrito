@@ -22,6 +22,7 @@ import {
 } from "grommet";
 import { Logout } from "grommet-icons";
 import { burritoTheme } from "./CustomGrommetTheme";
+import { EmployeeView } from "./employee/EmployeeView";
 const logo = require("../assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
@@ -38,7 +39,7 @@ export const ApplicationViews = (props) => {
 
   return (
     <Grommet theme={burritoTheme}>
-      <Header direction="row" justify="between" align="center">
+      <Header wrap={true} direction="row" justify="between" align="center">
         <Box margin="small" direction="row">
           <Heading>HeyBurrito!</Heading>
           <Box>
@@ -61,7 +62,7 @@ export const ApplicationViews = (props) => {
           />
         </Box>
       </Header>
-      <Box margin="medium" direction="row-responsive" justify="between">
+      <Box direction="row-responsive" justify="between">
         <Box className="body-left"></Box>
         <Box className="body-center">
           <FoodDetailProvider>
@@ -91,13 +92,17 @@ export const ApplicationViews = (props) => {
                     path="/editTacos/:foodItemObjectId(\d+)"
                     render={(props) => <TacoItemOrderForm {...props} />}
                   />
+                  <Route
+                    path="/employeeView"
+                    render={(props) => <EmployeeView {...props} />}
+                  />
                 </IngredientProvider>
               </OrderProvider>
             </FoodDetailProvider>
           </FoodItemProvider>
         </Box>
         <Box className="body-right">
-          {/* <Box height={{ max: 'large' }} overflow="auto"> */}
+          <Box height={{ max: 'large' }} overflow="auto" wrap={true} direction="column">
           <OrderProvider>
             <FoodItemProvider>
               <FoodDetailProvider>
@@ -111,7 +116,7 @@ export const ApplicationViews = (props) => {
               </FoodDetailProvider>
             </FoodItemProvider>
           </OrderProvider>
-          {/* </Box> */}
+          </Box>
         </Box>
       </Box>
       <Footer>
