@@ -22,6 +22,7 @@ import {
 } from "grommet";
 import { Logout } from "grommet-icons";
 import { burritoTheme } from "./CustomGrommetTheme";
+import { EmployeeView } from "./employee/EmployeeView";
 const logo = require("../assets/burrito256.png");
 
 export const ApplicationViews = (props) => {
@@ -90,6 +91,10 @@ export const ApplicationViews = (props) => {
                   <Route
                     path="/editTacos/:foodItemObjectId(\d+)"
                     render={(props) => <TacoItemOrderForm {...props} />}
+                  />
+                  <Route
+                    path="/employeeView"
+                    render={(props) => <EmployeeView {...props} />}
                   />
                 </IngredientProvider>
               </OrderProvider>
