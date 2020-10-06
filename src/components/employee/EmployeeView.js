@@ -54,12 +54,17 @@ export const EmployeeView = (history, props) => {
   };
 
   useEffect(() => {
-    const stateArray = [];
-
     const selectedFoodItem =
       foodItems.filter((item) => item.orderId === clicked.id) || {};
 
-    selectedFoodItem.forEach((object) => {
+    const constructedOrder = selectedFoodItem.map((object) => {
+      const stateObject = {
+        combo: object.combo,
+        quantity: object.quantity,
+        instructions: object.specialInstructions,
+        orderIngredients: [],
+      };
+
       //this will give me an array with just FoodItemIngredient Objects that match the ID of the current FoodItem.
 
       const ingredientIdList =
@@ -76,18 +81,25 @@ export const EmployeeView = (history, props) => {
           );
         }) || [];
 
+      itemIngredientList.forEach((ingredient) => {
+        const ingrObj = {
+          category: ingredient.ingredientCategory.categoryName,
+          name: ingredient.name,
+        };
+        stateObject.orderIngredients.push(ingrObj);
+      });
+
       const selectedFoodDetailObject =
         foodDetails.find(
           (foodItemObject) => foodItemObject.id === object.detailId
         ) || {};
 
-        //TODO: Work on this
-      ingredientIdList.concat(itemIngredientList,selectedFoodDetailObject)
-      stateArray.push(ingredientIdList)
-      debugger
+      stateObject["itemName"] = selectedFoodDetailObject.name;
+
+      return stateObject
     });
 
-    setSelectedOrder(stateArray);
+    //setSelectedOrder(constructedOrder);
   }, [clicked]);
 
   useEffect(() => {
@@ -113,15 +125,15 @@ export const EmployeeView = (history, props) => {
           direction="column"
           margin="medium"
         >
-          {/* <Heading level="4" className="foodOrderItem__name">
-            {selectedOrder[2].name}
-          </Heading> */}
+          <Heading level="4" className="foodOrderItem__name">
+            {selectedOrder.itemName}
+          </Heading>
           <List
             pad="xsmall"
-            data={selectedOrder[0]}
+            data={selectedOrder.orderIngredients}
             primaryKey={(item) => (
               <Text size="small" weight="bold" key={item.id}>
-                {selectedOrder}
+                {item.category}
               </Text>
             )}
             secondaryKey={(item) => (
@@ -143,7 +155,7 @@ export const EmployeeView = (history, props) => {
               </Text>
               <Text size="small" className="foodOrderItem__Combo">
                 {" "}
-                {selectedOrder ? "Yes" : "No"}
+                {selectedOrder.combo ? "Yes" : "No"}
               </Text>
             </Box>
             <Box className="quantityBlock" direction="row">
@@ -156,7 +168,7 @@ export const EmployeeView = (history, props) => {
                 Quantity:
               </Text>
               <Text size="small" className="foodOrderItem__Quantity">
-                {selectedOrder}
+                {selectedOrder.quantity}
               </Text>
             </Box>
             <Box className="quantityBlock" direction="row">
@@ -169,7 +181,7 @@ export const EmployeeView = (history, props) => {
                 Special Instructions:
               </Text>
               <Text size="small" className="foodOrderItem__Instructions">
-                {selectedOrder}
+                {selectedOrder.instructions}
               </Text>
             </Box>
           </Box>
@@ -208,8 +220,11 @@ export const EmployeeView = (history, props) => {
         ))}
       </Box>
       <Box className="Order_Details">
-        {selectedOrder === undefined ? <Box></Box> : <SelectedOrderList />}
+        {selectedOrder.map((selectedOrder) => <SelectedOrderList /> ) }
       </Box>
     </Box>
   );
 };
+
+
+// {selectedOrder === undefined ? <Box></Box> : <SelectedOrderList />}
