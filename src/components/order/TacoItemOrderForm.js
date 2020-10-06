@@ -186,7 +186,32 @@ export const TacoItemOrderForm = (props) => {
       }
     }
 
-    //Actual post request
+    //Edit Mode UPDATE
+    if (editMode) {
+      const cleanUp = foodItemIngredients.filter(item => item.foodItemId === foodItemId)
+     
+     cleanUp.forEach(item => deleteFoodOrderItemIngredient(item.id))
+      
+        //.then(
+          updateFoodItem(foodItemId,{
+            specialInstructions: state.specialInstructions,
+            quantity: parseInt(state.quantity),
+            detailId: foodDetails[1].id,
+            combo: state.combo,
+          })
+        //)
+        .then(
+          foodItemData.forEach((i) =>
+            addToFoodItemIngredients({
+              ingredientId: i.id,
+              foodItemId: foodItemId,
+            })
+          )
+        )
+        .then(getFoodItems)
+        .then(() => props.history.push("/"));
+    } else {
+          //Actual post request
     addToFoodItems({
       specialInstructions: state.specialInstructions,
       quantity: parseInt(state.quantity),
@@ -203,29 +228,6 @@ export const TacoItemOrderForm = (props) => {
       )
       .then(getFoodItems)
       .then(() => props.history.push("/"));
-
-    //Edit Mode UPDATE
-    if (editMode) {
-      deleteFoodOrderItemIngredient(foodItemId)
-        .then(
-          updateFoodItem({
-            id: foodItemId,
-            specialInstructions: state.specialInstructions,
-            quantity: parseInt(state.quantity),
-            detailId: foodDetails[1].id,
-            combo: state.combo,
-          })
-        )
-        .then(
-          foodItemData.forEach((i) =>
-            addToFoodItemIngredients({
-              ingredientId: i.id,
-              foodItemId: foodItemId,
-            })
-          )
-        )
-        .then(getFoodItems)
-        .then(() => props.history.push("/"));
     }
   };
 
