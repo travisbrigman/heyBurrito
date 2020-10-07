@@ -96,10 +96,10 @@ export const EmployeeView = (history, props) => {
 
       stateObject["itemName"] = selectedFoodDetailObject.name;
 
-      return stateObject
+      return stateObject;
     });
 
-    //setSelectedOrder(constructedOrder);
+    setSelectedOrder(constructedOrder);
   }, [clicked]);
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export const EmployeeView = (history, props) => {
     deleteOrder(deleteId);
   };
 
-  const SelectedOrderList = () => {
+  const SelectedOrderList = ({ selectedOrder }) => {
     if (selectedOrder.length === 0 || selectedOrder === undefined) {
       return <Box></Box>;
     } else {
@@ -194,37 +194,43 @@ export const EmployeeView = (history, props) => {
     <Box direction="row-responsive">
       <Box className="Order_list">
         <Heading>All Unfulfilled Orders</Heading>
-        <List
-          onClickItem={(event) => setClicked(event.item)}
-          pad="xsmall"
-          data={orders}
-          primaryKey={(item) => (
-            <Text size="small" weight="bold" key={item.id}>
-              Order # {item.id}
-            </Text>
-          )}
-          secondaryKey={(item) => (
-            <Text size="small" color="text-weak" key={item.time}>
-              Time Submitted: {timeFormatter(item.time)}
-            </Text>
-          )}
-        />
-        {orders.map((orderObject) => (
-          <Button
-            key={orderObject.id}
-            margin="small"
-            onClick={() => deleteSelectedOrder(orderObject.id)}
-            icon={<Trash />}
-            {...props}
-          />
-        ))}
+        <Box direction="row-responsive">
+          <Box>
+            <List
+              onClickItem={(event) => setClicked(event.item)}
+              pad="xsmall"
+              data={orders}
+              primaryKey={(item) => (
+                <Text size="small" weight="bold" key={item.id}>
+                  Order # {item.id}
+                </Text>
+              )}
+              secondaryKey={(item) => (
+                <Text size="small" color="text-weak" key={item.time}>
+                  Time Submitted: {timeFormatter(item.time)}
+                </Text>
+              )}
+            />
+          </Box>
+          <Box>
+            {orders.map((orderObject) => (
+              <Button
+                key={orderObject.id}
+                
+                onClick={() => deleteSelectedOrder(orderObject.id)}
+                icon={<Trash />}
+                {...props}
+              />
+            ))}
+          </Box>
+        </Box>
       </Box>
       <Box className="Order_Details">
-        {selectedOrder.map((selectedOrder) => <SelectedOrderList /> ) }
+        {selectedOrder.map((selectedOrder) => (
+          <SelectedOrderList selectedOrder={selectedOrder} />
+        ))}
       </Box>
     </Box>
   );
 };
 
-
-// {selectedOrder === undefined ? <Box></Box> : <SelectedOrderList />}
