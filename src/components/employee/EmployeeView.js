@@ -19,7 +19,7 @@ export const EmployeeView = (history, props) => {
   const [clicked, setClicked] = useState();
 
   const [selectedOrder, setSelectedOrder] = useState([]);
-  console.log(selectedOrder);
+  console.log(selectedOrder);  
 
   /*
   const sendEmail = (e) => {
