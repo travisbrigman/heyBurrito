@@ -4,8 +4,10 @@ import { FoodItemContext } from "../foodItem/FoodItemProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { OrderContext } from "../order/OrderProvider";
 import emailjs from "emailjs-com";
-import { Trash } from "grommet-icons";
+import { Send, Trash } from "grommet-icons";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
+import{ init } from 'emailjs-com';
+init("user_PyL4nJmYB2salLdZhF4A1");
 
 export const EmployeeView = (history, props) => {
   const { orders, getOrders, deleteOrder } = useContext(OrderContext);
@@ -19,29 +21,25 @@ export const EmployeeView = (history, props) => {
   const [clicked, setClicked] = useState();
 
   const [selectedOrder, setSelectedOrder] = useState([]);
-  console.log(selectedOrder);  
+  console.log(selectedOrder);
 
-  /*
-  const sendEmail = (e) => {
-    e.preventDefault();
+  var templateParams = {
+    name: 'James',
+    notes: 'Check this out!'
+};
 
-    emailjs
-      .sendForm(
-        "gmail",
-        "template_cmnn6de",
-        e.target,
-        "user_PyL4nJmYB2salLdZhF4A1"
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+  //service_dim4dgi
+
+  const sendEmail = () => {
+    emailjs.send("service_dim4dgi", "template_cmnn6de", templateParams).then(
+      function (response) {
+        console.log("SUCCESS!", response.status, response.text);
+      },
+      function (error) {
+        console.log("FAILED...", error);
+      }
+    );
   };
-  */
 
   const timeFormatter = (timestamp) => {
     let date = new Date(timestamp);
@@ -216,7 +214,6 @@ export const EmployeeView = (history, props) => {
             {orders.map((orderObject) => (
               <Button
                 key={orderObject.id}
-                
                 onClick={() => deleteSelectedOrder(orderObject.id)}
                 icon={<Trash />}
                 {...props}
@@ -230,7 +227,7 @@ export const EmployeeView = (history, props) => {
           <SelectedOrderList selectedOrder={selectedOrder} />
         ))}
       </Box>
+      <Button onClick={sendEmail} icon={<Send />} {...props} />
     </Box>
   );
 };
-
