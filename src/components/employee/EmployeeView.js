@@ -23,12 +23,31 @@ export const EmployeeView = (history, props) => {
   const [selectedOrder, setSelectedOrder] = useState([]);
   console.log(selectedOrder);
 
-  var templateParams = {
-    name: 'James',
-    notes: 'Check this out!'
-};
+const orderListHTML = selectedOrder.map(order => {
+  return (`
+    <h3>${order.itemName}</h3>
+    <div>Quantity: ${order.quantity}</div>
+    <div>Combo? ${order.combo}</div>
+    <div>Special Instructions: ${order.instructions}</div>
+    ${order.orderIngredients.map(ingredient =>{
+      return `<div>${ingredient.category} ${ingredient.name}</div> ` 
+    })}
+    
+    `
+    )
+  })
 
-  //service_dim4dgi
+/*
+combo: true
+instructions: "It's WORKING!!!"
+itemName: "Burrito"
+orderIngredients: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+quantity: 1
+*/
+
+  var templateParams = {
+    orderListHTML
+};
 
   const sendEmail = () => {
     emailjs.send("service_dim4dgi", "template_cmnn6de", templateParams).then(
