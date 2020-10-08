@@ -3,10 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { OrderContext } from "../order/OrderProvider";
+import { CustomerContext } from "../customers/CustomerProvider";
 import emailjs from "emailjs-com";
 import { Send, Trash } from "grommet-icons";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
-import{ init } from 'emailjs-com';
+import { init } from "emailjs-com";
 init("user_PyL4nJmYB2salLdZhF4A1");
 
 export const EmployeeView = (history, props) => {
@@ -17,39 +18,35 @@ export const EmployeeView = (history, props) => {
   );
   const { foodItems, getFoodItems } = useContext(FoodItemContext);
   const { getIngredients, ingredients } = useContext(IngredientContext);
+  const { getCustomers, customers } = useContext(CustomerContext);
 
   const [clicked, setClicked] = useState();
-
   const [selectedOrder, setSelectedOrder] = useState([]);
+  const [customerName, setCustomerName] = useState({});
   console.log(selectedOrder);
 
-const orderListHTML = selectedOrder.map(order => {
-  return (`
-    <h3>${order.itemName}</h3>
-    <div>Quantity: ${order.quantity}</div>
-    <div>Combo? ${order.combo}</div>
-    <div>Special Instructions: ${order.instructions}</div>
-    ${order.orderIngredients.map(ingredient =>{
-      return `<div>${ingredient.category} ${ingredient.name}</div> ` 
-    })}
-    
-    `
-    )
-  })
-
-/*
-combo: true
-instructions: "It's WORKING!!!"
-itemName: "Burrito"
-orderIngredients: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
-quantity: 1
-*/
-
-  var templateParams = {
-    orderListHTML
-};
-
   const sendEmail = () => {
+    const orderListHTML = `<h1>${customerName.name}</h1>
+    ${selectedOrder
+      .map((order) => {
+        return `
+        <h3><u>${order.itemName}</u></h3>
+        <div><strong>Quantity:</strong> ${order.quantity}</div>
+        <div><strong>Combo?</strong> ${order.combo}</div>
+        <div><strong>Special Instructions:</strong> ${order.instructions}</div>
+        ${order.orderIngredients
+          .map((ingredient) => {
+            return `<div><strong>${ingredient.category}</strong>: ${ingredient.name}</div> `;
+          })
+          .join("")}
+        `;
+      })
+      .join("")}
+  `;
+    var templateParams = {
+      orderListHTML,
+    };
+
     emailjs.send("service_dim4dgi", "template_cmnn6de", templateParams).then(
       function (response) {
         console.log("SUCCESS!", response.status, response.text);
@@ -59,6 +56,14 @@ quantity: 1
       }
     );
   };
+
+  /*
+combo: true
+instructions: "It's WORKING!!!"
+itemName: "Burrito"
+orderIngredients: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+quantity: 1
+*/
 
   const timeFormatter = (timestamp) => {
     let date = new Date(timestamp);
@@ -71,6 +76,12 @@ quantity: 1
   };
 
   useEffect(() => {
+    const clickedCustomer = customers.find(
+      (customer) => customer.id === clicked.userId
+    );
+
+    setCustomerName(clickedCustomer);
+
     const selectedFoodItem =
       foodItems.filter((item) => item.orderId === clicked.id) || {};
 
@@ -125,6 +136,7 @@ quantity: 1
     getOrders();
     getFoodItems();
     getFoodDetails();
+    getCustomers();
   }, []);
 
   const deleteSelectedOrder = (deleteId) => {
