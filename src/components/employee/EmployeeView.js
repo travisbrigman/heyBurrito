@@ -1,4 +1,4 @@
-import { Box, Button, Heading, List, Text } from "grommet";
+import { Box, Button, DataTable, Heading, List, Text } from "grommet";
 import React, { useContext, useEffect, useState } from "react";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
@@ -57,23 +57,7 @@ export const EmployeeView = (history, props) => {
     );
   };
 
-  /*
-combo: true
-instructions: "It's WORKING!!!"
-itemName: "Burrito"
-orderIngredients: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
-quantity: 1
-*/
 
-  const timeFormatter = (timestamp) => {
-    let date = new Date(timestamp);
-    let hours = date.getHours();
-    let minutes = "0" + date.getMinutes();
-    // let seconds = "0" + date.getSeconds();
-    //let formatTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    let formatTime = hours + ":" + minutes.substr(-2);
-    return formatTime;
-  };
 
   useEffect(() => {
     const clickedCustomer = customers.find(
@@ -142,6 +126,40 @@ quantity: 1
   const deleteSelectedOrder = (deleteId) => {
     deleteOrder(deleteId);
   };
+
+  const nameOnOrder = (userId) => {
+    const userObject = customers.find((customer) => customer.id === userId) || {}
+    let name = userObject.name;
+    return name;
+  };
+
+  const timeFormatter = (timestamp) => {
+    let date = new Date(timestamp);
+    let hours = date.getHours();
+    let minutes = "0" + date.getMinutes();
+    // let seconds = "0" + date.getSeconds();
+    //let formatTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    let formatTime = hours + ":" + minutes.substr(-2);
+    return formatTime;
+  };
+
+
+  const columns = [
+    {
+      property: "id",
+      header: <Text>Orders</Text>,
+    },
+    {
+      property: "userId",
+      header: "user name",
+      render: (datum) => nameOnOrder(datum.id),
+    },
+    {
+      property: "time",
+      header: "Order Placed",
+      render: (datum) => timeFormatter(datum.time),
+    },
+  ];
 
   const SelectedOrderList = ({ selectedOrder }) => {
     if (selectedOrder.length === 0 || selectedOrder === undefined) {
@@ -253,12 +271,24 @@ quantity: 1
           </Box>
         </Box>
       </Box>
-      <Box className="Order_Details">
-        {selectedOrder.map((selectedOrder) => (
-          <SelectedOrderList selectedOrder={selectedOrder} />
-        ))}
+      <Box className="orderAndSend" direction="column">
+        <Box className="Order_Details">
+          {selectedOrder.map((selectedOrder) => (
+            <SelectedOrderList selectedOrder={selectedOrder} />
+          ))}
+        </Box>
+        <Button onClick={sendEmail} icon={<Send />} {...props} />
       </Box>
-      <Button onClick={sendEmail} icon={<Send />} {...props} />
+      {/*----------------------*/}
+      <Box>
+        <DataTable
+          resizeable="true"
+          sortable="true"
+          size="small"
+          columns={columns}
+          data={orders}
+        />
+      </Box>
     </Box>
   );
 };
