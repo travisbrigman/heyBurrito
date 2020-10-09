@@ -5,7 +5,7 @@ import { IngredientContext } from "../ingredients/IngredientProvider";
 import { OrderContext } from "../order/OrderProvider";
 import { CustomerContext } from "../customers/CustomerProvider";
 import emailjs from "emailjs-com";
-import { Send, Trash } from "grommet-icons";
+import { Send, Trash, UserSettings } from "grommet-icons";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { init } from "emailjs-com";
 init("user_PyL4nJmYB2salLdZhF4A1");
@@ -127,6 +127,7 @@ export const EmployeeView = (history, props) => {
     deleteOrder(deleteId);
   };
 
+
   const nameOnOrder = (userId) => {
     const userObject = customers.find((customer) => customer.id === userId) || {}
     let name = userObject.name;
@@ -152,7 +153,7 @@ export const EmployeeView = (history, props) => {
     {
       property: "userId",
       header: "user name",
-      render: (datum) => nameOnOrder(datum.id),
+      render: (datum) => nameOnOrder(datum.userId),
     },
     {
       property: "time",
