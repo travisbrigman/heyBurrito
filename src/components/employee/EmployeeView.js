@@ -1,4 +1,4 @@
-import { Box, Button, DataTable, Heading, List, Text } from "grommet";
+import { Box, Button, CheckBox, DataTable, Heading, List, Text } from "grommet";
 import React, { useContext, useEffect, useState } from "react";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
@@ -56,8 +56,6 @@ export const EmployeeView = (history, props) => {
       }
     );
   };
-
-
 
   useEffect(() => {
     const clickedCustomer = customers.find(
@@ -127,9 +125,9 @@ export const EmployeeView = (history, props) => {
     deleteOrder(deleteId);
   };
 
-
   const nameOnOrder = (userId) => {
-    const userObject = customers.find((customer) => customer.id === userId) || {}
+    const userObject =
+      customers.find((customer) => customer.id === userId) || {};
     let name = userObject.name;
     return name;
   };
@@ -143,7 +141,6 @@ export const EmployeeView = (history, props) => {
     let formatTime = hours + ":" + minutes.substr(-2);
     return formatTime;
   };
-
 
   const columns = [
     {
@@ -161,6 +158,23 @@ export const EmployeeView = (history, props) => {
       render: (datum) => timeFormatter(datum.time),
     },
   ];
+
+  const controlledColumns = columns.map((col) => ({ ...col }));
+  const [checked, setChecked] = useState([]);
+
+  console.log("checked", checked);
+  
+
+  const onCheck = (event, value) => {
+    if (event.target.checked) {
+      setChecked([...checked, value]);
+    } else {
+      setChecked(checked.filter((item) => item !== value));
+    }
+  };
+
+  const onCheckAll = (event) =>
+    setChecked(event.target.checked ? orders.map((datum) => datum.id) : []);
 
   const SelectedOrderList = ({ selectedOrder }) => {
     if (selectedOrder.length === 0 || selectedOrder === undefined) {
@@ -242,7 +256,7 @@ export const EmployeeView = (history, props) => {
     <Box direction="row-responsive">
       <Box className="Order_list">
         <Heading>All Unfulfilled Orders</Heading>
-        <Box direction="row-responsive">
+        {/* <Box direction="row-responsive">
           <Box>
             <List
               onClickItem={(event) => setClicked(event.item)}
@@ -270,7 +284,7 @@ export const EmployeeView = (history, props) => {
               />
             ))}
           </Box>
-        </Box>
+        </Box> */}
       </Box>
       <Box className="orderAndSend" direction="column">
         <Box className="Order_Details">
@@ -282,12 +296,40 @@ export const EmployeeView = (history, props) => {
       </Box>
       {/*----------------------*/}
       <Box>
-        <DataTable
+        {/* <DataTable
           resizeable="true"
           sortable="true"
           size="small"
           columns={columns}
           data={orders}
+        /> */}
+        <DataTable
+          columns={[
+            {
+              property: "checkbox",
+              render: (datum) => (
+                <CheckBox
+                  key={datum.id}
+                  checked={checked.indexOf(datum.id) !== -1}
+                  onChange={(e) => onCheck(e, datum.id)}
+                />
+              ),
+              header: (
+                <CheckBox
+                  checked={checked.length === orders.length}
+                  indeterminate={
+                    checked.length > 0 && checked.length < orders.length
+                  }
+                  onChange={onCheckAll}
+                />
+              ),
+              sortable: false,
+            },
+            ...controlledColumns,
+          ].map((col) => ({ ...col }))}
+          data={orders}
+          sortable
+          size="medium"
         />
       </Box>
     </Box>
