@@ -10,7 +10,7 @@ import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { init } from "emailjs-com";
 init("user_PyL4nJmYB2salLdZhF4A1");
 
-export const EmployeeView = (history, props) => {
+export const EmployeeView = (props) => {
   const { orders, getOrders, deleteOrder } = useContext(OrderContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
   const { getFoodItemIngredients, foodItemIngredients } = useContext(
@@ -19,6 +19,11 @@ export const EmployeeView = (history, props) => {
   const { foodItems, getFoodItems } = useContext(FoodItemContext);
   const { getIngredients, ingredients } = useContext(IngredientContext);
   const { getCustomers, customers } = useContext(CustomerContext);
+
+  const [checked, setChecked] = useState([]);
+
+  console.log("checked", checked);
+  
 
   const [clicked, setClicked] = useState();
   const [selectedOrder, setSelectedOrder] = useState([]);
@@ -58,16 +63,20 @@ export const EmployeeView = (history, props) => {
   };
 
   useEffect(() => {
-    const clickedCustomer = customers.find(
-      (customer) => customer.id === clicked.userId
-    );
+    const checkedOrders= checked.map(checkedOrder => {
+      const userOrder = orders.find(order => order.id === checkedOrder)
+      return userOrder
+    })
+    console.log(checkedOrders);
+    
+    //setCustomerName(clickedCustomer);
 
-    setCustomerName(clickedCustomer);
+    const selectedFoodItems = checkedOrders.map(checkedObject => {
+        return foodItems.filter((item) => item.orderId === checkedObject.id) || {};
+    })
+      
 
-    const selectedFoodItem =
-      foodItems.filter((item) => item.orderId === clicked.id) || {};
-
-    const constructedOrder = selectedFoodItem.map((object) => {
+    const constructedOrder = selectedFoodItems.map((object) => {
       const stateObject = {
         combo: object.combo,
         quantity: object.quantity,
@@ -110,7 +119,7 @@ export const EmployeeView = (history, props) => {
     });
 
     setSelectedOrder(constructedOrder);
-  }, [clicked]);
+  }, [clicked, checked]);
 
   useEffect(() => {
     getFoodItemIngredients();
@@ -160,10 +169,7 @@ export const EmployeeView = (history, props) => {
   ];
 
   const controlledColumns = columns.map((col) => ({ ...col }));
-  const [checked, setChecked] = useState([]);
 
-  console.log("checked", checked);
-  
 
   const onCheck = (event, value) => {
     if (event.target.checked) {
