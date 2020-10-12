@@ -23,13 +23,13 @@ export const EmployeeView = (props) => {
   const [checked, setChecked] = useState([]);
 
   console.log("checked", checked);
-  
 
   const [clicked, setClicked] = useState();
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [customerName, setCustomerName] = useState({});
   console.log(selectedOrder);
 
+  //TODO: refactor this so that all checked orders are e-mailed. figure out good way to display username
   const sendEmail = () => {
     const orderListHTML = `<h1>${customerName.name}</h1>
     ${selectedOrder
@@ -63,59 +63,63 @@ export const EmployeeView = (props) => {
   };
 
   useEffect(() => {
-    const checkedOrders= checked.map(checkedOrder => {
-      const userOrder = orders.find(order => order.id === checkedOrder)
-      return userOrder
-    })
-    console.log(checkedOrders);
-    
-    //setCustomerName(clickedCustomer);
+    //finds the objects from the Orders collection that are associated with the checked orders in the list
+    const checkedOrders = checked.map((checkedOrder) => {
+      const userOrder = orders.find((order) => order.id === checkedOrder);
+      return userOrder;
+    });
 
-    const selectedFoodItems = checkedOrders.map(checkedObject => {
-        return foodItems.filter((item) => item.orderId === checkedObject.id) || {};
-    })
-      
+    const selectedFoodItems = checkedOrders.map((checkedObject) => {
+      return (
+        foodItems.filter((item) => item.orderId === checkedObject.id) || {}
+      );
+    });
 
-    const constructedOrder = selectedFoodItems.map((object) => {
-      const stateObject = {
-        combo: object.combo,
-        quantity: object.quantity,
-        instructions: object.specialInstructions,
-        orderIngredients: [],
-      };
+    const constructedOrder = selectedFoodItems.map((array) => {
+      const stateArray = [];
 
-      //this will give me an array with just FoodItemIngredient Objects that match the ID of the current FoodItem.
-
-      const ingredientIdList =
-        foodItemIngredients.filter(
-          (ingredient) => ingredient.foodItemId === object.id
-        ) || [];
-
-      //this should take that array and and for each object in that array, match it with a food ingredient.
-
-      const itemIngredientList =
-        ingredientIdList.map((ingredientIdObject) => {
-          return ingredients.find(
-            (ingredient) => ingredient.id === ingredientIdObject.ingredientId
-          );
-        }) || [];
-
-      itemIngredientList.forEach((ingredient) => {
-        const ingrObj = {
-          category: ingredient.ingredientCategory.categoryName,
-          name: ingredient.name,
+      array.forEach((object) => {
+        const stateObject = {
+          combo: object.combo,
+          quantity: object.quantity,
+          instructions: object.specialInstructions,
+          orderIngredients: [],
         };
-        stateObject.orderIngredients.push(ingrObj);
+
+        //this will give me an array with just FoodItemIngredient Objects that match the ID of the current FoodItem.
+
+        const ingredientIdList =
+          foodItemIngredients.filter(
+            (ingredient) => ingredient.foodItemId === object.id
+          ) || [];
+
+        //this should take that array and and for each object in that array, match it with a food ingredient.
+
+        const itemIngredientList =
+          ingredientIdList.map((ingredientIdObject) => {
+            return ingredients.find(
+              (ingredient) => ingredient.id === ingredientIdObject.ingredientId
+            );
+          }) || [];
+
+        itemIngredientList.forEach((ingredient) => {
+          const ingrObj = {
+            category: ingredient.ingredientCategory.categoryName,
+            name: ingredient.name,
+          };
+          stateObject.orderIngredients.push(ingrObj);
+        });
+
+        const selectedFoodDetailObject =
+          foodDetails.find(
+            (foodItemObject) => foodItemObject.id === object.detailId
+          ) || {};
+
+        stateObject["itemName"] = selectedFoodDetailObject.name;
+         stateArray.push(stateObject)
+        
       });
-
-      const selectedFoodDetailObject =
-        foodDetails.find(
-          (foodItemObject) => foodItemObject.id === object.detailId
-        ) || {};
-
-      stateObject["itemName"] = selectedFoodDetailObject.name;
-
-      return stateObject;
+      return stateArray;
     });
 
     setSelectedOrder(constructedOrder);
@@ -169,7 +173,6 @@ export const EmployeeView = (props) => {
   ];
 
   const controlledColumns = columns.map((col) => ({ ...col }));
-
 
   const onCheck = (event, value) => {
     if (event.target.checked) {
@@ -294,8 +297,10 @@ export const EmployeeView = (props) => {
       </Box>
       <Box className="orderAndSend" direction="column">
         <Box className="Order_Details">
-          {selectedOrder.map((selectedOrder) => (
-            <SelectedOrderList selectedOrder={selectedOrder} />
+          {selectedOrder.map((selectedOrderArrObj) => (
+            selectedOrderArrObj.map(selectedOrder => (
+              <SelectedOrderList selectedOrder={selectedOrder} />
+            ))
           ))}
         </Box>
         <Button onClick={sendEmail} icon={<Send />} {...props} />
