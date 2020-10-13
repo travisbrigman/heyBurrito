@@ -27,11 +27,11 @@ export const EmployeeView = (props) => {
   const [clicked, setClicked] = useState();
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [customerName, setCustomerName] = useState({});
-  console.log(selectedOrder);
+  console.log(customerName);
 
   //TODO: refactor this so that all checked orders are e-mailed. figure out good way to display username
   const sendEmail = () => {
-    const orderListHTML = `<h1>${customerName.name}</h1>
+    const orderListHTML = `<h1>${customerName}</h1>
     ${selectedOrder
       .map((order) => {
         return `
@@ -68,6 +68,15 @@ export const EmployeeView = (props) => {
       const userOrder = orders.find((order) => order.id === checkedOrder);
       return userOrder;
     });
+
+    const foo = customers.map((customer) => {
+      checkedOrders.map((checkedOrders) => {
+        return customer.id === checkedOrders.userId;
+      });
+      return customer.name;
+    });
+
+    setCustomerName(foo);
 
     const selectedFoodItems = checkedOrders.map((checkedObject) => {
       return (
@@ -116,8 +125,7 @@ export const EmployeeView = (props) => {
           ) || {};
 
         stateObject["itemName"] = selectedFoodDetailObject.name;
-         stateArray.push(stateObject)
-        
+        stateArray.push(stateObject);
       });
       return stateArray;
     });
@@ -297,11 +305,11 @@ export const EmployeeView = (props) => {
       </Box>
       <Box className="orderAndSend" direction="column">
         <Box className="Order_Details">
-          {selectedOrder.map((selectedOrderArrObj) => (
-            selectedOrderArrObj.map(selectedOrder => (
+          {selectedOrder.map((selectedOrderArrObj) =>
+            selectedOrderArrObj.map((selectedOrder) => (
               <SelectedOrderList selectedOrder={selectedOrder} />
             ))
-          ))}
+          )}
         </Box>
         <Button onClick={sendEmail} icon={<Send />} {...props} />
       </Box>
