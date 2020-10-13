@@ -32,7 +32,7 @@ export const EmployeeView = (props) => {
 
   //TODO: refactor this so that all checked orders are e-mailed. figure out good way to display username
   const sendEmail = () => {
-    const orderListHTML = `<h1>${customerName}</h1>
+    const orderListHTML = `<h1></h1>
     ${selectedOrder
       .map((order) => {
         return order.map((item) => {
@@ -72,16 +72,15 @@ export const EmployeeView = (props) => {
       return userOrder;
     });
 
-    const namesOnCheckedOrders = customers.map((customer) => {
-      checkedOrders.map((checkedOrders) => {
+    const namesOnCheckedOrders = customers.filter((customer) => {
+    const orderNames = checkedOrders.find((checkedOrders) => {
         return customer.id === checkedOrders.userId;
       });
-      return customer.name;
+      return orderNames
     });
 
-    setCustomerName(...namesOnCheckedOrders);
+    setCustomerName(namesOnCheckedOrders);
     
-
     const selectedFoodItems = checkedOrders.map((checkedObject) => {
       return (
         foodItems.filter((item) => item.orderId === checkedObject.id) || {}
@@ -277,35 +276,6 @@ export const EmployeeView = (props) => {
     <Box direction="row-responsive">
       <Box className="Order_list">
         <Heading>All Unfulfilled Orders</Heading>
-        {/* <Box direction="row-responsive">
-          <Box>
-            <List
-              onClickItem={(event) => setClicked(event.item)}
-              pad="xsmall"
-              data={orders}
-              primaryKey={(item) => (
-                <Text size="small" weight="bold" key={item.id}>
-                  Order # {item.id}
-                </Text>
-              )}
-              secondaryKey={(item) => (
-                <Text size="small" color="text-weak" key={item.time}>
-                  Time Submitted: {timeFormatter(item.time)}
-                </Text>
-              )}
-            />
-          </Box>
-          <Box>
-            {orders.map((orderObject) => (
-              <Button
-                key={orderObject.id}
-                onClick={() => deleteSelectedOrder(orderObject.id)}
-                icon={<Trash />}
-                {...props}
-              />
-            ))}
-          </Box>
-        </Box> */}
       </Box>
       <Box className="orderAndSend" direction="column">
         <Box className="Order_Details">
@@ -317,15 +287,7 @@ export const EmployeeView = (props) => {
         </Box>
         <Button onClick={sendEmail} icon={<Send />} {...props} />
       </Box>
-      {/*----------------------*/}
       <Box>
-        {/* <DataTable
-          resizeable="true"
-          sortable="true"
-          size="small"
-          columns={columns}
-          data={orders}
-        /> */}
         <DataTable
           columns={[
             {
