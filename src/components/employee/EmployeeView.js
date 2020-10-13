@@ -28,23 +28,26 @@ export const EmployeeView = (props) => {
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [customerName, setCustomerName] = useState({});
   console.log(customerName);
+  console.log(selectedOrder);
 
   //TODO: refactor this so that all checked orders are e-mailed. figure out good way to display username
   const sendEmail = () => {
     const orderListHTML = `<h1>${customerName}</h1>
     ${selectedOrder
       .map((order) => {
-        return `
-        <h3><u>${order.itemName}</u></h3>
-        <div><strong>Quantity:</strong> ${order.quantity}</div>
-        <div><strong>Combo?</strong> ${order.combo}</div>
-        <div><strong>Special Instructions:</strong> ${order.instructions}</div>
-        ${order.orderIngredients
+        return order.map((item) => {
+          return `
+        <h3><u>${item.itemName}</u></h3>
+        <div><strong>Quantity:</strong> ${item.quantity}</div>
+        <div><strong>Combo?</strong> ${item.combo}</div>
+        <div><strong>Special Instructions:</strong> ${item.instructions}</div>
+        ${item.orderIngredients
           .map((ingredient) => {
             return `<div><strong>${ingredient.category}</strong>: ${ingredient.name}</div> `;
           })
-          .join("")}
+          .join("")}    
         `;
+        }).join("");
       })
       .join("")}
   `;
@@ -69,14 +72,15 @@ export const EmployeeView = (props) => {
       return userOrder;
     });
 
-    const foo = customers.map((customer) => {
+    const namesOnCheckedOrders = customers.map((customer) => {
       checkedOrders.map((checkedOrders) => {
         return customer.id === checkedOrders.userId;
       });
       return customer.name;
     });
 
-    setCustomerName(foo);
+    setCustomerName(...namesOnCheckedOrders);
+    
 
     const selectedFoodItems = checkedOrders.map((checkedObject) => {
       return (
