@@ -32,8 +32,8 @@ export const EmployeeView = (props) => {
 
   //TODO: refactor this so that all checked orders are e-mailed. figure out good way to display username
   const sendEmail = () => {
-    const orderListHTML = `<h1></h1>
-    ${selectedOrder
+    const orderListHTML = customerName.map(name => { 
+      return `<h1>${name.name}</h1> ${selectedOrder
       .map((order) => {
         return order.map((item) => {
           return `
@@ -43,14 +43,16 @@ export const EmployeeView = (props) => {
         <div><strong>Special Instructions:</strong> ${item.instructions}</div>
         ${item.orderIngredients
           .map((ingredient) => {
-            return `<div><strong>${ingredient.category}</strong>: ${ingredient.name}</div> `;
+            return `<div><strong>${ingredient.category}</strong>: ${ingredient.name}</div>`
           })
           .join("")}    
         `;
-        }).join("");
+        }).join("")
       })
       .join("")}
-  `;
+  `})
+;
+
     var templateParams = {
       orderListHTML,
     };
