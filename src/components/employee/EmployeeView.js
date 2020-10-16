@@ -1,11 +1,11 @@
-import { Box, Button, CheckBox, DataTable, Heading, List, Text } from "grommet";
+import { Box, Button, CheckBox, DataTable, Heading, Layer, List, Text } from "grommet";
 import React, { useContext, useEffect, useState } from "react";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { OrderContext } from "../order/OrderProvider";
 import { CustomerContext } from "../customers/CustomerProvider";
 import emailjs from "emailjs-com";
-import { Send, Trash, UserSettings } from "grommet-icons";
+import { Send, Trash, UserSettings, FormClose, StatusGood } from "grommet-icons";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { init } from "emailjs-com";
 init("user_PyL4nJmYB2salLdZhF4A1");
@@ -21,38 +21,41 @@ export const EmployeeView = (props) => {
   const { getCustomers, customers } = useContext(CustomerContext);
 
   const [checked, setChecked] = useState([]);
-
-  console.log("checked", checked);
-
   const [clicked, setClicked] = useState();
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [customerName, setCustomerName] = useState({});
-  console.log(customerName);
-  console.log(selectedOrder);
 
-  //TODO: refactor this so that all checked orders are e-mailed. figure out good way to display username
+  const [open, setOpen] = useState();
+
+  const onOpen = () => setOpen(true);
+
+  const onClose = () => setOpen(undefined);
+
+
+  //TODO: Add a Join("") in the right place
   const sendEmail = () => {
-    const orderListHTML = customerName.map(name => { 
+    const orderListHTML = customerName.map((name) => {
       return `<h1>${name.name}</h1> ${selectedOrder
-      .map((order) => {
-        return order.map((item) => {
-          return `
+        .map((order) => {
+          return order
+            .map((item) => {
+              return `
         <h3><u>${item.itemName}</u></h3>
         <div><strong>Quantity:</strong> ${item.quantity}</div>
         <div><strong>Combo?</strong> ${item.combo}</div>
         <div><strong>Special Instructions:</strong> ${item.instructions}</div>
         ${item.orderIngredients
           .map((ingredient) => {
-            return `<div><strong>${ingredient.category}</strong>: ${ingredient.name}</div>`
+            return `<div><strong>${ingredient.category}</strong>: ${ingredient.name}</div>`;
           })
           .join("")}    
         `;
-        }).join("")
-      })
-      .join("")}
-  `})
-;
-
+            })
+            .join("");
+        })
+        .join("")}
+  `;
+    });
     var templateParams = {
       orderListHTML,
     };
@@ -75,14 +78,14 @@ export const EmployeeView = (props) => {
     });
 
     const namesOnCheckedOrders = customers.filter((customer) => {
-    const orderNames = checkedOrders.find((checkedOrders) => {
+      const orderNames = checkedOrders.find((checkedOrders) => {
         return customer.id === checkedOrders.userId;
       });
-      return orderNames
+      return orderNames;
     });
 
     setCustomerName(namesOnCheckedOrders);
-    
+
     const selectedFoodItems = checkedOrders.map((checkedObject) => {
       return (
         foodItems.filter((item) => item.orderId === checkedObject.id) || {}
@@ -147,8 +150,12 @@ export const EmployeeView = (props) => {
     getCustomers();
   }, []);
 
-  const deleteSelectedOrder = (deleteId) => {
-    deleteOrder(deleteId);
+  const deleteSelectedOrder = () => {
+    checked.forEach(checkedNum => {
+      deleteOrder(checkedNum);
+    })
+    setSelectedOrder([])
+    onClose()
   };
 
   const nameOnOrder = (userId) => {
@@ -202,75 +209,80 @@ export const EmployeeView = (props) => {
     if (selectedOrder.length === 0 || selectedOrder === undefined) {
       return <Box></Box>;
     } else {
-      return (
-        <Box
-          className="foodOrderItem"
-          wrap={true}
-          direction="column"
-          margin="medium"
-        >
-          <Heading level="4" className="foodOrderItem__name">
-            {selectedOrder.itemName}
-          </Heading>
-          <List
-            pad="xsmall"
-            data={selectedOrder.orderIngredients}
-            primaryKey={(item) => (
-              <Text size="small" weight="bold" key={item.id}>
-                {item.category}
-              </Text>
-            )}
-            secondaryKey={(item) => (
-              <Text size="small" color="text-weak">
-                {item.name}
-              </Text>
-            )}
-          />
-          <Box direction="column">
-            <Box className="comboBlock" direction="row">
-              <Text
-                size="small"
-                weight="bold"
-                margin={{ right: "xsmall" }}
-                className="foodOrderItem__Combo__text"
-              >
-                {" "}
-                Combo:{" "}
-              </Text>
-              <Text size="small" className="foodOrderItem__Combo">
-                {" "}
-                {selectedOrder.combo ? "Yes" : "No"}
-              </Text>
-            </Box>
-            <Box className="quantityBlock" direction="row">
-              <Text
-                size="small"
-                weight="bold"
-                margin={{ right: "xsmall" }}
-                className="foodOrderItem__Quantity_text"
-              >
-                Quantity:
-              </Text>
-              <Text size="small" className="foodOrderItem__Quantity">
-                {selectedOrder.quantity}
-              </Text>
-            </Box>
-            <Box className="quantityBlock" direction="row">
-              <Text
-                size="small"
-                weight="bold"
-                margin={{ right: "xsmall" }}
-                className="foodOrderItem__Instructions_text"
-              >
-                Special Instructions:
-              </Text>
-              <Text size="small" className="foodOrderItem__Instructions">
-                {selectedOrder.instructions}
-              </Text>
+      return customerName.map((name) => {
+        return (
+          <Box>
+            <Heading level="2">{name.name}</Heading>
+            <Box
+              className="foodOrderItem"
+              wrap={true}
+              direction="column"
+              margin="medium"
+            >
+              <Heading level="4" className="foodOrderItem__name">
+                {selectedOrder.itemName}
+              </Heading>
+              <List
+                pad="xsmall"
+                data={selectedOrder.orderIngredients}
+                primaryKey={(item) => (
+                  <Text size="small" weight="bold" key={item.id}>
+                    {item.category}
+                  </Text>
+                )}
+                secondaryKey={(item) => (
+                  <Text size="small" color="text-weak">
+                    {item.name}
+                  </Text>
+                )}
+              />
+              <Box direction="column">
+                <Box className="comboBlock" direction="row">
+                  <Text
+                    size="small"
+                    weight="bold"
+                    margin={{ right: "xsmall" }}
+                    className="foodOrderItem__Combo__text"
+                  >
+                    {" "}
+                    Combo:{" "}
+                  </Text>
+                  <Text size="small" className="foodOrderItem__Combo">
+                    {" "}
+                    {selectedOrder.combo ? "Yes" : "No"}
+                  </Text>
+                </Box>
+                <Box className="quantityBlock" direction="row">
+                  <Text
+                    size="small"
+                    weight="bold"
+                    margin={{ right: "xsmall" }}
+                    className="foodOrderItem__Quantity_text"
+                  >
+                    Quantity:
+                  </Text>
+                  <Text size="small" className="foodOrderItem__Quantity">
+                    {selectedOrder.quantity}
+                  </Text>
+                </Box>
+                <Box className="quantityBlock" direction="row">
+                  <Text
+                    size="small"
+                    weight="bold"
+                    margin={{ right: "xsmall" }}
+                    className="foodOrderItem__Instructions_text"
+                  >
+                    Special Instructions:
+                  </Text>
+                  <Text size="small" className="foodOrderItem__Instructions">
+                    {selectedOrder.instructions}
+                  </Text>
+                </Box>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      );
+        );
+      });
     }
   };
 
@@ -286,8 +298,10 @@ export const EmployeeView = (props) => {
               <SelectedOrderList selectedOrder={selectedOrder} />
             ))
           )}
+          
         </Box>
         <Button onClick={sendEmail} icon={<Send />} {...props} />
+        <Button onClick={onOpen} icon={<Trash />} {...props} />
       </Box>
       <Box>
         <DataTable
@@ -319,6 +333,33 @@ export const EmployeeView = (props) => {
           size="medium"
         />
       </Box>
+      {open && (
+      <Layer
+          position="bottom"
+          modal={false}
+          margin={{ vertical: 'medium', horizontal: 'small' }}
+          onEsc={onClose}
+          responsive={false}
+          plain
+        >
+          <Box
+            align="center"
+            direction="row"
+            gap="small"
+            justify="between"
+            round="medium"
+            elevation="medium"
+            pad={{ vertical: 'xsmall', horizontal: 'small' }}
+            background="status-ok"
+          >
+            <Box align="center" direction="row" gap="xsmall">
+              <StatusGood />
+              <Text>Are you sure you want to delete these items?</Text>
+            </Box>
+            <Button icon={<FormClose />} onClick={deleteSelectedOrder} plain />
+          </Box>
+        </Layer>
+      )}
     </Box>
   );
 };
