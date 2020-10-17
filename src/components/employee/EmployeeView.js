@@ -5,7 +5,7 @@ import { IngredientContext } from "../ingredients/IngredientProvider";
 import { OrderContext } from "../order/OrderProvider";
 import { CustomerContext } from "../customers/CustomerProvider";
 import emailjs from "emailjs-com";
-import { Send, Trash, UserSettings, FormClose, StatusGood } from "grommet-icons";
+import { Send, Trash, FormClose, StatusGood, FormCheckmark } from "grommet-icons";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { init } from "emailjs-com";
 init("user_PyL4nJmYB2salLdZhF4A1");
@@ -21,7 +21,7 @@ export const EmployeeView = (props) => {
   const { getCustomers, customers } = useContext(CustomerContext);
 
   const [checked, setChecked] = useState([]);
-  const [clicked, setClicked] = useState();
+  
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [customerName, setCustomerName] = useState({});
 
@@ -31,8 +31,6 @@ export const EmployeeView = (props) => {
 
   const onClose = () => setOpen(undefined);
 
-
-  //TODO: Add a Join("") in the right place
   const sendEmail = () => {
     const orderListHTML = customerName.map((name) => {
       return `<h1>${name.name}</h1> ${selectedOrder
@@ -55,7 +53,7 @@ export const EmployeeView = (props) => {
         })
         .join("")}
   `;
-    });
+    }).join("");
     var templateParams = {
       orderListHTML,
     };
@@ -139,7 +137,7 @@ export const EmployeeView = (props) => {
     });
 
     setSelectedOrder(constructedOrder);
-  }, [clicked, checked]);
+  }, [checked]);
 
   useEffect(() => {
     getFoodItemIngredients();
@@ -226,12 +224,12 @@ export const EmployeeView = (props) => {
                 pad="xsmall"
                 data={selectedOrder.orderIngredients}
                 primaryKey={(item) => (
-                  <Text size="small" weight="bold" key={item.id}>
+                  <Text size="small" weight="bold" key={item.category + item.id}>
                     {item.category}
                   </Text>
                 )}
                 secondaryKey={(item) => (
-                  <Text size="small" color="text-weak">
+                  <Text size="small" color="text-weak" key={item.name + item.id}>
                     {item.name}
                   </Text>
                 )}
@@ -295,7 +293,7 @@ export const EmployeeView = (props) => {
         <Box className="Order_Details">
           {selectedOrder.map((selectedOrderArrObj) =>
             selectedOrderArrObj.map((selectedOrder) => (
-              <SelectedOrderList selectedOrder={selectedOrder} />
+              <SelectedOrderList selectedOrder={selectedOrder} key={selectedOrder} />
             ))
           )}
           
@@ -356,7 +354,8 @@ export const EmployeeView = (props) => {
               <StatusGood />
               <Text>Are you sure you want to delete these items?</Text>
             </Box>
-            <Button icon={<FormClose />} onClick={deleteSelectedOrder} plain />
+            <Button icon={<FormCheckmark />} onClick={deleteSelectedOrder} plain />
+            <Button icon={<FormClose />} onClick={onClose} plain />
           </Box>
         </Layer>
       )}

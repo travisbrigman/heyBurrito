@@ -45,7 +45,6 @@ export const BurritoItemOrderForm = (props) => {
       [evt.target.name]: value,
     });
   }
-  console.log(state)
 
   const [buttonState, setButtonState] = useState(true);
   useEffect(() => {

@@ -22,7 +22,7 @@ import {
           image = taco
       }
     return (
-        <Card pad="xsmall" height="medium" width="small">
+        <Card pad="xsmall" height="medium" width="small" elevation="xsmall">
         <CardBody direction= "column" className="menuItem">
         <CardHeader pad="xsmall" level="5" className="menuItem__name">{ foodDetailObject.name }</CardHeader>
         <Box width="small" height="small">
@@ -30,7 +30,7 @@ import {
         </Box>
     </CardBody>
         <CardFooter direction="column" pad="xsmall" className="menuItem__description">{ foodDetailObject.description }
-    <Button pad="xsmall" label="Add" onClick={() => history.push(`/create${foodDetailObject.name}`)} {...props} icon={<Add/>} />
+    <Button pad="xsmall" label="Add" onClick={() => history.push(`/create${foodDetailObject.name}`)} {...props} icon={<Add/>} elevation="xsmall"/>
         </CardFooter>
     </Card>
     )

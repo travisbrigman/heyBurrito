@@ -66,7 +66,6 @@ export const MenuItemForm = (props) => {
         setBeanType(beanToEdit.ingredient.name);
         setMeatType(meatToEdit.ingredient.name);
 
-        console.log(checkedItems);
       }
     }
   };
@@ -83,7 +82,6 @@ export const MenuItemForm = (props) => {
         selectedObject.ingredient.ingredientCategoryId === 4 ||
         selectedObject.ingredient.ingredientCategoryId === 6
     );
-    console.log(checkBoxIngredients);
     //creates an array of objects that are {name : true}
     checkBoxIngredients.forEach((ingredientObject) => {
       x[ingredientObject.ingredient.name] = true;
@@ -153,7 +151,6 @@ export const MenuItemForm = (props) => {
       );
       foodItemData.push(foundIngredient);
     }
-    console.log(foodItemData)
 
     if (editMode) {
       updateFoodItem({
@@ -195,7 +192,6 @@ export const MenuItemForm = (props) => {
 
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   const Checkbox = ({ type = "checkbox", name, checked = false, onChange }) => {
-    // console.log("Checkbox: ", name, checked);
 
     return (
       <input type={type} name={name} checked={checked} onChange={onChange} />
@@ -207,7 +203,6 @@ export const MenuItemForm = (props) => {
       ...checkedItems,
       [event.target.name]: event.target.checked,
     });
-    console.log("checkedItems: ", checkedItems);
   };
   /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
   //create a func , set parameter in state ==== value of what you just selected
