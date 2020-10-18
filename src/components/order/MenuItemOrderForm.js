@@ -1,3 +1,6 @@
+
+/*
+
 import React, { useContext, useRef, useEffect, useState } from "react";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { OrderContext } from "./OrderProvider";
@@ -190,7 +193,7 @@ export const MenuItemForm = (props) => {
 
   };
 
-  /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
+  
   const Checkbox = ({ type = "checkbox", name, checked = false, onChange }) => {
 
     return (
@@ -204,9 +207,9 @@ export const MenuItemForm = (props) => {
       [event.target.name]: event.target.checked,
     });
   };
-  /*✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ CHECK BOX STUFF✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ */
+  
   //create a func , set parameter in state ==== value of what you just selected
-  /*🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘RADIO BUTTON STUFF🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘*/
+  
   function useInput(initialValue) {
     const [value, setValue] = useState(initialValue);
     function handleChange(e) {
@@ -219,7 +222,7 @@ export const MenuItemForm = (props) => {
     return [value, handleChange];
   }
 
-  /*🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘RADIO BUTTON STUFF🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘🔘*/
+  
 
   return (
     <form className="menuItemObjectOrderForm">
@@ -351,13 +354,10 @@ export const MenuItemForm = (props) => {
       >
         Add to Order
       </button>
-      {/* <button
-        type="cancel"
-        onClick= {props.history.push("/")}
-        className="btn btn-cancel"
-      >
-        Cancel
-      </button> */}
+
     </form>
   );
 };
+
+*/
+

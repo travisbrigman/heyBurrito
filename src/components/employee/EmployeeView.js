@@ -1,11 +1,26 @@
-import { Box, Button, CheckBox, DataTable, Heading, Layer, List, Text } from "grommet";
+import {
+  Box,
+  Button,
+  CheckBox,
+  DataTable,
+  Heading,
+  Layer,
+  List,
+  Text,
+} from "grommet";
 import React, { useContext, useEffect, useState } from "react";
 import { FoodItemContext } from "../foodItem/FoodItemProvider";
 import { IngredientContext } from "../ingredients/IngredientProvider";
 import { OrderContext } from "../order/OrderProvider";
 import { CustomerContext } from "../customers/CustomerProvider";
 import emailjs from "emailjs-com";
-import { Send, Trash, FormClose, StatusGood, FormCheckmark } from "grommet-icons";
+import {
+  Send,
+  Trash,
+  FormClose,
+  StatusGood,
+  FormCheckmark,
+} from "grommet-icons";
 import { FoodDetailContext } from "../foodItem/FoodDetailProvider";
 import { init } from "emailjs-com";
 init("user_PyL4nJmYB2salLdZhF4A1");
@@ -21,7 +36,7 @@ export const EmployeeView = (props) => {
   const { getCustomers, customers } = useContext(CustomerContext);
 
   const [checked, setChecked] = useState([]);
-  
+
   const [selectedOrder, setSelectedOrder] = useState([]);
   const [customerName, setCustomerName] = useState({});
 
@@ -32,12 +47,13 @@ export const EmployeeView = (props) => {
   const onClose = () => setOpen(undefined);
 
   const sendEmail = () => {
-    const orderListHTML = customerName.map((name) => {
-      return `<h1>${name.name}</h1> ${selectedOrder
-        .map((order) => {
-          return order
-            .map((item) => {
-              return `
+    const orderListHTML = customerName
+      .map((name) => {
+        return `<h1>${name.name}</h1> ${selectedOrder
+          .map((order) => {
+            return order
+              .map((item) => {
+                return `
         <h3><u>${item.itemName}</u></h3>
         <div><strong>Quantity:</strong> ${item.quantity}</div>
         <div><strong>Combo?</strong> ${item.combo}</div>
@@ -48,12 +64,13 @@ export const EmployeeView = (props) => {
           })
           .join("")}    
         `;
-            })
-            .join("");
-        })
-        .join("")}
+              })
+              .join("");
+          })
+          .join("")}
   `;
-    }).join("");
+      })
+      .join("");
     var templateParams = {
       orderListHTML,
     };
@@ -149,11 +166,11 @@ export const EmployeeView = (props) => {
   }, []);
 
   const deleteSelectedOrder = () => {
-    checked.forEach(checkedNum => {
+    checked.forEach((checkedNum) => {
       deleteOrder(checkedNum);
-    })
-    setSelectedOrder([])
-    onClose()
+    });
+    setSelectedOrder([]);
+    onClose();
   };
 
   const nameOnOrder = (userId) => {
@@ -176,17 +193,21 @@ export const EmployeeView = (props) => {
   const columns = [
     {
       property: "id",
-      header: <Text>Orders</Text>,
+      header: "Orders",
+      size: "xsmall",
+      primary: true,
     },
     {
       property: "userId",
-      header: "user name",
+      header: "User Name",
       render: (datum) => nameOnOrder(datum.userId),
+      size: "xsmall",
     },
     {
       property: "time",
       header: "Order Placed",
       render: (datum) => timeFormatter(datum.time),
+      size: "xsmall",
     },
   ];
 
@@ -203,33 +224,48 @@ export const EmployeeView = (props) => {
   const onCheckAll = (event) =>
     setChecked(event.target.checked ? orders.map((datum) => datum.id) : []);
 
+  console.log(selectedOrder);
+
   const SelectedOrderList = ({ selectedOrder }) => {
     if (selectedOrder.length === 0 || selectedOrder === undefined) {
       return <Box></Box>;
     } else {
       return customerName.map((name) => {
         return (
-          <Box>
-            <Heading level="2">{name.name}</Heading>
+          <Box key={selectedOrder.id}  direction="column">
+            <Heading margin="xsmall" level="6">
+              {name.name}
+            </Heading>
             <Box
               className="foodOrderItem"
-              wrap={true}
               direction="column"
               margin="medium"
             >
-              <Heading level="4" className="foodOrderItem__name">
+              <Heading
+                margin="xsmall"
+                level="6"
+                className="foodOrderItem__name"
+              >
                 {selectedOrder.itemName}
               </Heading>
               <List
                 pad="xsmall"
                 data={selectedOrder.orderIngredients}
                 primaryKey={(item) => (
-                  <Text size="small" weight="bold" key={item.category + item.id}>
+                  <Text
+                    size="small"
+                    weight="bold"
+                    key={selectedOrder.id + item.id}
+                  >
                     {item.category}
                   </Text>
                 )}
                 secondaryKey={(item) => (
-                  <Text size="small" color="text-weak" key={item.name + item.id}>
+                  <Text
+                    size="small"
+                    color="text-weak"
+                    key={item.name + item.id}
+                  >
                     {item.name}
                   </Text>
                 )}
@@ -286,56 +322,66 @@ export const EmployeeView = (props) => {
 
   return (
     <Box direction="row-responsive">
-      <Box className="Order_list">
+      <Box direction="column" className="Order_list">
         <Heading>All Unfulfilled Orders</Heading>
+        <Box height={{ max: "large" }} width={{ max: "small" }}>
+          <DataTable
+            fill={{ horizontal: false }}
+            columns={[
+              {
+                property: "checkbox",
+                size: "xsmall",
+                render: (datum) => (
+                  <CheckBox
+                    size="xsmall"
+                    key={datum.id}
+                    checked={checked.indexOf(datum.id) !== -1}
+                    onChange={(e) => onCheck(e, datum.id)}
+                  />
+                ),
+                header: (
+                  <CheckBox
+                    size="xsmall"
+                    checked={checked.length === orders.length}
+                    indeterminate={
+                      checked.length > 0 && checked.length < orders.length
+                    }
+                    onChange={onCheckAll}
+                  />
+                ),
+                sortable: false,
+              },
+              ...controlledColumns,
+            ].map((col) => ({ ...col }))}
+            data={orders}
+            sortable
+            size="medium"
+          />
+        </Box>
       </Box>
       <Box className="orderAndSend" direction="column">
-        <Box className="Order_Details">
+        <Box direction="row">
+        <Button margin="large" onClick={sendEmail} icon={<Send />} {...props} />
+        <Button margin="large" onClick={onOpen} icon={<Trash />} {...props} />
+        </Box>
+        <Box direction="column" height={{ max: 'large' }} overflow="auto" wrap={true} className="Order_Details">
           {selectedOrder.map((selectedOrderArrObj) =>
             selectedOrderArrObj.map((selectedOrder) => (
-              <SelectedOrderList selectedOrder={selectedOrder} key={selectedOrder} />
+              <Box direction="column" >
+              <SelectedOrderList
+                selectedOrder={selectedOrder}
+                key={selectedOrder.id}
+              />
+              </Box>
             ))
           )}
-          
         </Box>
-        <Button onClick={sendEmail} icon={<Send />} {...props} />
-        <Button onClick={onOpen} icon={<Trash />} {...props} />
-      </Box>
-      <Box>
-        <DataTable
-          columns={[
-            {
-              property: "checkbox",
-              render: (datum) => (
-                <CheckBox
-                  key={datum.id}
-                  checked={checked.indexOf(datum.id) !== -1}
-                  onChange={(e) => onCheck(e, datum.id)}
-                />
-              ),
-              header: (
-                <CheckBox
-                  checked={checked.length === orders.length}
-                  indeterminate={
-                    checked.length > 0 && checked.length < orders.length
-                  }
-                  onChange={onCheckAll}
-                />
-              ),
-              sortable: false,
-            },
-            ...controlledColumns,
-          ].map((col) => ({ ...col }))}
-          data={orders}
-          sortable
-          size="medium"
-        />
       </Box>
       {open && (
-      <Layer
+        <Layer
           position="bottom"
           modal={false}
-          margin={{ vertical: 'medium', horizontal: 'small' }}
+          margin={{ vertical: "medium", horizontal: "small" }}
           onEsc={onClose}
           responsive={false}
           plain
@@ -347,14 +393,18 @@ export const EmployeeView = (props) => {
             justify="between"
             round="medium"
             elevation="medium"
-            pad={{ vertical: 'xsmall', horizontal: 'small' }}
+            pad={{ vertical: "xsmall", horizontal: "small" }}
             background="status-ok"
           >
             <Box align="center" direction="row" gap="xsmall">
               <StatusGood />
               <Text>Are you sure you want to delete these items?</Text>
             </Box>
-            <Button icon={<FormCheckmark />} onClick={deleteSelectedOrder} plain />
+            <Button
+              icon={<FormCheckmark />}
+              onClick={deleteSelectedOrder}
+              plain
+            />
             <Button icon={<FormClose />} onClick={onClose} plain />
           </Box>
         </Layer>
