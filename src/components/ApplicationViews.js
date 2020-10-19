@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Route } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { MenuList } from "./foodItem/MenuList";
 import { CustomerContext } from "./customers/CustomerProvider";
 import { FoodDetailProvider } from "./foodItem/FoodDetailProvider";
@@ -102,20 +102,25 @@ export const ApplicationViews = (props) => {
           </FoodItemProvider>
         </Box>
         <Box className="body-right">
-          <Box height={{ max: 'large' }} overflow="auto" wrap={true} direction="column">
-          <OrderProvider>
-            <FoodItemProvider>
-              <FoodDetailProvider>
-                <IngredientProvider>
-                  <Route
-                    exact
-                    path="/"
-                    render={(props) => <OrderList {...props} />}
-                  />
-                </IngredientProvider>
-              </FoodDetailProvider>
-            </FoodItemProvider>
-          </OrderProvider>
+          <Box
+            height={{ max: "large" }}
+            overflow="auto"
+            wrap={true}
+            direction="column"
+          >
+            <OrderProvider>
+              <FoodItemProvider>
+                <FoodDetailProvider>
+                  <IngredientProvider>
+                    <Route
+                      exact
+                      path="/"
+                      render={(props) => <OrderList {...props} />}
+                    />
+                  </IngredientProvider>
+                </FoodDetailProvider>
+              </FoodItemProvider>
+            </OrderProvider>
           </Box>
         </Box>
       </Box>
@@ -128,7 +133,7 @@ export const ApplicationViews = (props) => {
             alignSelf="center"
             size="small"
             justify="center"
-            margin={{"horizontal": "xsmall"}}
+            margin={{ horizontal: "xsmall" }}
           >
             Freepik
           </Anchor>{" "}
@@ -139,11 +144,21 @@ export const ApplicationViews = (props) => {
             alignSelf="center"
             size="small"
             justify="center"
-            margin={{"horizontal": "xsmall"}}
+            margin={{ horizontal: "xsmall" }}
           >
             {" "}
             www.flaticon.com
           </Anchor>
+          <Box margin="xsmall" justify="center">
+            <Link className="link" to="/employeeView">
+              Employees
+            </Link>
+          </Box>
+          <Box margin="xsmall" justify="center">
+            <Link className="link" to="/">
+              Menu
+            </Link>
+          </Box>
         </Box>
       </Footer>
     </Grommet>

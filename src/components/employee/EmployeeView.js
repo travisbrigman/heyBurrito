@@ -232,7 +232,7 @@ export const EmployeeView = (props) => {
     } else {
       return customerName.map((name) => {
         return (
-          <Box key={selectedOrder.id}  direction="column">
+          <Box key={selectedOrder.id}>
             <Heading margin="xsmall" level="6">
               {name.name}
             </Heading>
@@ -321,11 +321,12 @@ export const EmployeeView = (props) => {
   };
 
   return (
-    <Box direction="row-responsive">
-      <Box direction="column" className="Order_list">
+    <Box direction="row" wrap={true}>
+      <Box direction="column" className="Order_list" wrap={true}>
         <Heading>All Unfulfilled Orders</Heading>
-        <Box height={{ max: "large" }} width={{ max: "small" }}>
+        <Box height={{ max: "large" }} width={{ max: "small" }} wrap={true}>
           <DataTable
+          wrap={true}
             fill={{ horizontal: false }}
             columns={[
               {
@@ -359,22 +360,22 @@ export const EmployeeView = (props) => {
           />
         </Box>
       </Box>
-      <Box className="orderAndSend" direction="column">
+      <Box className="orderAndSend" direction="column" wrap={true}>
         <Box direction="row">
-        <Button margin="large" onClick={sendEmail} icon={<Send />} {...props} />
-        <Button margin="large" onClick={onOpen} icon={<Trash />} {...props} />
+          <Button margin="large" onClick={sendEmail} icon={<Send />} {...props} />
+          <Button margin="large" onClick={onOpen} icon={<Trash />} {...props} />
         </Box>
-        <Box direction="column" height={{ max: 'large' }} overflow="auto" wrap={true} className="Order_Details">
-          {selectedOrder.map((selectedOrderArrObj) =>
-            selectedOrderArrObj.map((selectedOrder) => (
-              <Box direction="column" >
+        <Box direction="column"  className="Order_Details">
+          {selectedOrder.map((selectedOrderArrObj) => (
+            <Box direction="column">
+            {selectedOrderArrObj.map((selectedOrder) => (
               <SelectedOrderList
                 selectedOrder={selectedOrder}
                 key={selectedOrder.id}
               />
-              </Box>
-            ))
-          )}
+            ))}
+            </Box>
+            ))}
         </Box>
       </Box>
       {open && (
