@@ -149,16 +149,17 @@ export const ApplicationViews = (props) => {
             {" "}
             www.flaticon.com
           </Anchor>
-          <Box margin="xsmall" justify="center">
-            <Link className="link" to="/employeeView">
-              Employees
-            </Link>
-          </Box>
-          <Box margin="xsmall" justify="center">
-            <Link className="link" to="/">
-              Menu
-            </Link>
-          </Box>
+          <Anchor
+            title="Test"
+            href="/employeeView"
+            margin="small"
+            justify="center"
+          >
+            employees
+          </Anchor>
+          <Anchor title="Test" href="/" margin="small" justify="center">
+            menu
+          </Anchor>
         </Box>
       </Footer>
     </Grommet>

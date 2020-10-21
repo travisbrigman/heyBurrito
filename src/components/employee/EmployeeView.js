@@ -321,8 +321,8 @@ export const EmployeeView = (props) => {
   };
 
   return (
-    <Box direction="row" wrap={true}>
-      <Box direction="column" className="Order_list" wrap={true}>
+    <Box direction="row" wrap={true} margin="medium" justify="between">
+      <Box direction="column" className="Order_list" wrap={true} margin="medium" animation="fadeIn">
         <Heading>All Unfulfilled Orders</Heading>
         <Box height={{ max: "large" }} width={{ max: "small" }} wrap={true}>
           <DataTable
@@ -360,7 +360,7 @@ export const EmployeeView = (props) => {
           />
         </Box>
       </Box>
-      <Box className="orderAndSend" direction="column" wrap={true}>
+      <Box className="orderAndSend" direction="column" wrap={true} margin="medium">
         <Box direction="row">
           <Button margin="large" onClick={sendEmail} icon={<Send />} {...props} />
           <Button margin="large" onClick={onOpen} icon={<Trash />} {...props} />
