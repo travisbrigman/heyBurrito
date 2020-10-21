@@ -66,7 +66,7 @@ export const OrderList = (props) => {
 
   return (
     <Box>
-      <Box className="order_list">
+      <Box className="order_list" margin="xsmall">
       <Heading level="3">Current Order</Heading>
       <Box wrap={true} flex="grow" direction="column" className="orders">
         {currentOrderList.map((foodItemObject) => (
@@ -82,6 +82,7 @@ export const OrderList = (props) => {
       </Box>
       <Button
         primary={true}
+        elevation="medium"
         margin="small"
         pad="small"
         label="Send To Burrito Shop!"

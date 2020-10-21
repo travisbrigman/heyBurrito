@@ -19,7 +19,7 @@ export const burritoTheme =
       },
       "background-back": {
         "dark": "#111111",
-        "light": "#FFFFFC"
+        "light": "#B2E6FA"
       },
       "background-front": {
         "dark": "#222222",

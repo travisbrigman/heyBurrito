@@ -15,7 +15,7 @@ import {
 } from "grommet";
 import { NumberInput } from "grommet-controls";
 
-import { Add, Close, Edit } from "grommet-icons"
+import { Add, Close, Edit } from "grommet-icons";
 
 export const BurritoItemOrderForm = (props) => {
   const {
@@ -26,6 +26,7 @@ export const BurritoItemOrderForm = (props) => {
     addToFoodItems,
     addToFoodItemIngredients,
     deleteFoodOrderItemIngredient,
+    updateFoodItem,
   } = useContext(FoodItemContext);
   const { ingredients, getIngredients } = useContext(IngredientContext);
   const { foodDetails, getFoodDetails } = useContext(FoodDetailContext);
@@ -34,9 +35,7 @@ export const BurritoItemOrderForm = (props) => {
   const [state, setState] = useState({
     quantity: 1,
     combo: false,
-    // specialInstructions: null,
   });
-
 
   function handleChange(evt) {
     const value =
@@ -50,15 +49,14 @@ export const BurritoItemOrderForm = (props) => {
   const [buttonState, setButtonState] = useState(true);
   useEffect(() => {
     const requiredProperties = ["tortilla", "bean", "meat"];
-    const buttonProps = []
+    const buttonProps = [];
     requiredProperties.forEach((prop) => {
       if (state.hasOwnProperty(prop)) {
-        buttonProps.push(prop)
+        buttonProps.push(prop);
       }
       if (buttonProps.length === requiredProperties.length) {
         setButtonState(false);
       }
-      
     });
   });
   useEffect(() => {
@@ -156,36 +154,19 @@ export const BurritoItemOrderForm = (props) => {
       }
     }
 
-    //Actual post request
-    addToFoodItems({
-      specialInstructions: state.specialInstructions,
-      quantity: parseInt(state.quantity),
-      detailId: foodDetails[0].id,
-      combo: state.combo,
-    })
-      .then((res) =>
-        foodItemData.forEach((i) =>
-          addToFoodItemIngredients({
-            ingredientId: i.id,
-            foodItemId: res.id,
-          })
-        )
-      )
-      .then(getFoodItems)
-      .then(() => props.history.push("/"));
-
     //Edit Mode UPDATE
     if (editMode) {
-      deleteFoodOrderItemIngredient(foodItemId)
-        .then(
-          addToFoodItems({
-            foodItemId,
+     const cleanUp = foodItemIngredients.filter(item => item.foodItemId === foodItemId)
+     
+     cleanUp.forEach(item => deleteFoodOrderItemIngredient(item.id))
+        //.then(
+          updateFoodItem(foodItemId, {
             specialInstructions: state.specialInstructions,
             quantity: parseInt(state.quantity),
             detailId: foodDetails[0].id,
             combo: state.combo,
           })
-        )
+        //)
         .then(
           foodItemData.forEach((i) =>
             addToFoodItemIngredients({
@@ -196,6 +177,28 @@ export const BurritoItemOrderForm = (props) => {
         )
         .then(getFoodItems)
         .then(() => props.history.push("/"));
+    } else {
+      //Actual post request
+      addToFoodItems({
+        specialInstructions: state.specialInstructions,
+        quantity: parseInt(state.quantity),
+        detailId: foodDetails[0].id,
+        combo: state.combo,
+      })
+        .then((res) =>
+          foodItemData.forEach((i) =>
+            addToFoodItemIngredients({
+              ingredientId: i.id,
+              foodItemId: res.id,
+            })
+          )
+        )
+        .then(getFoodItems)
+        .then(() => props.history.push("/"));
+        setState({
+          quantity: 1,
+          combo: false,
+        })
     }
   };
 
@@ -204,7 +207,7 @@ export const BurritoItemOrderForm = (props) => {
     props.history.push("/");
   };
 
-  console.log("freebies",freebies)
+
   return (
     <Main>
       <Form>
@@ -218,16 +221,16 @@ export const BurritoItemOrderForm = (props) => {
             pad="small"
             gap="medium"
           >
-              {tortillaTypes.map((tortilla) => (
-                <RadioButton
-                  key={tortilla.id}
-                  label={tortilla.name}
-                  name="tortilla"
-                  value={tortilla.name}
-                  checked={state.tortilla === tortilla.name}
-                  onChange={handleChange}
-                />
-              ))}
+            {tortillaTypes.map((tortilla) => (
+              <RadioButton
+                key={tortilla.id}
+                label={tortilla.name}
+                name="tortilla"
+                value={tortilla.name}
+                checked={state.tortilla === tortilla.name}
+                onChange={handleChange}
+              />
+            ))}
           </Box>
         </Box>
         <Box direction="column">
@@ -279,7 +282,10 @@ export const BurritoItemOrderForm = (props) => {
           <Box>
             <h3>Free Ingredients</h3>
             {freebies.map((freebie) => (
-              <Box key={freebie.id}pad={{ horizontal: "small", vertical: "xsmall" }}>
+              <Box
+                key={freebie.id}
+                pad={{ horizontal: "small", vertical: "xsmall" }}
+              >
                 <CheckBox
                   key={freebie.id}
                   type="checkbox"
@@ -296,7 +302,10 @@ export const BurritoItemOrderForm = (props) => {
           <Box>
             <h3>Premium Ingredients</h3>
             {premiumIngredients.map((premium) => (
-              <Box key={premium.id} pad={{ horizontal: "small", vertical: "xsmall" }}>
+              <Box
+                key={premium.id}
+                pad={{ horizontal: "small", vertical: "xsmall" }}
+              >
                 <CheckBox
                   key={premium.id}
                   type="checkbox"
@@ -311,10 +320,7 @@ export const BurritoItemOrderForm = (props) => {
           </Box>
 
           <Box direction="column" align="end" fill="horizontal">
-            <FormField
-              name="comboField"
-              htmlFor="comboField"
-            >
+            <FormField name="comboField" htmlFor="comboField">
               <Box pad={{ horizontal: "small", vertical: "xsmall" }}>
                 <CheckBox
                   reverse={true}
@@ -371,7 +377,7 @@ export const BurritoItemOrderForm = (props) => {
                 constructNewOrderItem();
               }}
               {...props}
-              icon={editMode ? <Edit/> : <Add />}
+              icon={editMode ? <Edit /> : <Add />}
             />
             <Button
               margin="small"

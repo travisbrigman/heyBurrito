@@ -46,8 +46,8 @@ export const FoodOrderItem = ({
   };
 
   return (
-    <Box className="foodOrderItem" wrap={true} direction="column">
-      <Heading level="4" className="foodOrderItem__name">
+    <Box className="foodOrderItem" wrap={true} direction="column" elevation="xsmall" round="small" margin="small">
+      <Heading level="4" className="foodOrderItem__name" margin="xsmall">
         {" "}
         {foodDetailObject.name}{" "}
       </Heading>
@@ -60,7 +60,7 @@ export const FoodOrderItem = ({
           </Text>
         )}
         secondaryKey={(item) => (
-          <Text size="small" color="text-weak">
+          <Text size="small" color="text-weak"key={item.name}>
             {item.name}
           </Text>
         )}
