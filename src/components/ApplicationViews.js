@@ -160,8 +160,8 @@ export const ApplicationViews = (props) => {
           <Anchor title="Test" href="/" margin="small" justify="center">
             menu
           </Anchor>
-          <Link to="/">menu</Link>
-          <Link to="/employeeView">employees</Link>
+          {/* <Link to="/">menu</Link>
+          <Link to="/employeeView">employees</Link> */}
         </Box>
       </Footer>
     </Grommet>
