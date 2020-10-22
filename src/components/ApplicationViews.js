@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Route } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { MenuList } from "./foodItem/MenuList";
 import { CustomerContext } from "./customers/CustomerProvider";
 import { FoodDetailProvider } from "./foodItem/FoodDetailProvider";
@@ -160,6 +160,8 @@ export const ApplicationViews = (props) => {
           <Anchor title="Test" href="/" margin="small" justify="center">
             menu
           </Anchor>
+          <Link to="/">menu</Link>
+          <Link to="/employeeView">employees</Link>
         </Box>
       </Footer>
     </Grommet>
