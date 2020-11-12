@@ -409,7 +409,7 @@ export const EmployeeView = (props) => {
             <Button icon={<FormClose />} onClick={onClose} plain />
           </Box>
         </Layer>
-      )}
+      )}B
     </Box>
   );
 };
