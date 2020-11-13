@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Link, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { MenuList } from "./foodItem/MenuList";
 import { CustomerContext } from "./customers/CustomerProvider";
 import { FoodDetailProvider } from "./foodItem/FoodDetailProvider";
@@ -53,7 +53,6 @@ export const ApplicationViews = (props) => {
         </Box>
         <Box margin="small" gap="small" justify="start" direction="column">
           <Text>Hello {signedInCustomer.name}</Text>
-          {/* <img src={ signedInCustomer.avatar.path } alt="customer avatar"/> */}
           <Button
             label="Log Out"
             onClick={() => handleLogout()}
@@ -150,18 +149,16 @@ export const ApplicationViews = (props) => {
             www.flaticon.com
           </Anchor>
           <Anchor
-            title="Test"
+            title="employeeView"
             href="/employeeView"
             margin="small"
             justify="center"
           >
             employees
           </Anchor>
-          <Anchor title="Test" href="/" margin="small" justify="center">
+          <Anchor title="menu" href="/" margin="small" justify="center">
             menu
           </Anchor>
-          {/* <Link to="/">menu</Link>
-          <Link to="/employeeView">employees</Link> */}
         </Box>
       </Footer>
     </Grommet>
