@@ -1,12 +1,12 @@
 
 ## HeyBurrito!
 
-#####A demo burrito ordering app
+##### A demo burrito ordering app
 ---
 
 The intention of the app is for a user to log in select and customize menu items. When they click "Send to Burrito Shop" That adds the order to a queue in the employee view section of the app. From there, an employee can either delete or e-mailed to prescribed address. The idea being the restaurant could send orders to a web-enabled printer that would print hard copies of orders to be fulfilled.
 
-#####Setup
+##### Setup
 ---
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -26,7 +26,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 N.B. EmailJS can be used for free, but requires an account. Sign up [here](https://www.emailjs.com/).
 
-#####Screen Shots
+##### Screen Shots
 ---
 ![menu](readMeImages/menu.png)
 
