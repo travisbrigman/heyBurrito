@@ -4,22 +4,18 @@ import {
   Anchor,
   Box,
   Button,
-  CheckBox,
   Form,
   FormField,
-  Header,
   Heading,
   Layer,
-  ResponsiveContext,
-  Text,
   TextInput,
 } from "grommet";
 
 export const Login = (props) => {
   const email = useRef();
   const password = useRef();
-//   const existDialog = useRef();
-//   const passwordDialog = useRef();
+  //   const existDialog = useRef();
+  //   const passwordDialog = useRef();
 
   const [show, setShow] = useState();
   const [showUser, setShowUser] = useState();
@@ -90,13 +86,13 @@ export const Login = (props) => {
           </Layer>
         )}
         <Box>
+          <Heading>HeyBurrito!</Heading>
+          <Heading>Please sign in</Heading>
           <Form className="form--login" onSubmit={handleLogin}>
-            <Heading>HeyBurrito!</Heading>
-            <Heading>Please sign in</Heading>
             <FormField
               label="Email address"
               htmlFor="inputEmail"
-            //   validate={emailValidation}
+              //   validate={emailValidation}
             >
               <TextInput
                 ref={email}
@@ -116,14 +112,31 @@ export const Login = (props) => {
               />
             </FormField>
             <FormField>
-              <Button primary type="submit">
-                Sign in
-              </Button>
+              <Box align="center" pad="medium">
+                <Button
+                  size="large"
+                  label="sign in"
+                  fill={false}
+                  margin="small"
+                  pad="small"
+                  primary
+                  type="submit"
+                />
+              </Box>
             </FormField>
           </Form>
         </Box>
         <Box className="link--register">
-          <Link to="/register">Not a member yet?</Link>
+        <Anchor
+          as={Link}
+          to="/register"
+            title="register"
+            href="/register"
+            margin="small"
+            justify="center"
+          >
+          Not a member yet?
+          </Anchor>
         </Box>
       </Box>
     </>
